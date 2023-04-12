@@ -12,6 +12,15 @@ module.exports = {
         'gradient-conic':
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
+      keyframes: {
+        blurShowKeyframes: {
+          '0%': { opacity: '0' },
+          '50%': { filter: 'blur(10px)' },
+        }
+      },
+      animation: {
+        'blur-show-ani': 'blurShowKeyframes 2s linear',
+      },
     },
   },
   plugins: [],
