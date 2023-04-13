@@ -27,7 +27,7 @@ export default function Paragraph(props:ParagraphProps) {
       {selectMode ?
         <section
           className={`  
-            flex items-start justify-between
+            flex flex-col
             select-none
             p-0.5
             rounded-r-md  
@@ -63,7 +63,7 @@ export default function Paragraph(props:ParagraphProps) {
                 p-1
                 border    
                 border-transparent
-                focus:bg-orange-400
+                focus:bg-orange-500   
                 focus:text-black
               `}
             >
@@ -73,7 +73,7 @@ export default function Paragraph(props:ParagraphProps) {
               className={`
                 px-2
                 pb-2
-                text-gray-500
+                text-gray-300
                 flex
                 flex-wrap
               `}   
@@ -93,7 +93,7 @@ export default function Paragraph(props:ParagraphProps) {
           {text.length > 0 &&
             <span
               className={`
-                font-mono text-xs
+                font-mono text-xs text-gray-700 ml-auto
                 whitespace-nowrap
               `}
             >

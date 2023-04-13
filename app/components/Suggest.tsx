@@ -30,7 +30,7 @@ export default function Suggest(props:any) {
             focus && */}
             <div
               className={`
-                bg-orange-400
+                bg-orange-500
                 w-4
                 h-4
                 rounded-lg
@@ -48,8 +48,8 @@ export default function Suggest(props:any) {
               font-mono text-sm
               w-fit h-fit
               bg-transparent
-              text-orange-400
-              placeholder:text-orange-400 ` + (!focus && 'w-0 ')}
+              text-orange-500
+              placeholder:text-orange-500 ` + (!focus && 'w-0 ')}
             placeholder={focus ? "Type ...":""} 
             value={input}
             onChange={(e)=>setInput(e.target.value)}

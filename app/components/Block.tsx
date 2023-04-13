@@ -33,9 +33,9 @@ export default function Block(props:BlockTypes) {
             p-1
             rounded-t-sm
             ml-0.5
-            text-orange-400
-            border-orange-400
-            placeholder:text-orange-400
+            text-orange-500 
+            border-orange-500 
+            placeholder:text-orange-500 
           "
           placeholder="Insert ..."
           value={insertValue}
@@ -76,12 +76,13 @@ export default function Block(props:BlockTypes) {
         }}
         className={`
           focus:outline-none
-          focus:bg-gray-700
+          focus:bg-gray-700 
+          focus:text-gray-200
           cursor-pointer
           select-none
           p-0.5
           rounded-sm
-          blur-show-ani ` + (editMode ? 'text-gray-700':'text-gray-300')
+          blur-show-ani ` + (editMode ? 'text-gray-700':'text-gray-300  ')
         }
       >
         {props.word}
@@ -109,9 +110,9 @@ export default function Block(props:BlockTypes) {
             p-1
             rounded-t-sm
             ml-0.5
-            text-orange-400
-            border-orange-400
-            placeholder:text-orange-400
+            text-orange-500 
+            border-orange-500 
+            placeholder:text-orange-500 
           "
           placeholder="Edit ..."
           value={editValue}
