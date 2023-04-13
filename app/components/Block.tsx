@@ -28,7 +28,7 @@ export default function Block(props:BlockTypes) {
             focus:outline-none
             font-mono text-sm
             w-fit h-fit
-            bg-slate-800
+            bg-gray-800
             border-b
             p-1
             rounded-t-sm
@@ -52,8 +52,12 @@ export default function Block(props:BlockTypes) {
         />
       }
 
-
       <button
+        onBlur={props.onBlur}
+        onClick={()=>{
+          setEditMode(true);
+          setTimeout(() => setEditValue(''), 1)
+        }}
         onKeyDown={(e) => {
           if (e.key === 'c') copy();
           if (e.key === "Backspace" || e.key === "Delete") backspace();
@@ -72,19 +76,19 @@ export default function Block(props:BlockTypes) {
         }}
         className={`
           focus:outline-none
-        focus:bg-slate-700
+          focus:bg-gray-700
           cursor-pointer
           select-none
           p-0.5
           rounded-sm
-          blur-show-ani ` + (editMode ? 'text-slate-700':'text-slate-300')
+          blur-show-ani ` + (editMode ? 'text-gray-700':'text-gray-300')
         }
       >
         {props.word}
-        {props.word.at(-1) == '.' && 
+        {props.word?.at(-1) == '.' && 
           <small
             className="
-              text-slate-500
+              text-gray-500
               ml-1
             "
           >
@@ -100,7 +104,7 @@ export default function Block(props:BlockTypes) {
             focus:outline-none
             font-mono text-sm
             w-fit h-fit
-            bg-slate-800
+            bg-gray-800
             border-b
             p-1
             rounded-t-sm
