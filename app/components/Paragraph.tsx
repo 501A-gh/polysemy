@@ -39,6 +39,7 @@ export default function Paragraph(props:ParagraphProps) {
             `}
           >
             <button
+              autoFocus
               onClick={()=>setSelectMode(false)}
               onKeyDown={(e)=>{
                 if (e.key === 'Enter' && e.metaKey) {

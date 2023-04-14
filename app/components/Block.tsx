@@ -17,7 +17,7 @@ export default function Block(props:BlockTypes) {
 
 
   const copy = () => navigator.clipboard.writeText(props.word);
-  const backspace = () => props.setText((oldValues:string[]) => oldValues.filter((_:any, i:number) => i !== props.index));
+  const backspace = (deletingIndex:number) => props.setText((oldValues:string[]) => oldValues.filter((_:any, i:number) => i !== deletingIndex));
 
   return (
     <>
@@ -29,12 +29,12 @@ export default function Block(props:BlockTypes) {
             font-mono text-sm
             w-fit h-fit
             bg-gray-800
-            border-b
-            p-1
-            rounded-t-sm
+            border border-gray-800
+            py-1
+              px-2    
+            rounded-md
             ml-0.5
             text-orange-500 
-            border-orange-500 
             placeholder:text-orange-500 
           "
           placeholder="Insert ..."
@@ -42,9 +42,11 @@ export default function Block(props:BlockTypes) {
           onChange={(e)=>setInsertValue(e.target.value)}
           onBlur={()=>setInsertMode(false)}
           onKeyDown={(e) => {
-            if (e.key === ' ') {
+            if (e.key === 'Enter') {
               let temp:string[] = [...props.text];
-              temp.splice(props.index, 0, insertValue);
+              insertValue.split(" ").reverse().map((word:string) =>{
+                temp.splice(props.index, 0, word);
+              })
               props.setText(temp)
               setInsertMode(false);
             }
@@ -52,7 +54,7 @@ export default function Block(props:BlockTypes) {
         />
       }
 
-      <button
+      <button 
         onBlur={props.onBlur}
         onClick={()=>{
           setEditMode(true);
@@ -60,8 +62,11 @@ export default function Block(props:BlockTypes) {
         }}
         onKeyDown={(e) => {
           if (e.key === 'c') copy();
-          if (e.key === "Backspace" || e.key === "Delete") backspace();
-          if (e.key === 'e') {
+          if (e.key === "Backspace" || e.key === "Delete") backspace(props.index);
+          // if (e.altKey && e.key === 'j') {
+          //   backspace(props.index - 1);
+          // }
+          if (e.key === 'r') {
             setEditMode(true);
             setTimeout(() => setEditValue(''), 1)
           };
@@ -71,7 +76,7 @@ export default function Block(props:BlockTypes) {
           };
           if (e.key === "x") {
             copy();
-            backspace();
+            backspace(props.index);
           };
         }}
         className={`
@@ -81,8 +86,7 @@ export default function Block(props:BlockTypes) {
           cursor-pointer
           select-none
           p-0.5
-          rounded-sm
-          blur-show-ani ` + (editMode ? 'text-gray-700':'text-gray-300  ')
+          rounded-sm ` + (editMode ? 'text-gray-700 animate-bounce':'text-gray-300  ')
         }
       >
         {props.word}
@@ -106,15 +110,15 @@ export default function Block(props:BlockTypes) {
             font-mono text-sm
             w-fit h-fit
             bg-gray-800
-            border-b
-            p-1
-            rounded-t-sm
+            border border-gray-800
+            py-1
+            px-2    
+            rounded-md
             ml-0.5
             text-orange-500 
-            border-orange-500 
             placeholder:text-orange-500 
           "
-          placeholder="Edit ..."
+          placeholder="Replace ..."
           value={editValue}
           onChange={(e)=>setEditValue(e.target.value)}
           onBlur={()=>setEditMode(false)}

@@ -46,28 +46,32 @@ export default function Home() {
           /> */}
         </section>
       </main>
-      {/* <footer
+      <footer
         className="
           font-mono text-sm
           sticky
-             bottom-0
+          bottom-0
           flex items-center justify-between
           p-0.5
-          bg-slate-700
+          bg-gray-700
         "
       >
-        <input
-          className="
-            font-mono text-sm
-            p-1
-            w-auto h-fit
-            border-gray-700
-            bg-gray-800
-          "
-          placeholder="Text Goes Here ..."
-          // value={text}
-        />  
-      </footer> */}
+        <button
+          className={`
+            rounded-md
+            py-0.5
+            px-1.5
+            bg-gray-900
+            text-gray-500 
+            focus:outline-none
+            border
+            border-transparent
+            focus:border-gray-700
+          `}
+        >
+          Export as PDF
+        </button>
+      </footer>
     </>
   )
 }

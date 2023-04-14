@@ -19,7 +19,7 @@ module.exports = {
         }
       },
       animation: {
-        'blur-show-ani': 'blurShowKeyframes 2s linear',
+        'blur-show-ani': 'blurShowKeyframes 2s linear infinite',
       },
     },
   },
