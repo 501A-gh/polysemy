@@ -3,25 +3,27 @@ Polysemy is a block based text editor for English.
 
 ## Keybindings
 ### Basic Navigation
-`tab` - move forwards
-`tab` + `shift` - move backwords
+| Key | Action |
+| --- | --- |
+| `tab`  | move forwards  |
+| `tab` + `shift`  | move backwords  |
 
 ### Select Mode
-`enter` - switch to edit mode
+| Key | Action |
+| --- | --- |
+| `enter`  | switch to edit mode  |
+| `cmd` + `enter`  | add a new paragraph  |
+| `del` or `backspace` | delete paragraph  |
 
 ### Edit Mode
-`cmd` + `enter` - switch to select mode
-
-#### When selecting a word
-`c` - copy word
-
-`x` - cut word
-
-`j` - delete word infront
-
-`del` || `backspace` - delete word
-
-`r` || `enter` && `space` - replace a word
-
-`i` && `enter` - insert a sentence before the selected word
+| Key | Action | Submit |
+| --- | --- | --- |
+| `cmd` + `enter`  | switch to select mode |
+| `o`  | enter command mode | `enter` or `space` |
+| `c`  | copy word |
+| `x`  | cut word |
+| `j`  | delete word infront |
+| `del` or `backspace`  | delete word |
+| `r` or `enter` or `space`  | replace a word | `space` |
+| `i`  | insert a sentence infront | `enter` |
 

@@ -17,6 +17,9 @@ export default function Paragraph(props:ParagraphProps) {
   useEffect(()=>{
     const down = (e:any) => {
       if (e.key === 'Enter' && e.metaKey) setSelectMode(true);
+      // if (e.key === 'p' && e.metaKey) {
+      //   // setSelectMode(true)
+      // }
     }
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
@@ -64,6 +67,7 @@ export default function Paragraph(props:ParagraphProps) {
                 p-1
                 border    
                 border-transparent
+                print:hidden
                 focus:bg-orange-500   
                 focus:text-black
               `}
@@ -74,9 +78,10 @@ export default function Paragraph(props:ParagraphProps) {
               className={`
                 px-2
                 pb-2
-                text-gray-300
                 flex
                 flex-wrap
+                print:px-0
+                print:text-black
               `}   
             >
               {text.map((word:string,i:number) => 
@@ -84,6 +89,8 @@ export default function Paragraph(props:ParagraphProps) {
                   key={i}
                   className={`
                     mr-1
+                    text-gray-300
+                    print:text-black
                   `}
                 >
                   {word}
@@ -95,7 +102,7 @@ export default function Paragraph(props:ParagraphProps) {
             <span
               className={`
                 font-mono text-xs text-gray-700 ml-auto
-                whitespace-nowrap
+                whitespace-nowrap print:hidden
               `}
             >
               {text.length} Words
@@ -105,8 +112,7 @@ export default function Paragraph(props:ParagraphProps) {
         <section
           className={`
             flex flex-wrap items-center
-            mt-2
-            mb-2
+            mt-2 mb-2 print:hidden
           `}
         >
           {

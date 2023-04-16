@@ -41,7 +41,7 @@ export default function Block(props:BlockTypes) {
             py-1
             px-2
             rounded-md
-            ml-0.5
+            ml-0.5 mb-1
             text-orange-500 
             placeholder:text-orange-500 
           "
@@ -69,7 +69,7 @@ export default function Block(props:BlockTypes) {
           setTimeout(() => setEditValue(''), 1)
         }}
         onKeyDown={(e) => {
-          if (e.metaKey) {
+          if (e.key === 'o') {
             setCommandMode(commandMode ? false:true); 
           }
           if (e.key === 'c') copy();
@@ -94,10 +94,11 @@ export default function Block(props:BlockTypes) {
           focus:outline-none
           cursor-pointer
           select-none
-          p-0.5 mb-0.5
-          rounded-md ` + (editMode || commandMode && `
-          text-gray-700 animate-bounce
-          `) + (!editMode && !commandMode && `
+          p-0.5 mb-1
+          rounded-md `
+          + (editMode ? `text-gray-700 animate-bounce`:null)
+          + (commandMode ? `text-purple-700 animate-bounce`:null)
+          + (!editMode && !commandMode && `
             focus:px-1.5
             focus:bg-gray-800 
             focus:text-orange-500
@@ -133,7 +134,7 @@ export default function Block(props:BlockTypes) {
               setEditMode(true)
             }}
             className="
-              shadow
+              shadow mb-1
               focus:outline-none
               font-mono text-xs
               w-fit h-fit

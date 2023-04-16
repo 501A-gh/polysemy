@@ -47,21 +47,12 @@ export default function Command(props:any) {
   }
 
   return (
-    <section
-      className={`
-        flex
-        items-center
-        ml-1
-        gap-1
-        w-fit
-        mb-0.5
-      `}
-    >
+    <>
       {
         response.length > 0 ?
           <>
             {
-              response.slice(0, 3).map((obj:any, i:number)=>        
+              response.slice(0, 15).map((obj:any, i:number)=>        
                 <Button
                   key={i}
                   onClick={()=>{
@@ -100,6 +91,6 @@ export default function Command(props:any) {
           </>
       }
 
-    </section>
+    </>
   )
 }

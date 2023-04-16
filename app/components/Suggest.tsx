@@ -13,36 +13,25 @@ export interface SuggestProps{
 export default function Suggest(props:SuggestProps) {
   return (
     <>
-      <section
-        className={`
-          flex
-          items-center
-          ml-1
-          gap-1
-          w-fit
-          mb-0.5
-        `}
-      >
-        {props.children}
-        {props.input?.length > 0 && 
-          <>
-            {props.suggestion.slice(0, 3).map(suggestedText =>
-              <Button 
-                key={suggestedText}
-                onClick={() => {
-                  props.setInput(suggestedText);
-                  props?.setFocus(true);
-                  if (props?.inputRef.current != null) {
-                    props?.inputRef.current.focus();
-                  }
-                }}
-              >
-                {suggestedText}
-              </Button>
-            )}
-          </>
-        }
-      </section>
+      {props.children}
+      {props.input?.length > 3 && 
+        <>
+          {props.suggestion.map(suggestedText =>
+            <Button 
+              key={suggestedText}
+              onClick={() => {
+                props.setInput(suggestedText);
+                props?.setFocus(true);
+                if (props?.inputRef.current != null) {
+                  props?.inputRef.current.focus();
+                }
+              }}
+            >
+              {suggestedText}
+            </Button>
+          )}
+        </>
+      }
     </>
   )
 }

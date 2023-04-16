@@ -43,6 +43,8 @@ export const Button: React.FC<ButtonProps> = ({
         text-sm
         py-0.5
         px-1
+        mx-0.5
+        mb-1
         border
         border-transparent
         focus:outline-none

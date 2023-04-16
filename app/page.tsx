@@ -7,23 +7,22 @@ import Paragraph from './components/Paragraph';
 export default function Home() {
   const [paragraph, setParagraph] = useState<[string[]]>([["Welcome","to","Polysemy."]]);
 
-  const [open, setOpen] = useState(false)
+  // const [open, setOpen] = useState(false)
 
-  // Toggle the menu when ⌘K is pressed
-  useEffect(() => {
-    const down = (e:any) => {
-      if (e.key === 'k' && e.metaKey) setOpen((open) => !open)
-    }
-    document.addEventListener('keydown', down)
-    return () => document.removeEventListener('keydown', down)
-  }, [])
+  // // Toggle the menu when ⌘K is pressed
+  // useEffect(() => {
+  //   const down = (e:any) => {
+  //     if (e.key === 'k' && e.metaKey) setOpen((open) => !open)
+  //   }
+  //   document.addEventListener('keydown', down)
+  //   return () => document.removeEventListener('keydown', down)
+  // }, [])
 
   return (
     <>
-      {/* {open && } */}
       <main className="flex flex-col min-h-screen">
         <section className="p-10">
-          <div className="mb-10">
+          <div className="mb-10 print:hidden">
             <h1 className="text-2xl font-serif whitespace-nowrap">
               Polysemy.{" "}
               <span className="text-xs font-sans text-orange-500">

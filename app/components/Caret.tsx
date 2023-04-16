@@ -18,7 +18,9 @@ export default function Caret(props:any) {
       setFocus={setFocus}
       suggestion={suggestion}
     >
-      <>
+      <div
+        className={`flex items-center gap-0.25 ml-1 mb-1`}
+      >
         {focus &&
           <div
             className={`
@@ -30,44 +32,40 @@ export default function Caret(props:any) {
             `}
           />
         }
-      </>
-      <input
-        autoFocus
-        ref={inputRef}
-        onFocus={()=>setFocus(true)}
-        onBlur={()=> setFocus(false)}
-        className={`
-          focus:outline-none
-          font-mono text-xs
-          w-0 h-fit
-          bg-transparent
-          p-1
-          border
-          border-transparent
-          text-orange-500
-          placeholder:text-orange-500 ` + (focus && 'w-20')}
-        placeholder={focus ? "Type ...":""} 
-        value={input}
-        onChange={(e)=>{
-          setInput(e.target.value);
-          const results = words.filter((wrd:any) => {
-            if (e.target.value === "") return wrd
-            return wrd.toLowerCase().includes(e.target.value.toLowerCase()) 
-          })
-          setSuggestion(results);
-        }}
-        onKeyDown={(e) => {
-          setFocus(true)
-          if (e.key === ' ') {
-            props.setText([...props.text, input])
-            setTimeout(() => setInput(''), 1);
-          }
-          // if (e.key === 'Enter  ' && e.metaKey  && props.text.length > 0) {
-            // props.setParagraph([...props.paragraph, [props.text]]) ;
-            // props.setText([]);
-          // };
-        }}
-      />
+        <input
+          autoFocus
+          ref={inputRef}
+          onFocus={()=>setFocus(true)}
+          onBlur={()=> setFocus(false)}
+          className={`
+            focus:outline-none
+            font-mono text-xs
+            w-0 h-fit
+            bg-transparent
+            p-1
+            border
+            border-transparent
+            text-orange-500
+            placeholder:text-orange-500 ` + (focus && 'w-20')}
+          placeholder={focus ? "Type ...":""} 
+          value={input}
+          onChange={(e)=>{
+            setInput(e.target.value);
+            const results = words.filter((wrd:any) => {
+              if (e.target.value === "") return wrd
+              return wrd.toLowerCase().includes(e.target.value.toLowerCase()) 
+            })
+            setSuggestion(results);
+          }}
+          onKeyDown={(e) => {
+            setFocus(true)
+            if (e.key === ' ') {
+              props.setText([...props.text, input])
+              setTimeout(() => setInput(''), 1);
+            }
+          }}
+        />
+      </div>
     </Suggest>
   )
 }
