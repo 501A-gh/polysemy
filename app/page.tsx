@@ -1,26 +1,40 @@
 'use client';
 import { Inter } from 'next/font/google'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Paragraph from './components/Paragraph';
-
 // const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const [paragraph, setParagraph] = useState<[string[]]>([["Welcome","to","Polysemy."]]);
 
+  const [open, setOpen] = useState(false)
+
+  // Toggle the menu when ⌘K is pressed
+  useEffect(() => {
+    const down = (e:any) => {
+      if (e.key === 'k' && e.metaKey) setOpen((open) => !open)
+    }
+    document.addEventListener('keydown', down)
+    return () => document.removeEventListener('keydown', down)
+  }, [])
+
   return (
     <>
+      {/* {open && } */}
       <main className="flex flex-col min-h-screen">
         <section className="p-10">
-          <h1 className="text-2xl font-serif whitespace-nowrap">
-            Polysemy.
-          </h1>
-          <br/>
-          <div
-            className={`
-              flex flex-col
-            `}
-          >
+          <div className="mb-10">
+            <h1 className="text-2xl font-serif whitespace-nowrap">
+              Polysemy.{" "}
+              <span className="text-xs font-sans text-orange-500">
+                [Beta]
+              </span>
+            </h1>
+            <h6 className="text-xs font-serif">
+              The blockbased text editor
+            </h6>
+          </div>
+          <div className="flex flex-col">
             {paragraph.map((p,i) => 
               <Paragraph
                 key={i}
@@ -31,47 +45,8 @@ export default function Home() {
               />
             )}
           </div>
-          {/* <Editor
-            text={text}
-            setText={setText}
-            cursor={
-              <Suggest
-                editMode={true}
-                text={text}
-                setText={setText}
-                paragraph={paragraph}
-                setParagraph={setParagraph}
-              />
-            }
-          /> */}
         </section>
       </main>
-      <footer
-        className="
-          font-mono text-sm
-          sticky
-          bottom-0
-          flex items-center justify-between
-          p-0.5
-          bg-gray-700
-        "
-      >
-        <button
-          className={`
-            rounded-md
-            py-0.5
-            px-1.5
-            bg-gray-900
-            text-gray-500 
-            focus:outline-none
-            border
-            border-transparent
-            focus:border-gray-700
-          `}
-        >
-          Export as PDF
-        </button>
-      </footer>
     </>
   )
 }

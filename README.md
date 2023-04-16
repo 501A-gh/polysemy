@@ -17,6 +17,10 @@ Polysemy is a block based text editor for English.
 
 `x` - cut word
 
+`j` - delete word infront
+
+`del` || `backspace` - delete word
+
 `r` || `enter` && `space` - replace a word
 
 `i` && `enter` - insert a sentence before the selected word

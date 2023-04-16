@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import Suggest from './Suggest';
+import React, { useEffect, useRef, useState } from 'react'
+import Caret from './Caret';
 import Block from './Block';
 
 interface ParagraphProps{
@@ -12,19 +12,19 @@ interface ParagraphProps{
 export default function Paragraph(props:ParagraphProps) {
   const [selectMode, setSelectMode] = useState(true)
   const [text, setText] = useState<string[]>(props.text);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(()=>{
     const down = (e:any) => {
-      if (e.key === 'Enter' && e.metaKey) setSelectMode(true);  
+      if (e.key === 'Enter' && e.metaKey) setSelectMode(true);
     }
-
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
   }, [])
 
   return (
     <>
-      {selectMode ?
+      {selectMode ? 
         <section
           className={`  
             flex flex-col
@@ -121,8 +121,12 @@ export default function Paragraph(props:ParagraphProps) {
               />
             ))
           }
-          <Suggest
-            editMode={true}
+          <Caret
+            ref={inputRef}
+            // focus={()=> if (inputRef.current != null) {
+            //     inputRef.current.focus();
+            //   }
+            // }
             text={text}
             setText={setText}
             paragraph={props.paragraph}
