@@ -29,6 +29,11 @@ const options:CommandButtonProps[] = [
 export default function Command(props:any) {
   const [response, setResponse] = useState([])
   const [commandType, setCommandType] = useState('')
+
+  const closeCommandMode = () =>{
+    setResponse([])
+    props.setCommandMode(false);
+  }
   
   async function fetchApi(apiRoute:string){
     const response = await fetch(`https://api.datamuse.com/words?${apiRoute}=${props.word}`);
@@ -36,6 +41,8 @@ export default function Command(props:any) {
     console.log(responseJsonData)
     if (responseJsonData.length > 0) {
       setResponse(responseJsonData)
+    }else{
+      alert('None found.')
     }
   }
 
@@ -57,11 +64,17 @@ export default function Command(props:any) {
               response.slice(0, 3).map((obj:any, i:number)=>        
                 <Button
                   key={i}
-                  // onClick={()=>{
-                  //   props.setInput(suggestedText);
-                  //   props?.setFocus(true);
-                  // }}
-                  onBlur={()=>setResponse([])}
+                  onClick={()=>{
+                    let temp:string[] = [...props.text];
+                    temp.map((_:any, i:number) => {
+                      if (i == props.index) temp[i] = obj.word
+                    });
+                    props.setText(temp);
+                    closeCommandMode();
+                  }}
+                  onKeyDown={(e)=>{
+                    if (e.metaKey) closeCommandMode()
+                  }}
                 >
                   {obj.word}
                 </Button>
@@ -76,6 +89,9 @@ export default function Command(props:any) {
                 icon={obj.icon}
                 onClick={()=>{
                   fetchApi(obj.apiRoute)
+                }}
+                onKeyDown={(e)=>{
+                  if (e.metaKey) closeCommandMode()
                 }}
               >
               {obj.name} 

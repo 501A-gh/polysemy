@@ -171,7 +171,11 @@ export default function Block(props:BlockTypes) {
       }
       {commandMode &&
         <Command
+          index={props.index}
           word={props.word}
+          text={props.text}
+          setText={props.setText}
+          setCommandMode={setCommandMode}
         />
       }
     </>
