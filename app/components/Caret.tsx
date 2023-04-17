@@ -19,7 +19,7 @@ export default function Caret(props:any) {
       suggestion={suggestion}
     >
       <div
-        className={`flex items-center gap-0.25 ml-1 mb-1`}
+        className={`flex items-center gap-0.25 my-0.5 ml-1`}
       >
         {focus &&
           <div

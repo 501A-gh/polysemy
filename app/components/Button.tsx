@@ -4,22 +4,30 @@ import { type VariantProps, cva } from 'class-variance-authority';
 const button = cva("button", {
   variants: {
     intent: {
+      standard: [
+        "text-gray-500",
+        "focus:border-gray-700",
+        "focus:text-white",
+      ],
       word: [
-        "bg-gray-900",
-        "text-gray-500 ",
-        "focus:border-gray-800",
+        "text-orange-500",
+        "focus:border-orange-600",
         "focus:text-orange-500",
       ],
-      action: [
-        "bg-gray-900",
-        "text-purple-700",
-        "focus:border-purple-900",
+      highlight: [
+        "text-lime-500",
+        "focus:border-lime-600",
+        "focus:text-lime-500",
+      ],
+      command: [
+        "text-purple-500",
+        "focus:border-purple-600",
         "focus:text-purple-500",
       ]
     },
   },
   defaultVariants:{
-    intent:"word"
+    intent:"standard"
   }
 });
 
@@ -39,12 +47,13 @@ export const Button: React.FC<ButtonProps> = ({
     className={
       button({ intent, className }) + 
       ` 
+        font-sans
         rounded-md
         text-sm
         py-0.5
         px-1
+        my-0.5
         mx-0.5
-        mb-1
         border
         border-transparent
         focus:outline-none
@@ -52,6 +61,8 @@ export const Button: React.FC<ButtonProps> = ({
         flex
         items-center
         gap-1.5
+        whitespace-nowrap
+        bg-gray-800
       `
     }
     {...props}

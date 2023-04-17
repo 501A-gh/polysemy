@@ -1,24 +1,92 @@
 import { words } from '@/words';
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { setTimeout } from 'timers';
 import Suggest, { SuggestProps } from './Suggest';
 import Command from './Command';
+import { VariantProps, cva } from 'class-variance-authority';
+import Highlight from './Highlight';
 
 interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   index: number,
   word: string,
   text: string[],
   setText: any,
+  highlightPoint:number[],
+  setHighlightPoint:any,
 }
+
+const blockButton = cva("button", {
+  variants: {
+    intent: {
+      command: [
+        "text-gray-700",
+        "animate-pulse",
+      ],
+      edit: [
+        "text-gray-700",
+        "animate-bounce",
+      ],
+      standard:[
+        "focus:px-1.5",
+        "text-gray-300",
+        "focus:bg-gray-800 ",
+        "focus:text-orange-500",
+      ],
+      highlight:[
+        "rounded-none",
+        "text-gray-900",
+        "bg-lime-500",
+        "focus:bg-lime-700",
+      ]
+    },
+  },
+  defaultVariants:{
+    intent:"standard"
+  }
+});
+
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof blockButton> {
+  icon?:JSX.Element
+}
+
+const BlockButton: React.FC<ButtonProps> = ({
+  className,
+  intent,
+  icon,
+  ...props
+}) => (
+  <button
+    className={
+      blockButton({ intent, className }) + 
+      ` 
+        border 
+        text-sm
+        border-transparent
+        focus:outline-none
+        cursor-pointer
+        select-none
+        p-0.5 my-0.5
+        rounded-md
+      `
+    }
+    {...props}
+  >
+    {icon}
+    {props.children}
+  </button>
+);
+
+// interface CurrentMode extends VariantProps<typeof blockButton>{
+//   mode:
+// }
 
 export default function Block(props:BlockTypes) {
   const editInputRef = useRef<HTMLInputElement>(null);
-  const [commandMode, setCommandMode] = useState<boolean>(false);
+  const [currentMode, setCurrentMode] = useState<any>();
 
-  const [editMode, setEditMode] = useState<boolean>(false);
   const [editValue, setEditValue] = useState<SuggestProps["input"]>('');
-
-  const [insertMode, setInsertMode] = useState<boolean>(false);
   const [insertValue, setInsertValue] = useState<string>('');
 
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
@@ -26,9 +94,35 @@ export default function Block(props:BlockTypes) {
   const copy = () => navigator.clipboard.writeText(props.word);
   const backspace = (deletingIndex:number) => props.setText((oldValues:string[]) => oldValues.filter((_:any, i:number) => i !== deletingIndex));
 
+
+  let highlightIndex:number[] = []
+  let sortedHighlightPoint = props.highlightPoint.sort();
+  let highlightPointStart:number = sortedHighlightPoint[0];
+  let highlightPointEnd:number = sortedHighlightPoint[props.highlightPoint.length-1];
+
+  // useEffect(()=>{
+  //   // highlightIndex = [];
+  // },[])
+  
+  for (let i = highlightPointStart; i < highlightPointEnd+1; i++) {
+    highlightIndex.push(i);
+  }
+  console.log(highlightIndex)
+
+
+  // useEffect(() => {
+  //   if (props.highlight.length === 2) {
+  //     props.setHighlight()
+  //     se
+  //   }
+  // }, [])
+
+  // console.log(props.highlight)
+  
+
   return (
     <>
-      {insertMode && 
+      {currentMode === 'insert' && 
         <input
           autoFocus
           className="
@@ -41,14 +135,14 @@ export default function Block(props:BlockTypes) {
             py-1
             px-2
             rounded-md
-            ml-0.5 mb-1
+            ml-0.5 my-0.5
             text-orange-500 
             placeholder:text-orange-500 
           "
           placeholder="Insert ..."
           value={insertValue}
           onChange={(e)=>setInsertValue(e.target.value)}
-          onBlur={()=>setInsertMode(false)}
+          onBlur={()=>setCurrentMode('insert')}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               let temp:string[] = [...props.text];
@@ -56,55 +150,48 @@ export default function Block(props:BlockTypes) {
                 temp.splice(props.index, 0, word);
               })
               props.setText(temp)
-              setInsertMode(false);
+              setCurrentMode('standard');
             }
           }}
         />
       }
 
-      <button 
+      <BlockButton
+        intent={highlightIndex.includes(props.index) ? 'highlight':currentMode}
         onBlur={props.onBlur}
         onClick={()=>{
-          setEditMode(true);
+          setCurrentMode('edit');
           setTimeout(() => setEditValue(''), 1)
         }}
         onKeyDown={(e) => {
           if (e.key === 'o') {
-            setCommandMode(commandMode ? false:true); 
+            currentMode === 'command' ? setCurrentMode('standard'):setCurrentMode('command')
           }
           if (e.key === 'c') copy();
           if (e.key === "Backspace" || e.key === "Delete") backspace(props.index);
           if (e.key === 'j') backspace(props.index - 1);
           if (e.key === 'r') {
-            setEditMode(true);
+            setCurrentMode('edit');
             setTimeout(() => setEditValue(''), 1)
           };
           if (e.key === 'i') {
-            setInsertMode(true);
+            setCurrentMode('insert');
             setTimeout(() => setInsertValue(''), 1)
+          };
+          if (e.key === 'h') {
+            if (highlightIndex.includes(props.index)) {
+              props.setHighlightPoint([])
+            }else if(props.highlightPoint.length == 2){
+              alert('cannot highlight');
+            }else{
+              props.setHighlightPoint([...props.highlightPoint,props.index])
+            }
           };
           if (e.key === "x") {
             copy();
             backspace(props.index);
           };
         }}
-        className={`
-          border text-sm
-          border-transparent
-          focus:outline-none
-          cursor-pointer
-          select-none
-          p-0.5 mb-1
-          rounded-md `
-          + (editMode ? `text-gray-700 animate-bounce`:null)
-          + (commandMode ? `text-purple-700 animate-bounce`:null)
-          + (!editMode && !commandMode && `
-            focus:px-1.5
-            focus:bg-gray-800 
-            focus:text-orange-500
-            text-gray-300
-          `)
-        }
       >
         {props.word}
         {props.word?.at(-1) == '.' && 
@@ -117,24 +204,22 @@ export default function Block(props:BlockTypes) {
             ({props.index+1} Words Until Here)
           </small>
         }
-      </button>
+      </BlockButton>
 
-      {editMode && 
+      {currentMode === 'edit' && 
         <Suggest
           inputRef={editInputRef}
           input={editValue}
           setInput={setEditValue}
-          setFocus={setEditMode}
+          setCurrentMode={setCurrentMode}
           suggestion={suggestion}
         >
           <input
             autoFocus
             ref={editInputRef}
-            onFocus={()=>{
-              setEditMode(true)
-            }}
+            onFocus={()=>setCurrentMode('edit')}
             className="
-              shadow mb-1
+              shadow my-0.5
               focus:outline-none
               font-mono text-xs
               w-fit h-fit
@@ -164,19 +249,28 @@ export default function Block(props:BlockTypes) {
                   if (i == props.index) temp[i] = editValue
                 });
                 props.setText(temp)
-                setEditMode(false);
+                setCurrentMode('standard');
               }
             }}
           />
         </Suggest>
       }
-      {commandMode &&
+      {currentMode === 'command' &&
         <Command
           index={props.index}
           word={props.word}
           text={props.text}
           setText={props.setText}
-          setCommandMode={setCommandMode}
+          setCurrentMode={setCurrentMode}
+        />
+      }
+      {
+        props.highlightPoint.length === 2 && 
+        sortedHighlightPoint[props.highlightPoint.length-1] === props.index &&
+        <Highlight
+          highlightPoint={props.highlightPoint}
+          setHighlightPoint={props.setHighlightPoint}
+          setCurrentMode={setCurrentMode}
         />
       }
     </>

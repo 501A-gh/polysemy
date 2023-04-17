@@ -21,6 +21,11 @@ module.exports = {
       animation: {
         'blur-show-ani': 'blurShowKeyframes 2s linear infinite',
       },
+      fontFamily: {
+        sans: ['var(--font-inter)'],
+        mono: ['var(--font-spaceMono)'],
+        serif: ['var(--font-playfairDisplay)'],
+      },
     },
   },
   plugins: [],

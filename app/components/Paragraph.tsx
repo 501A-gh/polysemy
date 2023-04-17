@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import Caret from './Caret';
 import Block from './Block';
 
+
 interface ParagraphProps{
   index:number,
   text:string[],
@@ -25,15 +26,19 @@ export default function Paragraph(props:ParagraphProps) {
     return () => document.removeEventListener('keydown', down)
   }, [])
 
+  const [highlightPoint, setHighlightPoint] = useState([]);
+
   return (
     <>
       {selectMode ? 
         <section
-          className={`  
+          className={`
+            my-2
             flex flex-col
             select-none
-            p-0.5
-            rounded-r-md  
+            rounded-r-md 
+            px-10 print:p-0
+            border-b-gray-800
           `}
         >
           <div
@@ -61,7 +66,8 @@ export default function Paragraph(props:ParagraphProps) {
               className={`
                 focus:outline-none
                 text-gray-600
-                font-mono text-sm
+                text-sm
+                font-mono
                 mr-1
                 rounded-md
                 p-1
@@ -76,8 +82,8 @@ export default function Paragraph(props:ParagraphProps) {
             </button>
             <p
               className={`
+                pt-1.5
                 px-2
-                pb-2
                 flex
                 flex-wrap
                 print:px-0
@@ -88,7 +94,7 @@ export default function Paragraph(props:ParagraphProps) {
                 <span
                   key={i}
                   className={`
-                    mr-1
+                    mr-1 text-sm
                     text-gray-300
                     print:text-black
                   `}
@@ -98,7 +104,7 @@ export default function Paragraph(props:ParagraphProps) {
               )}
             </p>
           </div>
-          {text.length > 0 &&
+          {/* {text.length > 0 &&
             <span
               className={`
                 font-mono text-xs text-gray-700 ml-auto
@@ -107,12 +113,19 @@ export default function Paragraph(props:ParagraphProps) {
             >
               {text.length} Words
             </span>
-          }
+          } */}
         </section>:  
+        // mx-2 
         <section
+        // rounded-lg 
           className={`
             flex flex-wrap items-center
-            mt-2 mb-2 print:hidden
+            mt-3
+            py-0.2 5 px-1.5 mx-10 
+            print:hidden
+            border-transparent
+            border-l
+            border-orange-500
           `}
         >
           {
@@ -124,6 +137,8 @@ export default function Paragraph(props:ParagraphProps) {
                 word={word}
                 text={text}
                 setText={setText}
+                highlightPoint={highlightPoint}
+                setHighlightPoint={setHighlightPoint}
               />
             ))
           }

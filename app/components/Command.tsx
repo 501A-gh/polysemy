@@ -32,7 +32,7 @@ export default function Command(props:any) {
 
   const closeCommandMode = () =>{
     setResponse([])
-    props.setCommandMode(false);
+    props.setCurrentMode('standard');
   }
   
   async function fetchApi(apiRoute:string){
@@ -48,49 +48,48 @@ export default function Command(props:any) {
 
   return (
     <>
-      {
-        response.length > 0 ?
-          <>
-            {
-              response.slice(0, 15).map((obj:any, i:number)=>        
-                <Button
-                  key={i}
-                  onClick={()=>{
-                    let temp:string[] = [...props.text];
-                    temp.map((_:any, i:number) => {
-                      if (i == props.index) temp[i] = obj.word
-                    });
-                    props.setText(temp);
-                    closeCommandMode();
-                  }}
-                  onKeyDown={(e)=>{
-                    if (e.metaKey) closeCommandMode()
-                  }}
-                >
-                  {obj.word}
-                </Button>
-              )
-            }            
-          </>:
-          <>
-            {options.map((obj:CommandButtonProps, i:number)=>        
+      {response.length > 0 ?
+        <>
+          {
+            response.slice(0, 15).map((obj:any, i:number)=>        
               <Button
                 key={i}
-                intent={'action'}
-                icon={obj.icon}
+                intent={'word'}
                 onClick={()=>{
-                  fetchApi(obj.apiRoute)
+                  let temp:string[] = [...props.text];
+                  temp.map((_:any, i:number) => {
+                    if (i == props.index) temp[i] = obj.word
+                  });
+                  props.setText(temp);
+                  closeCommandMode();
                 }}
                 onKeyDown={(e)=>{
                   if (e.metaKey) closeCommandMode()
                 }}
               >
-              {obj.name} 
+                {obj.word}
               </Button>
-            )}
-          </>
+            )
+          }            
+        </>:
+        <>
+          {options.map((obj:CommandButtonProps, i:number)=>        
+            <Button
+              key={i}
+              intent={'command'}
+              icon={obj.icon}
+              onClick={()=>{
+                fetchApi(obj.apiRoute)
+              }}
+              onKeyDown={(e)=>{
+                if (e.metaKey) closeCommandMode()
+              }}
+            >
+            {obj.name} 
+            </Button>
+          )}
+        </>
       }
-
     </>
   )
 }
