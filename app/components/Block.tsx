@@ -13,6 +13,8 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   setText: any,
   highlightPoint:number[],
   setHighlightPoint:any,
+  paragraph:string[][],
+  setParagraph:any
 }
 
 const blockButton = cva("button", {
@@ -268,6 +270,11 @@ export default function Block(props:BlockTypes) {
         props.highlightPoint.length === 2 && 
         sortedHighlightPoint[props.highlightPoint.length-1] === props.index &&
         <Highlight
+          paragraph={props.paragraph}
+          setParagraph={props.setParagraph}
+          text={props.text}
+          backspace={backspace}
+          highlightIndex={highlightIndex}
           highlightPoint={props.highlightPoint}
           setHighlightPoint={props.setHighlightPoint}
           setCurrentMode={setCurrentMode}

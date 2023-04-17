@@ -15,7 +15,6 @@ export default function Caret(props:any) {
       inputRef={inputRef}
       input={input}
       setInput={setInput}
-      setFocus={setFocus}
       suggestion={suggestion}
     >
       <div
@@ -24,7 +23,7 @@ export default function Caret(props:any) {
         {focus &&
           <div
             className={`
-              bg-orange-500
+              bg-gradient-to-r from-orange-500 to-red-500
               w-4
               h-4
               rounded-lg

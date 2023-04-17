@@ -20,6 +20,7 @@ Polysemy is a block based text editor for English.
 | --- | --- | --- |
 | `cmd` + `enter`  | switch to select mode |
 | `o`  | enter command mode | `enter` or `space` |
+| `h` (start) + `h` (end)  | highlight words | `enter` or `space` |
 | `c`  | copy word |
 | `x`  | cut word |
 | `j`  | delete word infront |

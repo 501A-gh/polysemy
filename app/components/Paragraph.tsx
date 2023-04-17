@@ -139,15 +139,13 @@ export default function Paragraph(props:ParagraphProps) {
                 setText={setText}
                 highlightPoint={highlightPoint}
                 setHighlightPoint={setHighlightPoint}
+                paragraph={props.paragraph}
+                setParagraph={props.setParagraph}
               />
             ))
           }
           <Caret
             ref={inputRef}
-            // focus={()=> if (inputRef.current != null) {
-            //     inputRef.current.focus();
-            //   }
-            // }
             text={text}
             setText={setText}
             paragraph={props.paragraph}
