@@ -20,25 +20,29 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
 const blockButton = cva("button", {
   variants: {
     intent: {
-      command: [
+      standard:[
+        "focus:px-1.5",
         "text-gray-700",
+        "focus:bg-gray-200 ",
+        "dark:text-gray-300",
+        "dark:focus:bg-gray-800 ",
+        "focus:text-orange-500",
+      ],
+      command: [
+        "text-gray-400",
+        "dark:text-gray-700",
         "animate-pulse",
       ],
       edit: [
-        "text-gray-700",
+        "text-gray-400",
+        "dark:text-gray-700",
         "animate-bounce",
-      ],
-      standard:[
-        "focus:px-1.5",
-        "text-gray-300",
-        "focus:bg-gray-800 ",
-        "focus:text-orange-500",
       ],
       highlight:[
         "rounded-none",
         "text-gray-900",
-        "bg-lime-500",
-        "focus:bg-lime-700",
+        "bg-green-300",
+        "focus:bg-green-400",
       ]
     },
   },
@@ -102,24 +106,9 @@ export default function Block(props:BlockTypes) {
   let highlightPointStart:number = sortedHighlightPoint[0];
   let highlightPointEnd:number = sortedHighlightPoint[props.highlightPoint.length-1];
 
-  // useEffect(()=>{
-  //   // highlightIndex = [];
-  // },[])
-  
   for (let i = highlightPointStart; i < highlightPointEnd+1; i++) {
     highlightIndex.push(i);
   }
-  console.log(highlightIndex)
-
-
-  // useEffect(() => {
-  //   if (props.highlight.length === 2) {
-  //     props.setHighlight()
-  //     se
-  //   }
-  // }, [])
-
-  // console.log(props.highlight)
   
 
   return (
@@ -127,20 +116,26 @@ export default function Block(props:BlockTypes) {
       {currentMode === 'insert' && 
         <input
           autoFocus
-          className="
-            shadow
+          className={`
+            my-0.5
             focus:outline-none
             font-mono text-xs
             w-fit h-fit
-            bg-gray-800
-            border border-gray-700
+            border 
             py-1
-            px-2
+            px-2    
             rounded-md
-            ml-0.5 my-0.5
+            ml-0.5
+            shadow-md
+            shadow-gray-200
+            dark:shadow-gray-900
+            bg-gray-100
+            border-gray-300
+            dark:bg-gray-800
+            dark:border-gray-700
             text-orange-500 
             placeholder:text-orange-500 
-          "
+          `}
           placeholder="Insert ..."
           value={insertValue}
           onChange={(e)=>setInsertValue(e.target.value)}
@@ -159,7 +154,7 @@ export default function Block(props:BlockTypes) {
       }
 
       <BlockButton
-        intent={highlightIndex.includes(props.index) ? 'highlight':currentMode}
+        intent={highlightIndex.includes(props.index) ? 'highlight':currentMode === "insert" ? "standard":currentMode}
         onBlur={props.onBlur}
         onClick={()=>{
           setCurrentMode('edit');
@@ -219,20 +214,26 @@ export default function Block(props:BlockTypes) {
             autoFocus
             ref={editInputRef}
             onFocus={()=>setCurrentMode('edit')}
-            className="
-              shadow my-0.5
+            className={`
+              my-0.5
               focus:outline-none
               font-mono text-xs
               w-fit h-fit
-              bg-gray-800
-              border border-gray-700
+              border 
               py-1
               px-2    
               rounded-md
               ml-0.5
+              shadow-md
+              shadow-gray-200
+              dark:shadow-gray-900
+              bg-gray-100
+              border-gray-300
+              dark:bg-gray-800
+              dark:border-gray-700
               text-orange-500 
               placeholder:text-orange-500 
-            "
+            `}
             placeholder="Replace ..."
             value={editValue}
             onChange={(e)=>{

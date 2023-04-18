@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Button, ButtonProps } from './Button'
-import { ClipboardIcon, ColorWheelIcon, CubeIcon, MagicWandIcon, Pencil1Icon, TransformIcon } from '@radix-ui/react-icons';
+import { ClipboardIcon, ColorWheelIcon, CubeIcon, InfoCircledIcon, MagicWandIcon, Pencil1Icon, TextIcon, TransformIcon } from '@radix-ui/react-icons';
 
 interface SettingButtonProps extends ButtonProps{
   name:string,
-  action:Function,
-  intent:'highlight' | 'standard'
+  action:any,
 }
 
 export default function Setting(props:any) {
@@ -20,29 +19,28 @@ export default function Setting(props:any) {
       icon:<CubeIcon/>,
       name:"Feed data",
       action:props.consume,
-      intent:'standard'
     },
     {
       icon:<ColorWheelIcon/>,
-      name:"Editor theme",
+      name:"Set to " + "color" + " theme",
       action:changeTheme(),
-      intent:'standard'
     },
     {
       icon:<MagicWandIcon/>,
       name:"Copy all text ",
       action:props.copyAllRaw,
-      intent:'standard'
+    },
+    {
+      icon:<TextIcon/>,
+      name:"Display word count",
+      action:() => props.setDisplayWordCound(props.displayWordCound ? false:true),
+    },
+    {
+      icon:<InfoCircledIcon/>,
+      name:"View docs",
+      action:props.copyAllRaw,
     },
   ];
-
-  const closeCommandMode = () =>{
-    setResponse([])
-    props.setCommandMode(false);
-  }
-  
-  async function fetchApi(apiRoute:string){
-  }
 
   return (
     <section
@@ -53,48 +51,15 @@ export default function Setting(props:any) {
         flex items-center
       `}    
     >
-      {
-        response.length > 0 ?
-          <>
-            {
-              response.slice(0, 15).map((obj:any, i:number)=>        
-                <Button
-                  key={i}
-                  onClick={()=>{
-                    let temp:string[] = [...props.text];
-                    temp.map((_:any, i:number) => {
-                      if (i == props.index) temp[i] = obj.word
-                    });
-                    props.setText(temp);
-                    closeCommandMode();
-                  }}
-                  onKeyDown={(e)=>{
-                    if (e.metaKey) closeCommandMode()
-                  }}
-                >
-                  {obj.word}
-                </Button>
-              )
-            }            
-          </>:
-          <>
-            {options.filter((obj:SettingButtonProps) => obj.intent === props.intent).map((obj:SettingButtonProps, i:number)=>        
-              <Button
-                key={i}
-                intent={props.intent}
-                icon={obj.icon}
-                onClick={()=>{
-                  // fetchApi(obj.apiRoute)
-                }}
-                onKeyDown={(e)=>{
-                  if (e.metaKey) closeCommandMode()
-                }}
-              >
-              {obj.name} 
-              </Button>
-            )}
-          </>
-      }
+      {options.map((obj:SettingButtonProps, i:number)=>        
+        <Button
+          key={i}
+          icon={obj.icon}
+          onClick={obj.action}
+        >
+          {obj.name}
+        </Button>
+      )}
     </section>
   )
 }

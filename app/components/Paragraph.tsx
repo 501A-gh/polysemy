@@ -8,6 +8,7 @@ interface ParagraphProps{
   text:string[],
   paragraph:any,
   setParagraph:any,
+  displayWordCound:boolean,
 }
 
 export default function Paragraph(props:ParagraphProps) {
@@ -62,17 +63,19 @@ export default function Paragraph(props:ParagraphProps) {
               }}
               className={`
                 focus:outline-none
-                text-gray-600
                 text-sm
                 font-mono
                 mr-1
                 rounded-md
                 p-1
-                border    
+                border
                 border-transparent
                 print:hidden
+                text-gray-400
+                dark:text-gray-600
                 focus:bg-orange-500   
-                focus:text-black
+                focus:text-white
+                dark:focus:text-black
               `}
             >
               P{props.index}
@@ -92,7 +95,8 @@ export default function Paragraph(props:ParagraphProps) {
                   key={i}
                   className={`
                     mr-1 text-sm
-                    text-gray-300
+                    text-gray-700
+                    dark:text-gray-300
                     print:text-black
                   `}
                 >
@@ -101,16 +105,16 @@ export default function Paragraph(props:ParagraphProps) {
               )}
             </p>
           </div>
-          {/* {text.length > 0 &&
+          {props.displayWordCound && text.length > 0 &&
             <span
               className={`
-                font-mono text-xs text-gray-700 ml-auto
+                font-mono text-xs text-orange-600 ml-auto
                 whitespace-nowrap print:hidden
               `}
             >
               {text.length} Words
             </span>
-          } */}
+          }
         </section>:  
         <section
           className={`
@@ -119,8 +123,7 @@ export default function Paragraph(props:ParagraphProps) {
             py-1
             px-10
             print:hidden
-            border
-            border-transparent
+            border-l-2
             border-l-orange-500
           `}
         >

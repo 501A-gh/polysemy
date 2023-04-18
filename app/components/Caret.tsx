@@ -19,12 +19,18 @@ export default function Caret(props:any) {
       suggestion={suggestion}
     >
       <div
-        className={`flex items-center gap-0.25 my-0.5 ml-1`}
+        className={`
+          flex items-center gap-0.25 
+          my-0.5 ml-1
+        `}
       >
         {focus &&
           <div
             className={`
-              bg-gradient-to-r from-orange-500 to-red-500
+              bg-gradient-to-r 
+              from-orange-400 dark:from-orange-500
+              to-red-400 dark:to-red-500 
+              shadow-lg shadow-orange-200/10  
               w-4
               h-4
               rounded-lg
@@ -36,7 +42,7 @@ export default function Caret(props:any) {
           autoFocus
           ref={inputRef}
           onFocus={()=>setFocus(true)}
-          onBlur={()=> setFocus(false)}
+          onBlur={()=>setFocus(false)}
           className={`
             focus:outline-none
             font-mono text-xs

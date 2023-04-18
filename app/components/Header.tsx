@@ -6,8 +6,15 @@ export default function Header({status}:{status:string}) {
     <header
       className={`
         px-10 py-7 print:hidden font-serif select-none
-        border border-black border-b-gray-800
-        bg-gradient-to-r from-gray-950 to-black
+        border
+        text-black
+        dark:text-white
+        border-gray-200 
+        border-b-gray-300
+        dark:border-black 
+        dark:border-b-gray-800
+        bg-gray-200
+        dark:bg-gray-900
       `}
     >
       <h1 className="text-2xl whitespace-nowrap">

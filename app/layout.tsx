@@ -30,7 +30,8 @@ export default function RootLayout({
     <html
       lang="en"
       className={`
-      bg-gray-950
+        bg-gray-100
+        dark:bg-gray-950
         ${inter.variable}
         ${spaceMono.variable}
         ${playfairDisplay.variable}

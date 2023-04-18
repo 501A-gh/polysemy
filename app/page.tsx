@@ -6,7 +6,8 @@ import Setting from './components/Setting';
 export default function Home() {
   const [paragraph, setParagraph] = useState<[string[]]>([["Welcome","to","Polysemy."]]);
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [displayWordCound, setDisplayWordCound] = useState(false);
 
   // Toggle the menu when ⌘K is pressed
   useEffect(() => {
@@ -23,9 +24,18 @@ export default function Home() {
       {open && 
         <Setting
           intent={'highlight'}
+          displayWordCound={displayWordCound}
+          setDisplayWordCound={setDisplayWordCound}
         />
       }
-      <main className="flex flex-col bg-gray-950 pt-5 print:pt-1">
+      <main
+        className={`
+          flex flex-col 
+          pt-5 print:pt-1
+          bg-gray-100 
+          dark:bg-gray-950       
+        `}
+      >
         {paragraph.map((p,i) => 
           <Paragraph
             key={i}
@@ -33,6 +43,7 @@ export default function Home() {
             text={p}
             paragraph={paragraph}
             setParagraph={setParagraph}
+            displayWordCound={displayWordCound}
           />
         )}
       </main>
