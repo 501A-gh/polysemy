@@ -12,6 +12,7 @@ export default function Caret(props:any) {
 
   return (
     <Suggest
+      onFocus={setFocus}
       inputRef={inputRef}
       input={input}
       setInput={setInput}

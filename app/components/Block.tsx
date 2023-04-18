@@ -213,7 +213,6 @@ export default function Block(props:BlockTypes) {
           inputRef={editInputRef}
           input={editValue}
           setInput={setEditValue}
-          setCurrentMode={setCurrentMode}
           suggestion={suggestion}
         >
           <input

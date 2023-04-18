@@ -4,7 +4,7 @@ export interface SuggestProps{
   inputRef?:any
   input:string | '',
   setInput:any,
-  setCurrentMode?:any,
+  // setFocus?:any,
   suggestion:string[],
   children:JSX.Element | JSX.Element[],
   onFocus?:any,
@@ -22,7 +22,7 @@ export default function Suggest(props:SuggestProps) {
               key={suggestedText}
               onClick={() => {
                 props.setInput(suggestedText);
-                props?.setCurrentMode('edit');
+                props?.onFocus();
                 if (props?.inputRef.current != null) {
                   props?.inputRef.current.focus();
                 }

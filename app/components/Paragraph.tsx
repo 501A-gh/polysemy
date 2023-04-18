@@ -18,9 +18,6 @@ export default function Paragraph(props:ParagraphProps) {
   useEffect(()=>{
     const down = (e:any) => {
       if (e.key === 'Enter' && e.metaKey) setSelectMode(true);
-      // if (e.key === 'p' && e.metaKey) {
-      //   // setSelectMode(true)
-      // }
     }
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
@@ -33,10 +30,10 @@ export default function Paragraph(props:ParagraphProps) {
       {selectMode ? 
         <section
           className={`
-            my-2
             flex flex-col
             select-none
             rounded-r-md 
+            my-1
             px-10 print:p-0
             border-b-gray-800
           `}
@@ -115,17 +112,16 @@ export default function Paragraph(props:ParagraphProps) {
             </span>
           } */}
         </section>:  
-        // mx-2 
         <section
-        // rounded-lg 
           className={`
+            my-0.5
             flex flex-wrap items-center
-            mt-3
-            py-0.2 5 px-1.5 mx-10 
+            py-1
+            px-10
             print:hidden
+            border
             border-transparent
-            border-l
-            border-orange-500
+            border-l-orange-500
           `}
         >
           {
