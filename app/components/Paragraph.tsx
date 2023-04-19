@@ -36,7 +36,6 @@ export default function Paragraph(props:ParagraphProps) {
             rounded-r-md 
             my-1
             px-10 print:p-0
-            border-b-gray-800
           `}
         >
           <div
@@ -82,27 +81,17 @@ export default function Paragraph(props:ParagraphProps) {
             </button>
             <p
               className={`
-                pt-1.5
+                pt-1
                 px-2
                 flex
                 flex-wrap
-                print:px-0
+                print:p-0
+                text-gray-800
+                dark:text-gray-300
                 print:text-black
               `}   
             >
-              {text.map((word:string,i:number) => 
-                <span
-                  key={i}
-                  className={`
-                    mr-1 text-sm
-                    text-gray-700
-                    dark:text-gray-300
-                    print:text-black
-                  `}
-                >
-                  {word}
-                </span>
-              )}
+              {text.join(' ')}
             </p>
           </div>
           {props.displayWordCound && text.length > 0 &&

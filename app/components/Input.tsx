@@ -1,19 +1,12 @@
 import React from 'react'
 import { type VariantProps, cva } from 'class-variance-authority';
 
-const button = cva("button", {
+const input = cva("input", {
   variants: {
     intent: {
       standard: [
-        "bg-gray-300",
-        "dark:bg-gray-800",
-        "text-gray-500",
-        "focus:shadow-gray-400/40",
-
-        "focus:text-gray-100",
-        "focus:bg-gray-400",
-
-      "dark:focus:bg-gray-700 ",
+        "text-orange-500", 
+        "placeholder:text-orange-500"
       ],
       word: [
         "text-orange-500",
@@ -48,42 +41,39 @@ const button = cva("button", {
   }
 });
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof button> {
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement>,
+    VariantProps<typeof input> {
   icon?:JSX.Element
 }
 
-export const Button: React.FC<ButtonProps> = ({
+export const Input: React.FC<InputProps> = ({
   className,
   intent,
-  icon,
   ...props
 }) => (
-  <button
+  <input
     className={
-      button({ intent, className }) + 
+      input({ intent, className }) + 
       ` 
-        font-sans
-        rounded-md text-xs
-        py-1
-        px-1.5
         my-0.5
-        mx-0.5
-        border
-        border-none
         focus:outline-none
-        flex
-        items-center
-        gap-1.5
-        whitespace-nowrap
-        bg-gray-200
+        font-mono text-xs
+        w-fit h-fit
+        border 
+        py-1
+        px-2    
+        rounded-md
+        ml-0.5
+        shadow-md
+        shadow-gray-200
+        dark:shadow-gray-900
+        bg-gray-100
+        border-gray-300
         dark:bg-gray-800
+        dark:border-gray-700
       `
     }
     {...props}
-  >
-    {icon}
-    {props.children}
-  </button>
+  />
 );

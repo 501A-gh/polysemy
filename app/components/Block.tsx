@@ -5,6 +5,7 @@ import Suggest, { SuggestProps } from './Suggest';
 import Command from './Command';
 import { VariantProps, cva } from 'class-variance-authority';
 import Highlight from './Highlight';
+import { Input } from './Input';
 
 interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   index: number,
@@ -43,6 +44,9 @@ const blockButton = cva("button", {
         "text-gray-900",
         "bg-green-300",
         "focus:bg-green-400",
+      ],
+      blur:[
+        "blur-md"
       ]
     },
   },
@@ -114,28 +118,8 @@ export default function Block(props:BlockTypes) {
   return (
     <>
       {currentMode === 'insert' && 
-        <input
+        <Input
           autoFocus
-          className={`
-            my-0.5
-            focus:outline-none
-            font-mono text-xs
-            w-fit h-fit
-            border 
-            py-1
-            px-2    
-            rounded-md
-            ml-0.5
-            shadow-md
-            shadow-gray-200
-            dark:shadow-gray-900
-            bg-gray-100
-            border-gray-300
-            dark:bg-gray-800
-            dark:border-gray-700
-            text-orange-500 
-            placeholder:text-orange-500 
-          `}
           placeholder="Insert ..."
           value={insertValue}
           onChange={(e)=>setInsertValue(e.target.value)}
@@ -154,7 +138,9 @@ export default function Block(props:BlockTypes) {
       }
 
       <BlockButton
-        intent={highlightIndex.includes(props.index) ? 'highlight':currentMode === "insert" ? "standard":currentMode}
+        intent={
+          highlightIndex.includes(props.index) ? 'highlight':
+          currentMode === "insert" ? "standard":currentMode}
         onBlur={props.onBlur}
         onClick={()=>{
           setCurrentMode('edit');
@@ -210,30 +196,9 @@ export default function Block(props:BlockTypes) {
           setInput={setEditValue}
           suggestion={suggestion}
         >
-          <input
+          <Input
             autoFocus
-            ref={editInputRef}
             onFocus={()=>setCurrentMode('edit')}
-            className={`
-              my-0.5
-              focus:outline-none
-              font-mono text-xs
-              w-fit h-fit
-              border 
-              py-1
-              px-2    
-              rounded-md
-              ml-0.5
-              shadow-md
-              shadow-gray-200
-              dark:shadow-gray-900
-              bg-gray-100
-              border-gray-300
-              dark:bg-gray-800
-              dark:border-gray-700
-              text-orange-500 
-              placeholder:text-orange-500 
-            `}
             placeholder="Replace ..."
             value={editValue}
             onChange={(e)=>{
