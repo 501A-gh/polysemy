@@ -2,6 +2,7 @@
 import { words } from '@/words'
 import React, { useRef, useState } from 'react'
 import Suggest, { SuggestProps } from './Suggest'
+import { Input } from './Input';
 
 export default function Caret(props:any) {
   const [focus, setFocus] = useState<boolean>(false)
@@ -9,6 +10,9 @@ export default function Caret(props:any) {
   
   const [input, setInput] = useState<SuggestProps["input"]>('');
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
+
+  const [insert, setInsert] = useState<boolean>(false);
+  const [insertInput, setInsertInput] = useState<string>('');
 
   return (
     <Suggest
@@ -24,31 +28,24 @@ export default function Caret(props:any) {
           my-0.5 ml-1
         `}
       >
-        {focus &&
-          <div
-            className={`
-              bg-gradient-to-r 
-              from-orange-400 dark:from-orange-500
-              to-red-400 dark:to-red-500 
-              shadow-lg shadow-orange-200/10  
-              w-4
-              h-4
-              rounded-lg
-              ease-out
-            `}
-          />
-        }
         <input
           autoFocus
+          spellCheck
           ref={inputRef}
           onFocus={()=>setFocus(true)}
           onBlur={()=>setFocus(false)}
+          onPaste={(e) => {
+            e.preventDefault();
+            alert("To paste switch to insert mode")
+          }}
           className={`
             focus:outline-none
-            font-mono text-xs
+            font-mono 
             w-0 h-fit
+            text-sm
             bg-transparent
-            p-1
+            px-0
+            mr-0.5
             border
             border-transparent
             text-orange-500
@@ -65,12 +62,40 @@ export default function Caret(props:any) {
           }}
           onKeyDown={(e) => {
             setFocus(true)
-            if (e.key === ' ') {
+            if (e.metaKey && e.key == 'i') {
+              setInsert(true);
+              setFocus(false);
+            }
+            if (
+              input.split('').length > 0 && 
+              e.key === ' '
+            ) {
               props.setText([...props.text, input])
               setTimeout(() => setInput(''), 1);
             }
           }}
         />
+        {insert && 
+          <Input
+            autoFocus
+            placeholder="Insert ..."
+            value={insertInput}
+            onChange={(e)=>setInsertInput(e.target.value)}
+            onBlur={()=>setInsert(false)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                let temp:string[] = [...props.text];
+                insertInput.split(" ").map((word:string) =>{
+                  temp.push(word);
+                })
+                props.setText(temp)
+                setInsertInput('');
+                setInsert(false);
+                setFocus(true);
+              }
+            }}
+          />
+        }
       </div>
     </Suggest>
   )

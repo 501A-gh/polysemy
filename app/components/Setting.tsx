@@ -44,19 +44,18 @@ export default function Setting(props:any) {
 
   return (
     <section
-    className={`
-        px-10 py-2 print:hidden font-serif select-none
+      className={`
+        z-0
+        sticky top-0
+        p-2 print:hidden font-serif select-none
         overflow-x-auto 
         flex items-center
-        border-b
+        border-t
         border-gray-300
-        bg-gray-200
+        bg-gray-100
         dark:border-gray-800
         dark:bg-gray-900
-      `}    
-        // bg-gradient-to-t from-black to-white
-        // dark:border-b-gray-800
-        // dark:bg-black 
+      `}
     >
       {options.map((obj:SettingButtonProps, i:number)=>        
         <Button

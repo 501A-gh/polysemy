@@ -18,9 +18,9 @@ const input = cva("input", {
         "dark:focus:bg-orange-500",
       ],
       highlight: [
+        "rounded-none",
         "text-green-500",
         "focus:shadow-green-400/40",
-
         "focus:text-white",
         "focus:bg-green-400",
         "dark:focus:text-black",
@@ -41,37 +41,33 @@ const input = cva("input", {
   }
 });
 
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof input> {
-  icon?:JSX.Element
+  ref?:any
 }
 
 export const Input: React.FC<InputProps> = ({
   className,
   intent,
+  ref,
   ...props
 }) => (
   <input
+    ref={ref}
+    spellCheck
     className={
-      input({ intent, className }) + 
+      input({ className, intent }) + 
       ` 
-        my-0.5
+        m-0.5
         focus:outline-none
         font-mono text-xs
         w-fit h-fit
-        border 
+        border-none
         py-1
-        px-2    
-        rounded-md
-        ml-0.5
-        shadow-md
-        shadow-gray-200
-        dark:shadow-gray-900
-        bg-gray-100
-        border-gray-300
+        px-2 
+        rounded-sm
+        bg-gray-200
         dark:bg-gray-800
-        dark:border-gray-700
       `
     }
     {...props}

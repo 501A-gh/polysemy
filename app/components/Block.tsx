@@ -22,12 +22,13 @@ const blockButton = cva("button", {
   variants: {
     intent: {
       standard:[
-        "focus:px-1.5",
-        "text-gray-700",
-        "focus:bg-gray-200 ",
-        "dark:text-gray-300",
+        "text-gray-600",
+        "dark:text-gray-400",
+
+        "focus:bg-gray-200",
         "dark:focus:bg-gray-800 ",
-        "focus:text-orange-500",
+        "focus:text-black",
+        "focus:dark:text-white",
       ],
       command: [
         "text-gray-400",
@@ -71,14 +72,18 @@ const BlockButton: React.FC<ButtonProps> = ({
     className={
       blockButton({ intent, className }) + 
       ` 
-        border 
-        text-sm
-        border-transparent
-        focus:outline-none
+        border
+        border-none
+        outline-none
         cursor-pointer
         select-none
-        p-0.5 my-0.5
-        rounded-md
+
+        font-sans
+        rounded-sm
+        
+        px-0.5
+        py-0.25
+        my-0.5
       `
     }
     {...props}
@@ -94,6 +99,8 @@ const BlockButton: React.FC<ButtonProps> = ({
 
 export default function Block(props:BlockTypes) {
   const editInputRef = useRef<HTMLInputElement>(null);
+  const [focus, setFocus] = useState<boolean>(false)
+
   const [currentMode, setCurrentMode] = useState<any>();
 
   const [editValue, setEditValue] = useState<SuggestProps["input"]>('');
@@ -191,6 +198,7 @@ export default function Block(props:BlockTypes) {
 
       {currentMode === 'edit' && 
         <Suggest
+          onFocus={setFocus}
           inputRef={editInputRef}
           input={editValue}
           setInput={setEditValue}
@@ -198,7 +206,11 @@ export default function Block(props:BlockTypes) {
         >
           <Input
             autoFocus
-            onFocus={()=>setCurrentMode('edit')}
+            ref={editInputRef}
+            onFocus={()=> {
+              setCurrentMode('edit')
+              setFocus(true)
+            }}
             placeholder="Replace ..."
             value={editValue}
             onChange={(e)=>{

@@ -21,23 +21,31 @@ export const metadata = {
   description: 'Block based text editor.',
 }
 
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html
       lang="en"
       className={`
-        bg-gray-100
+        bg-gray-200
         dark:bg-gray-950
         ${inter.variable}
         ${spaceMono.variable}
         ${playfairDisplay.variable}
       `}
     >
-      <body>
+      <body
+        className={`
+          bg-gray-200/80
+          dark:bg-gray-950/80
+          min-h-screen
+        `}
+      >
         {children}
       </body>
     </html>

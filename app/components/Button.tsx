@@ -11,9 +11,9 @@ const button = cva("button", {
         "focus:shadow-gray-400/40",
 
         "focus:text-gray-100",
-        "focus:bg-gray-400",
+        "focus:bg-gray-500",
 
-      "dark:focus:bg-gray-700 ",
+        "dark:focus:bg-gray-700 ",
       ],
       word: [
         "text-orange-500",
@@ -64,15 +64,18 @@ export const Button: React.FC<ButtonProps> = ({
     className={
       button({ intent, className }) + 
       ` 
-        font-sans
-        rounded-md text-xs
-        py-1
-        px-1.5
-        my-0.5
-        mx-0.5
-        border
+        border text-xs
         border-none
-        focus:outline-none
+        outline-none
+        cursor-pointer
+        select-none
+
+        font-sans rounded-sm
+
+        py-1
+        px-2
+        my-0.25
+        mr-0.5
         flex
         items-center
         gap-1.5
