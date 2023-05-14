@@ -1,5 +1,5 @@
-import React from 'react'
-import { type VariantProps, cva } from 'class-variance-authority';
+import React from "react";
+import { type VariantProps, cva } from "class-variance-authority";
 
 const button = cva("button", {
   variants: {
@@ -40,18 +40,18 @@ const button = cva("button", {
         "focus:bg-purple-400",
         "dark:focus:text-black",
         "dark:focus:bg-purple-500",
-      ]
+      ],
     },
   },
-  defaultVariants:{
-    intent:"standard"
-  }
+  defaultVariants: {
+    intent: "standard",
+  },
 });
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof button> {
-  icon?:JSX.Element
+  icon?: JSX.Element;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -62,7 +62,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => (
   <button
     className={
-      button({ intent, className }) + 
+      button({ intent, className }) +
       ` 
         border text-xs
         border-none

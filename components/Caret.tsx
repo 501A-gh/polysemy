@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Suggest, { SuggestProps } from "./Suggest";
 import { Input } from "./Input";
-import words from "@/words";
+import words from "@/util/data/words";
 
 export default function Caret(props: any) {
   const [focus, setFocus] = useState<boolean>(false);
@@ -37,11 +37,11 @@ export default function Caret(props: any) {
             e.preventDefault();
             alert("To paste switch to insert mode");
           }}
-          className={
-            `
+          className={`
             focus:outline-none
+            rounded-sm
             font-mono 
-            w-0 h-fit
+            w-20 h-fit
             text-sm
             bg-transparent
             px-0
@@ -49,8 +49,7 @@ export default function Caret(props: any) {
             border
             border-transparent
             text-orange-500
-            placeholder:text-orange-500 ` + (focus && "w-20")
-          }
+            placeholder:text-orange-500`}
           placeholder={focus ? "Type ..." : ""}
           value={input}
           onChange={(e) => {
@@ -83,7 +82,7 @@ export default function Caret(props: any) {
             onKeyDown={(e) => {
               if (e.key === "Enter") {
                 let temp: string[] = [...props.text];
-                insertInput.split(" ").map((word: string) => {
+                insertInput.split(/\W+/).map((word: string) => {
                   temp.push(word);
                 });
                 props.setText(temp);

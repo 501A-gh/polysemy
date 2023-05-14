@@ -5,7 +5,7 @@ import Command from "./Command";
 import { VariantProps, cva } from "class-variance-authority";
 import Highlight from "./Highlight";
 import { Input } from "./Input";
-import words from "@/words";
+import words from "@/util/data/words";
 
 interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   index: number;
@@ -166,7 +166,7 @@ export default function Block(props: BlockTypes) {
             setCurrentMode("edit");
             setTimeout(() => setEditValue(""), 1);
           }
-          if (e.key === "i") {
+          if (e.key === "/") {
             setCurrentMode("insert");
             setTimeout(() => setInsertValue(""), 1);
           }

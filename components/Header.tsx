@@ -1,8 +1,11 @@
-import React from 'react'
-import { Tab } from './Tab'
+import React from "react";
+import { Tab } from "./Tab";
 
-
-export default function Header({children}:{children:any}) {
+export default function Header({
+  children,
+}: {
+  children?: JSX.Element | JSX.Element[];
+}) {
   return (
     <header
       className={`
@@ -27,17 +30,11 @@ export default function Header({children}:{children:any}) {
             flex items-center
           `}
         >
-          <Tab
-            focus
-          >
-            Untitled
-          </Tab>
-
-          {/* <Tab
-            focus={false}
-          >
-            Untitled 2
-          </Tab> */}
+          <Tab focus>Untitled</Tab>
+          <Tab focus={false}>Docs</Tab>
+          <Tab focus={false}>Add Tokens</Tab>
+          <Tab focus={false}>Import</Tab>
+          <Tab focus={false}>Export</Tab>
         </div>
 
         <div
@@ -49,9 +46,9 @@ export default function Header({children}:{children:any}) {
             p-1
           `}
         >
-          <h1 
+          <h1
             className={`
-              text-sm mx-2 
+              text-sm mx-2 my-0
               whitespace-nowrap
               text-white font-serif
             `}
@@ -62,5 +59,5 @@ export default function Header({children}:{children:any}) {
       </section>
       {children}
     </header>
-  )
+  );
 }

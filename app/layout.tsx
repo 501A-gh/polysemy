@@ -1,33 +1,40 @@
-import './globals.css'
-import { Inter, Space_Mono, Playfair_Display } from 'next/font/google'
-const inter = Inter({
-  subsets: ['latin'],
-  weight:['400','700'],
-  variable:'--font-inter'
-})
+import "./globals.css";
+import {
+  Inter,
+  Space_Mono,
+  Playfair_Display,
+  Inter_Tight,
+  Space_Grotesk,
+} from "next/font/google";
+
+const inter = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
 const spaceMono = Space_Mono({
-  subsets: ['latin'],
-  weight:['400','700'],
-  variable:'--font-spaceMono  '
-})
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  variable: "--font-spaceMono  ",
+});
 const playfairDisplay = Playfair_Display({
-  subsets: ['latin'],
-  weight:['400','500','600'],
-  variable:'--font-playfairDisplay'
-})
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-playfairDisplay",
+  display: "swap",
+});
 
 export const metadata = {
-  title: 'Polysemy.',
-  description: 'Block based text editor.',
-}
-
+  title: "Polysemy.",
+  description: "Block based text editor.",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-
   return (
     <html
       lang="en"
@@ -49,5 +56,5 @@ export default function RootLayout({
         {children}
       </body>
     </html>
-  )
+  );
 }

@@ -6,6 +6,7 @@ import { EditModeRow } from "./EditModeRow";
 import { VariantProps } from "class-variance-authority";
 import Tag from "../Tag";
 import { Button } from "../Button";
+import { getRowIntent } from "@/util/helper/getRowIntent";
 
 interface RowProps {
   index: number;
@@ -15,20 +16,30 @@ interface RowProps {
 }
 
 export default function Row(props: RowProps) {
-  const [position, setPosition] =
-    useState<VariantProps<typeof displayRowStyle>["position"]>();
   const [bold, setBold] =
     useState<VariantProps<typeof displayRowStyle>["bold"]>();
   const [italic, setItalic] =
     useState<VariantProps<typeof displayRowStyle>["italic"]>();
-  const [intent, setIntent] =
-    useState<VariantProps<typeof displayRowStyle>["intent"]>("p");
-
   const [selectMode, setSelectMode] = useState<boolean>(true);
   const [text, setText] = useState<string[]>(props.text);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [commandMode, setCommandMode] = useState<boolean>(false);
+  const intents = [
+    "paragraph",
+    "heading 1",
+    "heading 2",
+    "heading 3",
+    "heading 4",
+    "heading 5",
+    "heading 6",
+    "quote",
+    "table",
+    "ordered list",
+    "unordered list",
+    "horizontal line",
+  ];
+  const [intent, setIntent] = useState("p");
 
   useEffect(() => {
     const down = (e: any) => {
@@ -39,16 +50,6 @@ export default function Row(props: RowProps) {
   }, []);
 
   const [highlightPoint, setHighlightPoint] = useState([]);
-
-  const intents: VariantProps<typeof displayRowStyle>["intent"][] = [
-    "h1",
-    "h2",
-    "h3",
-    "h4",
-    "h5",
-    "h6",
-    "p",
-  ];
 
   return (
     <>
@@ -83,19 +84,6 @@ export default function Row(props: RowProps) {
               if (e.key === "i") {
                 setItalic(italic ? false : true);
               }
-              if (e.key === "e") {
-                setPosition("center");
-              }
-              if (e.key === "w") {
-                setPosition("left");
-              }
-              if (e.key === "r") {
-                setPosition("right");
-              }
-
-              if (e.key === "o") {
-                setCommandMode(commandMode ? false : true);
-              }
             }}
             className={`
               ml-1
@@ -122,31 +110,9 @@ export default function Row(props: RowProps) {
               flex-grow
             `}
           >
-            {commandMode ? (
-              <>
-                {intents.map((i) => (
-                  <Button
-                    className={`uppercase`}
-                    onClick={() => {
-                      setIntent(i);
-                      setCommandMode(false);
-                      setSelectMode(false);
-                    }}
-                  >
-                    {i}
-                  </Button>
-                ))}
-              </>
-            ) : (
-              <DisplayRow
-                position={position}
-                bold={bold}
-                italic={italic}
-                intent={intent}
-              >
-                {text.join(" ")}
-              </DisplayRow>
-            )}
+            <DisplayRow bold={bold} italic={italic}>
+              {text.join(" ")}
+            </DisplayRow>
           </div>
           {text.length > 0 && (
             <span
@@ -167,9 +133,30 @@ export default function Row(props: RowProps) {
               flex gap-1 items-center
             `}
           >
-            <Tag>{intent}</Tag>
-            {bold && <Tag>Bold</Tag>}
-            {italic && <Tag>Italic</Tag>}
+            <Button
+              onClick={() => {
+                setCommandMode(commandMode ? false : true);
+              }}
+            >
+              {intent}
+            </Button>
+            {commandMode && (
+              <>
+                {intents.map((i) => (
+                  <Button
+                    className={`uppercase`}
+                    onClick={() => {
+                      setIntent(i);
+                      setCommandMode(false);
+                      setSelectMode(false);
+                    }}
+                  >
+                    {i}
+                  </Button>
+                ))}
+              </>
+            )}
+            {/* setIntent(getRowIntent(text[0])); */}
           </div>
           {text.length > 0 &&
             text.map((word: string, i: number) => (

@@ -16,6 +16,33 @@
   }
 }
 
+@layer base {
+  h1 {
+    @apply text-black dark:text-white text-2xl my-2;
+  }
+  h2 {
+    @apply text-black dark:text-white text-xl my-2;
+  }
+  h3 {
+    @apply text-black dark:text-white text-lg my-2;
+  }
+  h4 {
+    @apply text-black dark:text-white text-base my-2;
+  }
+  h5 {
+    @apply text-black dark:text-white text-sm my-2;
+  }
+  h6 {
+    @apply text-black dark:text-white text-xs my-2;
+  }
+  p {
+    @apply text-black dark:text-gray-400 text-sm;
+  }
+  hr {
+    @apply my-5 bg-transparent border-gray-300 dark:border-gray-800 rounded;
+  }
+}
+
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
