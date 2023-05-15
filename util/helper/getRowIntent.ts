@@ -1,6 +1,17 @@
-export const getRowIntent = (firstWord: string) => {
+export type MarkdownSymbolType =
+  | ""
+  | "#"
+  | "##"
+  | "###"
+  | "####"
+  | "#####"
+  | "######"
+  | ">"
+  | "-";
+
+export const getRowIntent = (markdownSymbol: MarkdownSymbolType) => {
   let type = "p";
-  switch (firstWord) {
+  switch (markdownSymbol) {
     case "#":
       type = "h1";
       break;

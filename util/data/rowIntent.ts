@@ -1,6 +1,19 @@
-export const rowIntent = {
+import { MarkdownSymbolType } from "../helper/getRowIntent";
+
+interface RowIntentType {
+  text: TextIntentType[];
+  // block:
+}
+
+export type TextIntentType = {
+  name: string;
+  htmlElement: string;
+  markdownSymbol: MarkdownSymbolType;
+};
+
+export const rowIntent: RowIntentType = {
   text: [
-    { name: "paragraph", htmlElement: "p", markdownSymbol: null },
+    { name: "paragraph", htmlElement: "p", markdownSymbol: "" },
     { name: "heading 1", htmlElement: "h1", markdownSymbol: "#" },
     { name: "heading 2", htmlElement: "h2", markdownSymbol: "##" },
     { name: "heading 3", htmlElement: "h3", markdownSymbol: "###" },
@@ -9,10 +22,9 @@ export const rowIntent = {
     { name: "heading 6", htmlElement: "h6", markdownSymbol: "######" },
     { name: "quote", htmlElement: "q", markdownSymbol: ">" },
   ],
-  block: {
-    hr: { name: "horizontal line", markdownSymbol: "---" },
-    // ol: "ordered list",
-    // ul: "unordered list",
-    // table: {name:"table",markdownSymbol:">"},
-  },
+  // block: [
+  //   { name: "horizontal line", hTMLElement: "hr", markdownSymbol: "---" },
+  //   ol: "ordered list",
+  //   ul: "unordered list",
+  // ],
 };

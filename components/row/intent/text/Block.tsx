@@ -1,22 +1,11 @@
 import React, { useRef, useState } from "react";
 import { setTimeout } from "timers";
-import Suggest, { SuggestProps } from "./Suggest";
-import Command from "./Command";
+import Suggest, { SuggestProps } from "../../../Suggest";
+import Command from "../../../Command";
 import { VariantProps, cva } from "class-variance-authority";
-import Highlight from "./Highlight";
-import { Input } from "./Input";
+import Highlight from "../../../Highlight";
+import { Input } from "../../../Input";
 import words from "@/util/data/words";
-
-interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
-  index: number;
-  word: string;
-  text: string[];
-  setText: any;
-  highlightPoint: number[];
-  setHighlightPoint: any;
-  paragraph: string[][];
-  setParagraph: any;
-}
 
 const blockButton = cva("button", {
   variants: {
@@ -83,13 +72,27 @@ const BlockButton: React.FC<ButtonProps> = ({
   </button>
 );
 
-// interface CurrentMode extends VariantProps<typeof blockButton>{
-//   mode:
-// }
+interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
+  blockIndex: number;
+  rowIndex: number;
+  highlightPoint: number[];
+  setHighlightPoint: any;
+  stack: string[][];
+  setStack: any;
+  word: string;
+}
 
-export default function Block(props: BlockTypes) {
+const Block: React.FC<BlockTypes> = ({
+  blockIndex,
+  rowIndex,
+  highlightPoint,
+  setHighlightPoint,
+  stack,
+  setStack,
+  word,
+}) => {
   const editInputRef = useRef<HTMLInputElement>(null);
-  const [focus, setFocus] = useState<boolean>(false);
+  // const [focus, setFocus] = useState<boolean>(false);
 
   const [currentMode, setCurrentMode] = useState<any>();
 
@@ -98,17 +101,40 @@ export default function Block(props: BlockTypes) {
 
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
 
-  const copy = () => navigator.clipboard.writeText(props.word);
-  const backspace = (deletingIndex: number) =>
-    props.setText((oldValues: string[]) =>
-      oldValues.filter((_: any, i: number) => i !== deletingIndex)
-    );
+  const copy = () => navigator.clipboard.writeText(word);
+
+  const backspace = (deletingIndex: number) => {
+    setStack((prevItems: any) => {
+      const updatedItems = [...prevItems];
+      updatedItems[rowIndex] = [...prevItems[rowIndex]];
+      updatedItems[rowIndex].splice(deletingIndex, 1);
+      return updatedItems;
+    });
+  };
+
+  const edit = (newValue: string) => {
+    setStack((prevItems: any) => {
+      const updatedItems = [...prevItems];
+      updatedItems[rowIndex] = [...prevItems[rowIndex]];
+      updatedItems[rowIndex][blockIndex] = newValue;
+      return updatedItems;
+    });
+  };
+
+  const insert = (newValue: string) => {
+    setStack((prevItems: any) => {
+      const updatedItems = [...prevItems];
+      updatedItems.splice(rowIndex, 0, [...prevItems[rowIndex]]);
+      updatedItems[rowIndex].splice(blockIndex, 0, newValue);
+      return updatedItems;
+    });
+  };
 
   let highlightIndex: number[] = [];
-  let sortedHighlightPoint = props.highlightPoint.sort();
+  let sortedHighlightPoint = highlightPoint.sort();
   let highlightPointStart: number = sortedHighlightPoint[0];
   let highlightPointEnd: number =
-    sortedHighlightPoint[props.highlightPoint.length - 1];
+    sortedHighlightPoint[highlightPoint.length - 1];
 
   for (let i = highlightPointStart; i < highlightPointEnd + 1; i++) {
     highlightIndex.push(i);
@@ -125,14 +151,7 @@ export default function Block(props: BlockTypes) {
           onBlur={() => setCurrentMode("insert")}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              let temp: string[] = [...props.text];
-              insertValue
-                .split(" ")
-                .reverse()
-                .map((word: string) => {
-                  temp.splice(props.index, 0, word);
-                });
-              props.setText(temp);
+              insert(insertValue);
               setCurrentMode("standard");
             }
           }}
@@ -141,66 +160,62 @@ export default function Block(props: BlockTypes) {
 
       <BlockButton
         intent={
-          highlightIndex.includes(props.index)
+          highlightIndex.includes(blockIndex)
             ? "highlight"
             : currentMode === "insert"
             ? "standard"
             : currentMode
         }
-        onBlur={props.onBlur}
         onClick={() => {
           setCurrentMode("edit");
           setTimeout(() => setEditValue(""), 1);
         }}
         onKeyDown={(e) => {
-          if (e.key === "o") {
-            currentMode === "command"
-              ? setCurrentMode("standard")
-              : setCurrentMode("command");
-          }
-          if (e.key === "c") copy();
-          if (e.key === "Backspace" || e.key === "Delete")
-            backspace(props.index);
-          if (e.key === "j") backspace(props.index - 1);
-          if (e.key === "r") {
-            setCurrentMode("edit");
-            setTimeout(() => setEditValue(""), 1);
-          }
-          if (e.key === "/") {
-            setCurrentMode("insert");
-            setTimeout(() => setInsertValue(""), 1);
-          }
-          if (e.key === "h") {
-            if (highlightIndex.includes(props.index)) {
-              props.setHighlightPoint([]);
-            } else if (props.highlightPoint.length == 2) {
-              alert("cannot highlight");
-            } else {
-              props.setHighlightPoint([...props.highlightPoint, props.index]);
-            }
-          }
-          if (e.key === "x") {
-            copy();
-            backspace(props.index);
+          switch (e.key) {
+            case "o":
+              currentMode === "command"
+                ? setCurrentMode("standard")
+                : setCurrentMode("command");
+              break;
+            case "c":
+              copy();
+              break;
+            case "Backspace" || "Delete":
+              backspace(blockIndex);
+              break;
+            case "j":
+              backspace(blockIndex - 1);
+              break;
+            case "r":
+              setCurrentMode("edit");
+              setTimeout(() => setEditValue(""), 1);
+              break;
+            case "/":
+              setCurrentMode("insert");
+              setTimeout(() => setInsertValue(""), 1);
+              break;
+            case "h":
+              if (highlightIndex.includes(blockIndex)) {
+                setHighlightPoint([]);
+              } else if (highlightPoint.length == 2) {
+                alert("cannot highlight");
+              } else {
+                setHighlightPoint([...highlightPoint, blockIndex]);
+              }
+              break;
+            case "x":
+              copy();
+              backspace(blockIndex);
+              break;
           }
         }}
       >
-        {props.word}
-        {props.word?.at(-1) == "." && (
-          <small
-            className="
-              text-gray-500
-              ml-1
-            "
-          >
-            ({props.index + 1} Words Until Here)
-          </small>
-        )}
+        {word}
       </BlockButton>
 
       {currentMode === "edit" && (
         <Suggest
-          onFocus={setFocus}
+          // onFocus={setFocus}
           inputRef={editInputRef}
           input={editValue}
           setInput={setEditValue}
@@ -211,7 +226,7 @@ export default function Block(props: BlockTypes) {
             ref={editInputRef}
             onFocus={() => {
               setCurrentMode("edit");
-              setFocus(true);
+              // setFocus(true);
             }}
             placeholder="Replace ..."
             value={editValue}
@@ -225,11 +240,7 @@ export default function Block(props: BlockTypes) {
             }}
             onKeyDown={(e) => {
               if (e.key === " ") {
-                let temp: string[] = [...props.text];
-                temp.map((_: any, i: number) => {
-                  if (i == props.index) temp[i] = editValue;
-                });
-                props.setText(temp);
+                edit(editValue);
                 setCurrentMode("standard");
               }
             }}
@@ -237,28 +248,23 @@ export default function Block(props: BlockTypes) {
         </Suggest>
       )}
       {currentMode === "command" && (
-        <Command
-          index={props.index}
-          word={props.word}
-          text={props.text}
-          setText={props.setText}
-          setCurrentMode={setCurrentMode}
-        />
+        <Command word={word} edit={edit} setCurrentMode={setCurrentMode} />
       )}
-      {props.highlightPoint.length === 2 &&
-        sortedHighlightPoint[props.highlightPoint.length - 1] ===
-          props.index && (
+      {/* {highlightPoint.length === 2 &&
+        sortedHighlightPoint[highlightPoint.length - 1] === index && (
           <Highlight
-            paragraph={props.paragraph}
-            setParagraph={props.setParagraph}
-            text={props.text}
+            stack={stack}
+            setStack={setStack}
+            text={text}
             backspace={backspace}
             highlightIndex={highlightIndex}
-            highlightPoint={props.highlightPoint}
-            setHighlightPoint={props.setHighlightPoint}
+            highlightPoint={highlightPoint}
+            setHighlightPoint={setHighlightPoint}
             setCurrentMode={setCurrentMode}
           />
-        )}
+        )} */}
     </>
   );
-}
+};
+
+export default Block;

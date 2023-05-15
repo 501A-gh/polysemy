@@ -3,7 +3,13 @@ import Suggest, { SuggestProps } from "./Suggest";
 import { Input } from "./Input";
 import words from "@/util/data/words";
 
-export default function Caret(props: any) {
+interface CaretProps {
+  rowIndex: number;
+  stack: any;
+  setStack: any;
+}
+
+const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
   const [focus, setFocus] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -12,6 +18,14 @@ export default function Caret(props: any) {
 
   const [insert, setInsert] = useState<boolean>(false);
   const [insertInput, setInsertInput] = useState<string>("");
+
+  const addItemToEnd = (newValue: string) => {
+    setStack((prevItems: any) => {
+      const updatedItems = [...prevItems];
+      updatedItems[rowIndex] = [...prevItems[rowIndex], newValue];
+      return updatedItems;
+    });
+  };
 
   return (
     <Suggest
@@ -67,7 +81,7 @@ export default function Caret(props: any) {
               setFocus(false);
             }
             if (input.split("").length > 0 && e.key === " ") {
-              props.setText([...props.text, input]);
+              addItemToEnd(input);
               setTimeout(() => setInput(""), 1);
             }
           }}
@@ -81,11 +95,11 @@ export default function Caret(props: any) {
             onBlur={() => setInsert(false)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                let temp: string[] = [...props.text];
+                let temp: string[] = [...stack[rowIndex]];
                 insertInput.split(/\W+/).map((word: string) => {
                   temp.push(word);
                 });
-                props.setText(temp);
+                setStack([...stack, [temp]]);
                 setInsertInput("");
                 setInsert(false);
                 setFocus(true);
@@ -96,4 +110,6 @@ export default function Caret(props: any) {
       </div>
     </Suggest>
   );
-}
+};
+
+export default Caret;

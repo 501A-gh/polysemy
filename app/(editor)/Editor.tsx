@@ -3,7 +3,7 @@ import Row from "@/components/row/Row";
 import React, { useState } from "react";
 
 const Editor = () => {
-  const [paragraph, setParagraph] = useState<[string[]]>([
+  const [stack, setStack] = useState<[string[]]>([
     ["Welcome", "to", "Polysemy."],
   ]);
   return (
@@ -13,14 +13,8 @@ const Editor = () => {
         print:pt-1
       `}
     >
-      {paragraph.map((p, i) => (
-        <Row
-          key={i}
-          index={i}
-          text={p}
-          paragraph={paragraph}
-          setParagraph={setParagraph}
-        />
+      {stack.map((p, i) => (
+        <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
       ))}
     </section>
   );

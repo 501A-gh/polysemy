@@ -1,13 +1,10 @@
-import React from 'react'
-import { type VariantProps, cva } from 'class-variance-authority';
+import React from "react";
+import { type VariantProps, cva } from "class-variance-authority";
 
 const input = cva("input", {
   variants: {
     intent: {
-      standard: [
-        "text-orange-500", 
-        "placeholder:text-orange-500"
-      ],
+      standard: ["text-orange-500", "focus:placeholder:text-orange-500"],
       word: [
         "text-orange-500",
         "focus:shadow-orange-400/40",
@@ -33,17 +30,18 @@ const input = cva("input", {
         "focus:bg-purple-400",
         "dark:focus:text-black",
         "dark:focus:bg-purple-500",
-      ]
+      ],
     },
   },
-  defaultVariants:{
-    intent:"standard"
-  }
+  defaultVariants: {
+    intent: "standard",
+  },
 });
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
+export interface InputProps
+  extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof input> {
-  ref?:any
+  ref?: any;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -56,7 +54,7 @@ export const Input: React.FC<InputProps> = ({
     ref={ref}
     spellCheck
     className={
-      input({ className, intent }) + 
+      input({ className, intent }) +
       ` 
         m-0.5
         focus:outline-none

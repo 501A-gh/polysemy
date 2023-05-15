@@ -29,17 +29,31 @@ const options: CommandButtonProps[] = [
   },
 ];
 
-export default function Command(props: any) {
+interface CommandProps {
+  setCurrentMode: any;
+  word: string;
+  // stack: any;
+  // setStack: any;
+  edit: any;
+}
+
+const Command: React.FC<CommandProps> = ({
+  setCurrentMode,
+  // stack,
+  // setStack,
+  word,
+  edit,
+}) => {
   const [response, setResponse] = useState([]);
 
   const closeCommandMode = () => {
     setResponse([]);
-    props.setCurrentMode("standard");
+    setCurrentMode("standard");
   };
 
   async function fetchApi(apiRoute: string) {
     const response = await fetch(
-      `https://api.datamuse.com/words?${apiRoute}=${props.word}`
+      `https://api.datamuse.com/words?${apiRoute}=${word}`
     );
     const responseJsonData = await response.json();
     console.log(responseJsonData);
@@ -59,11 +73,12 @@ export default function Command(props: any) {
               key={i}
               intent={"word"}
               onClick={() => {
-                let temp: string[] = [...props.text];
-                temp.map((_: any, i: number) => {
-                  if (i == props.index) temp[i] = obj.word;
-                });
-                props.setText(temp);
+                // let temp: string[] = [...props.text];
+                // temp.map((_: any, i: number) => {
+                //   if (i == props.index) temp[i] = obj.word;
+                // });
+                // props.setText(temp);
+                edit(obj.word);
                 closeCommandMode();
               }}
               onKeyDown={(e) => {
@@ -84,9 +99,7 @@ export default function Command(props: any) {
               onClick={() => {
                 fetchApi(obj.apiRoute);
               }}
-              onKeyDown={(e) => {
-                if (e.metaKey) closeCommandMode();
-              }}
+              onKeyDown={(e) => e.metaKey && closeCommandMode()}
             >
               {obj.name}
             </Button>
@@ -95,4 +108,6 @@ export default function Command(props: any) {
       )}
     </>
   );
-}
+};
+
+export default Command;
