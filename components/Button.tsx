@@ -74,8 +74,7 @@ export const Button: React.FC<ButtonProps> = ({
 
         py-1
         px-2
-        my-0.25
-        mr-0.5
+        mr-0.5 my-0.5
         flex
         items-center
         gap-1.5

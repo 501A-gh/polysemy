@@ -6,6 +6,7 @@ import { VariantProps, cva } from "class-variance-authority";
 import Highlight from "../../../Highlight";
 import { Input } from "../../../Input";
 import words from "@/util/data/words";
+import { RowType } from "../../Row";
 
 const blockButton = cva("button", {
   variants: {
@@ -77,7 +78,7 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   rowIndex: number;
   highlightPoint: number[];
   setHighlightPoint: any;
-  stack: string[][];
+  stack: RowType[];
   setStack: any;
   word: string;
 }
@@ -106,8 +107,8 @@ const Block: React.FC<BlockTypes> = ({
   const backspace = (deletingIndex: number) => {
     setStack((prevItems: any) => {
       const updatedItems = [...prevItems];
-      updatedItems[rowIndex] = [...prevItems[rowIndex]];
-      updatedItems[rowIndex].splice(deletingIndex, 1);
+      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0]];
+      updatedItems[rowIndex][0].splice(deletingIndex, 1);
       return updatedItems;
     });
   };
@@ -115,8 +116,8 @@ const Block: React.FC<BlockTypes> = ({
   const edit = (newValue: string) => {
     setStack((prevItems: any) => {
       const updatedItems = [...prevItems];
-      updatedItems[rowIndex] = [...prevItems[rowIndex]];
-      updatedItems[rowIndex][blockIndex] = newValue;
+      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0]];
+      updatedItems[rowIndex][0][blockIndex] = newValue;
       return updatedItems;
     });
   };
@@ -124,8 +125,9 @@ const Block: React.FC<BlockTypes> = ({
   const insert = (newValue: string) => {
     setStack((prevItems: any) => {
       const updatedItems = [...prevItems];
-      updatedItems.splice(rowIndex, 0, [...prevItems[rowIndex]]);
-      updatedItems[rowIndex].splice(blockIndex, 0, newValue);
+      const updatedRow = [...prevItems[rowIndex][0]];
+      updatedRow.splice(blockIndex, 0, newValue);
+      updatedItems[rowIndex][0] = updatedRow;
       return updatedItems;
     });
   };
@@ -151,7 +153,11 @@ const Block: React.FC<BlockTypes> = ({
           onBlur={() => setCurrentMode("insert")}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              insert(insertValue);
+              insertValue
+                .split(/\W+/)
+                .reverse()
+                .map((w: string) => insert(w));
+              setInsertValue("");
               setCurrentMode("standard");
             }
           }}
@@ -248,7 +254,13 @@ const Block: React.FC<BlockTypes> = ({
         </Suggest>
       )}
       {currentMode === "command" && (
-        <Command word={word} edit={edit} setCurrentMode={setCurrentMode} />
+        <Command
+          word={word}
+          blockIndex={blockIndex}
+          insert={insert}
+          backspace={backspace}
+          setCurrentMode={setCurrentMode}
+        />
       )}
       {/* {highlightPoint.length === 2 &&
         sortedHighlightPoint[highlightPoint.length - 1] === index && (

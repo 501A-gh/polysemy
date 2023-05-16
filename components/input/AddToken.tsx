@@ -1,3 +1,4 @@
+import { getTopFrequentWords } from "@/util/helper/getTopFrequentWords";
 import React from "react";
 
 const WordFrequencyAnalyzer = ({ sentence }: { sentence: string }) => {

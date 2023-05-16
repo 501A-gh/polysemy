@@ -17,9 +17,9 @@ function Page() {
       <p className={`my-5 max-w-md`}>
         The text editing experience for programmers is great. But the input
         experience when doing anything else like taking notes or creating a
-        document is just fine, but not great. Polysemy is a different kind of
-        text editor soley built around "editing" and "fine-tuning" your text. If
-        you're interested you can learn more about our design approach{" "}
+        document is just fine but not great. Polysemy is a different kind of
+        text editor soley built around editing and fine-tuning your text. If
+        youre interested you can learn more about our design approach{" "}
         <Link href={"/design"}>here.</Link>
       </p>
       <Button onClick={() => router.push("/")}>Try it out.</Button>

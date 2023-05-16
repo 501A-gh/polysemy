@@ -34,7 +34,9 @@ interface CommandProps {
   word: string;
   // stack: any;
   // setStack: any;
-  edit: any;
+  insert: any;
+  backspace: any;
+  blockIndex: number;
 }
 
 const Command: React.FC<CommandProps> = ({
@@ -42,7 +44,9 @@ const Command: React.FC<CommandProps> = ({
   // stack,
   // setStack,
   word,
-  edit,
+  insert,
+  backspace,
+  blockIndex,
 }) => {
   const [response, setResponse] = useState([]);
 
@@ -68,17 +72,18 @@ const Command: React.FC<CommandProps> = ({
     <>
       {response.length > 0 ? (
         <>
-          {response.slice(0, 15).map((obj: any, i: number) => (
+          {response.slice(0, 50).map((obj: any, i: number) => (
             <Button
               key={i}
               intent={"word"}
               onClick={() => {
-                // let temp: string[] = [...props.text];
-                // temp.map((_: any, i: number) => {
-                //   if (i == props.index) temp[i] = obj.word;
-                // });
-                // props.setText(temp);
-                edit(obj.word);
+                backspace(blockIndex);
+                obj.word
+                  .split(/\W+/)
+                  .reverse()
+                  .map((w: string) => {
+                    insert(w);
+                  });
                 closeCommandMode();
               }}
               onKeyDown={(e) => {

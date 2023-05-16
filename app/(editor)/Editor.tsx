@@ -1,10 +1,10 @@
 "use client";
-import Row from "@/components/row/Row";
+import Row, { RowType } from "@/components/row/Row";
 import React, { useState } from "react";
 
 const Editor = () => {
-  const [stack, setStack] = useState<[string[]]>([
-    ["Welcome", "to", "Polysemy."],
+  const [stack, setStack] = useState<RowType[]>([
+    [["Welcome", "to", "Polysemy."]],
   ]);
   return (
     <section

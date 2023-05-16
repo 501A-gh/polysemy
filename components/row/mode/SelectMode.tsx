@@ -1,4 +1,3 @@
-import { MarkdownSymbolType } from "@/util/helper/getRowIntent";
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
@@ -7,7 +6,6 @@ interface SelectModeProps extends React.HTMLAttributes<HTMLDivElement> {
   stack: any;
   setStack: any;
   setSelectMode: any;
-  markdownSymbol: MarkdownSymbolType;
 }
 
 const SelectMode = ({
@@ -15,12 +13,20 @@ const SelectMode = ({
   stack,
   setStack,
   setSelectMode,
-  markdownSymbol,
   ...props
 }: SelectModeProps) => {
+  const addStackAbove = () => {
+    setStack((prevItems: any) => {
+      const updatedItems = [...prevItems];
+      updatedItems.splice(rowIndex, 0, [[]]);
+      return updatedItems;
+    });
+  };
+
   const newParagraph = () => {
     setStack([...stack, []]);
   };
+
   const deleteParagraph = () => {
     if (confirm("Are you sure you want to delete this paragraph?")) {
       setStack((oldValues: [string[]]) =>
@@ -42,7 +48,8 @@ const SelectMode = ({
         onClick={() => setSelectMode(false)}
         onKeyDown={(e) => {
           if (e.key === "Enter" && e.metaKey) {
-            newParagraph();
+            // newParagraph();
+            addStackAbove();
           }
           switch (e.key) {
             case "o":
@@ -88,17 +95,17 @@ const SelectMode = ({
           print:text-black
         `}
         >
-          {`${markdownSymbol} ${props.children}`}
+          {`${props.children}`}
         </ReactMarkdown>
       </div>
-      {stack[rowIndex].length > 0 && (
+      {stack[rowIndex][0]?.length > 0 && (
         <span
           className={`
             font-mono text-xs text-orange-600 ml-auto mr-3
             whitespace-nowrap print:hidden
           `}
         >
-          {stack[rowIndex].length}
+          {stack[rowIndex][0].length}
         </span>
       )}
     </div>

@@ -1,26 +1,25 @@
 import React, { useState } from "react";
-import { Input } from "../../Input";
-import { TextIntentType, rowIntent } from "@/util/data/rowIntent";
 import { Button } from "../../Button";
+import { IntentType, rowIntent } from "@/util/data/rowIntent";
 
 interface IntentSelectProps
   extends React.HTMLAttributes<typeof HTMLDivElement> {
-  textIntent: any;
-  setTextIntent: any;
+  intent: any;
+  setIntent: any;
   setSelectMode: any;
 }
 
 const IntentSelect = ({
-  textIntent,
-  setTextIntent,
+  intent,
+  setIntent,
   setSelectMode,
 }: IntentSelectProps) => {
   const [commandMode, setCommandMode] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState();
   const [filteredRowIntent, setFilteredRowIntent] = useState([]);
 
-  const setRowIntent = (intent: TextIntentType) => {
-    setTextIntent(intent);
+  const setRowIntent = (intent: IntentType) => {
+    setIntent(intent);
     setCommandMode(false);
     setSelectMode(false);
   };
@@ -40,8 +39,9 @@ const IntentSelect = ({
             }}
           /> */}
 
-          {rowIntent.text.map((intent: TextIntentType) => (
+          {rowIntent.map((intent: IntentType, i: number) => (
             <Button
+              key={i}
               className={`uppercase`}
               onClick={() => setRowIntent(intent)}
             >
@@ -56,7 +56,7 @@ const IntentSelect = ({
             setCommandMode(true);
           }}
         >
-          {textIntent?.name}
+          {intent.name}
         </Button>
       )}
     </div>

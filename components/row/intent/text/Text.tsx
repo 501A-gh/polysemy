@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Block from "./Block";
 import Caret from "@/components/Caret";
+import { RowType } from "../../Row";
 
 interface TextIntentProps {
   rowIndex: number;
-  stack: string[][];
+  stack: RowType[];
   setStack: any;
   setSelectMode: any;
 }
 
-const TextIntent: React.FC<TextIntentProps> = ({
+const Text: React.FC<TextIntentProps> = ({
   rowIndex,
   stack,
   setStack,
@@ -28,8 +29,8 @@ const TextIntent: React.FC<TextIntentProps> = ({
 
   return (
     <>
-      {stack[rowIndex].length > 0 &&
-        stack[rowIndex].map((word: string, i: number) => (
+      {stack[rowIndex][0]?.length > 0 &&
+        stack[rowIndex][0]?.map((word: string, i: number) => (
           <Block
             key={i}
             blockIndex={i}
@@ -51,4 +52,4 @@ const TextIntent: React.FC<TextIntentProps> = ({
   );
 };
 
-export default TextIntent;
+export default Text;

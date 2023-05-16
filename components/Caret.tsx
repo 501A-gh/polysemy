@@ -22,7 +22,7 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
   const addItemToEnd = (newValue: string) => {
     setStack((prevItems: any) => {
       const updatedItems = [...prevItems];
-      updatedItems[rowIndex] = [...prevItems[rowIndex], newValue];
+      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0], newValue];
       return updatedItems;
     });
   };
@@ -51,19 +51,18 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
             e.preventDefault();
             alert("To paste switch to insert mode");
           }}
-          className={`
+          className={
+            `
             focus:outline-none
             rounded-sm
-            font-mono 
             w-20 h-fit
-            text-sm
+            px-0 mr-0.5
+            font-mono text-sm
+            border border-transparent
             bg-transparent
-            px-0
-            mr-0.5
-            border
-            border-transparent
             text-orange-500
-            placeholder:text-orange-500`}
+            placeholder:text-orange-500 ` + (insert && "w-0")
+          }
           placeholder={focus ? "Type ..." : ""}
           value={input}
           onChange={(e) => {
@@ -95,11 +94,9 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
             onBlur={() => setInsert(false)}
             onKeyDown={(e) => {
               if (e.key === "Enter") {
-                let temp: string[] = [...stack[rowIndex]];
-                insertInput.split(/\W+/).map((word: string) => {
-                  temp.push(word);
-                });
-                setStack([...stack, [temp]]);
+                insertInput
+                  .split(/\W+/)
+                  .map((word: string) => addItemToEnd(word));
                 setInsertInput("");
                 setInsert(false);
                 setFocus(true);
