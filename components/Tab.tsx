@@ -1,4 +1,4 @@
-import { VariantProps, cva } from 'class-variance-authority';
+import { VariantProps, cva } from "class-variance-authority";
 
 const tab = cva("button", {
   variants: {
@@ -9,7 +9,7 @@ const tab = cva("button", {
         "dark:text-black",
 
         `bg-gradient-to-r 
-        from-orange-400 dark:from-orange-500
+        from-orange-500 dark:from-orange-500
         to-red-400 dark:to-red-500`,
       ],
       false: [
@@ -22,15 +22,15 @@ const tab = cva("button", {
       ],
     },
   },
-  defaultVariants:{
-    focus:false
-  }
+  defaultVariants: {
+    focus: false,
+  },
 });
 
 export interface TabProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof tab> {
-  icon?:JSX.Element
+  icon?: JSX.Element;
 }
 
 export const Tab: React.FC<TabProps> = ({
@@ -40,8 +40,9 @@ export const Tab: React.FC<TabProps> = ({
   ...props
 }) => (
   <button
+    autoFocus={focus == true ? true : false}
     className={
-      tab({ focus, className }) + 
+      tab({ focus, className }) +
       ` 
         border-r
         outline-none

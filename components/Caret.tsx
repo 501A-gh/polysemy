@@ -2,10 +2,11 @@ import React, { useRef, useState } from "react";
 import Suggest, { SuggestProps } from "./Suggest";
 import { Input } from "./Input";
 import words from "@/util/data/words";
+import { StackType } from "@/app/(editor)/Editor";
 
 interface CaretProps {
   rowIndex: number;
-  stack: any;
+  stack: StackType[];
   setStack: any;
 }
 
@@ -19,11 +20,11 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
   const [insert, setInsert] = useState<boolean>(false);
   const [insertInput, setInsertInput] = useState<string>("");
 
-  const addItemToEnd = (newValue: string) => {
-    setStack((prevItems: any) => {
-      const updatedItems = [...prevItems];
-      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0], newValue];
-      return updatedItems;
+  const addItemToEnd = (newValue: string): void => {
+    setStack((prevStack: StackType[]) => {
+      const updatedStack = [...prevStack];
+      updatedStack[rowIndex].data.text.push(newValue);
+      return updatedStack;
     });
   };
 

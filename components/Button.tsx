@@ -5,14 +5,13 @@ const button = cva("button", {
   variants: {
     intent: {
       standard: [
-        "bg-gray-300",
+        "bg-gray-200",
         "dark:bg-gray-800",
         "text-gray-500",
         "focus:shadow-gray-400/40",
 
         "focus:text-gray-100",
-        "focus:bg-gray-500",
-
+        "focus:bg-gray-800",
         "dark:focus:bg-gray-700 ",
       ],
       word: [
@@ -20,26 +19,23 @@ const button = cva("button", {
         "focus:shadow-orange-400/40",
 
         "focus:text-white",
-        "focus:bg-orange-400",
+        "focus:bg-orange-500",
         "dark:focus:text-black",
-        "dark:focus:bg-orange-500",
       ],
       highlight: [
         "text-green-500",
         "focus:shadow-green-400/40",
 
         "focus:text-white",
-        "focus:bg-green-400",
+        "focus:bg-green-500",
         "dark:focus:text-black",
-        "dark:focus:bg-green-500",
       ],
       command: [
         "text-purple-500",
         "focus:shadow-purple-400/40",
         "focus:text-white",
-        "focus:bg-purple-400",
+        "focus:bg-purple-500",
         "dark:focus:text-black",
-        "dark:focus:bg-purple-500",
       ],
     },
   },
@@ -79,6 +75,7 @@ export const Button: React.FC<ButtonProps> = ({
         items-center
         gap-1.5
         whitespace-nowrap
+        
         bg-gray-200
         dark:bg-gray-800
       `

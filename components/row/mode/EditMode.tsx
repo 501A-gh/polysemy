@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-interface EditModeProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface EditModeProps extends React.HTMLAttributes<HTMLDivElement> {
+  setSelectMode: any;
+}
 
-const EditMode: React.FC<EditModeProps> = ({ ...props }) => {
+const EditMode: React.FC<EditModeProps> = ({ setSelectMode, ...props }) => {
   const [highlightPoint, setHighlightPoint] = useState([]);
+
+  useEffect(() => {
+    const down = (e: any) => {
+      if (e.key === "Enter" && e.metaKey) setSelectMode(true);
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <div

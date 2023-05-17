@@ -1,36 +1,25 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import Block from "./Block";
 import Caret from "@/components/Caret";
-import { RowType } from "../../Row";
+import { StackType } from "@/app/(editor)/Editor";
+import { IntentComponentProps } from "../../Row";
 
-interface TextIntentProps {
-  rowIndex: number;
-  stack: RowType[];
-  setStack: any;
-  setSelectMode: any;
-}
-
-const Text: React.FC<TextIntentProps> = ({
+const Text: React.FC<IntentComponentProps> = ({
   rowIndex,
   stack,
   setStack,
-  setSelectMode,
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [highlightPoint, setHighlightPoint] = useState([]);
 
-  useEffect(() => {
-    const down = (e: any) => {
-      if (e.key === "Enter" && e.metaKey) setSelectMode(true);
-    };
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+  const currentRow: StackType = stack[rowIndex];
+  const data = currentRow.data.text;
 
   return (
     <>
-      {stack[rowIndex][0]?.length > 0 &&
-        stack[rowIndex][0]?.map((word: string, i: number) => (
+      {data &&
+        data.length > 0 &&
+        data.map((word: string, i: number) => (
           <Block
             key={i}
             blockIndex={i}
@@ -48,6 +37,16 @@ const Text: React.FC<TextIntentProps> = ({
         stack={stack}
         setStack={setStack}
       />
+      {data.length > 0 && (
+        <span
+          className={`
+            font-mono text-xs text-orange-600 ml-auto mr-3
+            whitespace-nowrap print:hidden
+          `}
+        >
+          {data.length} Words
+        </span>
+      )}
     </>
   );
 };

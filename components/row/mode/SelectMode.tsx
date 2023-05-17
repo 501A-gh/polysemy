@@ -1,4 +1,5 @@
-import React from "react";
+import { StackType } from "@/app/(editor)/Editor";
+import React, { useState } from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 interface SelectModeProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,47 +17,69 @@ const SelectMode = ({
   ...props
 }: SelectModeProps) => {
   const addStackAbove = () => {
-    setStack((prevItems: any) => {
+    setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      updatedItems.splice(rowIndex, 0, [[]]);
+      updatedItems.splice(rowIndex, 0, {
+        intentId: "p",
+        data: {
+          text: [],
+          table: [[]],
+        },
+      });
       return updatedItems;
     });
   };
 
-  const newParagraph = () => {
-    setStack([...stack, []]);
+  const addStackBelow = () => {
+    setStack((prevItems: StackType[]) => {
+      const updatedItems = [...prevItems];
+      updatedItems.splice(rowIndex + 1, 0, {
+        intentId: "p",
+        data: {
+          text: [],
+          table: [[]],
+        },
+      });
+      return updatedItems;
+    });
   };
 
-  const deleteParagraph = () => {
-    if (confirm("Are you sure you want to delete this paragraph?")) {
-      setStack((oldValues: [string[]]) =>
-        oldValues.filter((_: any, i: number) => i !== rowIndex)
-      );
+  const currentRow: StackType = stack[rowIndex];
+  const data = currentRow.data;
+
+  const deleteStack = () => {
+    setStack((oldValues: [string[]]) =>
+      oldValues.filter((_: any, i: number) => i !== rowIndex)
+    );
+  };
+
+  const confirmDelete = () => {
+    if (data.text.length == 0 || data.table.length == 0) {
+      deleteStack();
+    } else {
+      if (confirm("Are you sure you want to delete this paragraph?")) {
+        deleteStack();
+      }
     }
   };
 
   return (
-    <div
-      className={`
-        flex items-center
-        select-none
-        py-1 print:p-0
-      `}
-    >
+    <div className={`flex items-center select-none py-1 print:p-0`}>
       <button
-        autoFocus
+        autoFocus={false}
         onClick={() => setSelectMode(false)}
         onKeyDown={(e) => {
-          if (e.key === "Enter" && e.metaKey) {
-            // newParagraph();
-            addStackAbove();
-          }
           switch (e.key) {
-            case "o":
-              alert("bruh");
+            case "m":
+              addStackAbove();
+              break;
+            case "n":
+              addStackBelow();
+              break;
+            case "c":
               break;
             case "Backspace" || "Delete":
-              deleteParagraph();
+              confirmDelete();
               break;
           }
         }}
@@ -71,7 +94,7 @@ const SelectMode = ({
           text-gray-400
           dark:text-gray-600
           focus:bg-gradient-to-b 
-          from-orange-400 dark:from-orange-500
+          from-orange-500 dark:from-orange-500
           to-red-400 dark:to-red-500
           focus:text-white
           dark:focus:text-black
@@ -98,16 +121,6 @@ const SelectMode = ({
           {`${props.children}`}
         </ReactMarkdown>
       </div>
-      {stack[rowIndex][0]?.length > 0 && (
-        <span
-          className={`
-            font-mono text-xs text-orange-600 ml-auto mr-3
-            whitespace-nowrap print:hidden
-          `}
-        >
-          {stack[rowIndex][0].length}
-        </span>
-      )}
     </div>
   );
 };

@@ -3,10 +3,9 @@ import { setTimeout } from "timers";
 import Suggest, { SuggestProps } from "../../../Suggest";
 import Command from "../../../Command";
 import { VariantProps, cva } from "class-variance-authority";
-import Highlight from "../../../Highlight";
 import { Input } from "../../../Input";
 import words from "@/util/data/words";
-import { RowType } from "../../Row";
+import { StackType } from "@/app/(editor)/Editor";
 
 const blockButton = cva("button", {
   variants: {
@@ -78,7 +77,7 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   rowIndex: number;
   highlightPoint: number[];
   setHighlightPoint: any;
-  stack: RowType[];
+  stack: StackType[];
   setStack: any;
   word: string;
 }
@@ -105,29 +104,29 @@ const Block: React.FC<BlockTypes> = ({
   const copy = () => navigator.clipboard.writeText(word);
 
   const backspace = (deletingIndex: number) => {
-    setStack((prevItems: any) => {
+    setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0]];
-      updatedItems[rowIndex][0].splice(deletingIndex, 1);
+      updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
+      updatedItems[rowIndex].data.text.splice(deletingIndex, 1);
       return updatedItems;
     });
   };
 
   const edit = (newValue: string) => {
-    setStack((prevItems: any) => {
+    setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      updatedItems[rowIndex][0] = [...prevItems[rowIndex][0]];
-      updatedItems[rowIndex][0][blockIndex] = newValue;
+      updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
+      updatedItems[rowIndex].data.text[blockIndex] = newValue;
       return updatedItems;
     });
   };
 
   const insert = (newValue: string) => {
-    setStack((prevItems: any) => {
+    setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      const updatedRow = [...prevItems[rowIndex][0]];
+      const updatedRow = [...prevItems[rowIndex].data.text];
       updatedRow.splice(blockIndex, 0, newValue);
-      updatedItems[rowIndex][0] = updatedRow;
+      updatedItems[rowIndex].data.text = updatedRow;
       return updatedItems;
     });
   };

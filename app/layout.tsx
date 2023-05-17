@@ -48,7 +48,7 @@ export default function RootLayout({
     >
       <body
         className={`
-          bg-gray-200/80
+          bg-gray-100/80
           dark:bg-gray-950/80
           min-h-screen
         `}

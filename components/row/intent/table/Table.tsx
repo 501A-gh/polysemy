@@ -1,17 +1,16 @@
 import React from "react";
+import { IntentIdType } from "@/util/data/rowIntentDict";
+import { IntentComponentProps } from "../../Row";
 
-interface TableIntentProps {
-  rowIndex: number;
-  stack: string[][];
-  setStack: any;
-  setSelectMode: any;
+export interface TableType {
+  intentId: IntentIdType;
+  data: string[][];
 }
 
-const Table: React.FC<TableIntentProps> = ({
+const Table: React.FC<IntentComponentProps> = ({
   rowIndex,
   stack,
   setStack,
-  setSelectMode,
 }) => {
   return <></>;
 };

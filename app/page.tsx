@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/app/(editor)/Header";
 import Editor from "./(editor)/Editor";
 import Wallpaper from "./(editor)/Wallpaper";
 

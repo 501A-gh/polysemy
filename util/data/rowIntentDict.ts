@@ -11,74 +11,79 @@ export type MarkdownSymbolType =
   | "1"
   | "---";
 
-export type IntentType = {
-  category: "text" | "table" | "list";
-  name: string;
-  htmlElement: string;
-  markdownSymbol: MarkdownSymbolType;
-};
+export type IntentIdType =
+  | "p"
+  | "h1"
+  | "h2"
+  | "h3"
+  | "h4"
+  | "h5"
+  | "h6"
+  | "q"
+  | "table"
+  | "hr"
+  | "ul"
+  | "ol";
 
-export const rowIntent: IntentType[] = [
-  { category: "text", name: "paragraph", htmlElement: "p", markdownSymbol: "" },
-  {
+export const rowIntentDict = {
+  p: {
     category: "text",
-    name: "heading 1",
-    htmlElement: "h1",
-    markdownSymbol: "#",
-  },
-  {
-    category: "text",
-    name: "heading 2",
-    htmlElement: "h2",
-    markdownSymbol: "##",
-  },
-  {
-    category: "text",
-    name: "heading 3",
-    htmlElement: "h3",
-    markdownSymbol: "###",
-  },
-  {
-    category: "text",
-    name: "heading 4",
-    htmlElement: "h4",
-    markdownSymbol: "####",
-  },
-  {
-    category: "text",
-    name: "heading 5",
-    htmlElement: "h5",
-    markdownSymbol: "#####",
-  },
-  {
-    category: "text",
-    name: "heading 6",
-    htmlElement: "h6",
-    markdownSymbol: "######",
-  },
-  { category: "text", name: "quote", htmlElement: "q", markdownSymbol: ">" },
-  {
-    category: "table",
-    name: "table",
-    htmlElement: "table",
+    name: "paragraph",
     markdownSymbol: "",
   },
-  {
+  h1: {
+    category: "text",
+    name: "heading 1",
+    markdownSymbol: "#",
+  },
+  h2: {
+    category: "text",
+    name: "heading 2",
+    markdownSymbol: "##",
+  },
+  h3: {
+    category: "text",
+    name: "heading 3",
+    markdownSymbol: "###",
+  },
+  h4: {
+    category: "text",
+    name: "heading 4",
+    markdownSymbol: "####",
+  },
+  h5: {
+    category: "text",
+    name: "heading 5",
+    markdownSymbol: "#####",
+  },
+  h6: {
+    category: "text",
+    name: "heading 6",
+    markdownSymbol: "######",
+  },
+  q: {
+    category: "text",
+    name: "quote",
+    markdownSymbol: ">",
+  },
+  table: {
+    category: "table",
+    name: "table",
+    markdownSymbol: "",
+  },
+  hr: {
     category: "text",
     name: "horizontal line",
-    htmlElement: "hr",
     markdownSymbol: "---",
   },
-  {
+  ul: {
     category: "list",
     name: "unordered list",
-    htmlElement: "ul",
     markdownSymbol: "-",
   },
-  {
+  ol: {
     category: "list",
     name: "ordered list",
-    htmlElement: "ol",
     markdownSymbol: "1",
   },
-];
+};

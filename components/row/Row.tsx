@@ -1,27 +1,33 @@
 import React, { useState } from "react";
-import { IntentType, rowIntent } from "@/util/data/rowIntent";
+import { rowIntentDict } from "@/util/data/rowIntentDict";
 import IntentSelect from "./intent/IntentSelect";
 
 import SelectMode from "./mode/SelectMode";
 import EditMode from "./mode/EditMode";
 
 // Intent Types
-import Text from "./intent/text/Text";
 import { markdownTable } from "markdown-table";
+import { StackType } from "@/app/(editor)/Editor";
+import Text from "./intent/text/Text";
+import Table from "./intent/table/Table";
 
-export type RowType = string[][];
+export interface IntentComponentProps {
+  rowIndex: number;
+  stack: StackType[];
+  setStack: any;
+}
 
 interface RowProps {
   rowIndex: number;
-  stack: RowType[];
+  stack: StackType[];
   setStack: any;
 }
 
 const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
   const [selectMode, setSelectMode] = useState<boolean>(true);
-  const [intent, setIntent] = useState<IntentType>(rowIntent[0]);
-
-  const row = stack[rowIndex];
+  const currentRow: StackType = stack[rowIndex];
+  const rowIntent = rowIntentDict[currentRow.intentId];
+  const data = currentRow.data;
 
   return (
     <>
@@ -32,26 +38,25 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
           setStack={setStack}
           setSelectMode={setSelectMode}
         >
-          {intent.category == "text" ? (
-            `${intent.markdownSymbol} ` + row[0]?.join(" ")
-          ) : (
-            <>{intent.category == "table" && markdownTable(row)}</>
-          )}
+          {rowIntent.category == "text"
+            ? `${rowIntent.markdownSymbol} ${data.text && data.text.join(" ")}`
+            : rowIntent.category == "table" &&
+              data.table &&
+              markdownTable(data.table)}
         </SelectMode>
       ) : (
-        <EditMode>
+        <EditMode setSelectMode={setSelectMode}>
           <IntentSelect
-            intent={intent}
-            setIntent={setIntent}
+            rowIndex={rowIndex}
+            stack={stack}
+            setStack={setStack}
             setSelectMode={setSelectMode}
           />
-          {intent.category == "text" && (
-            <Text
-              rowIndex={rowIndex}
-              stack={stack}
-              setStack={setStack}
-              setSelectMode={setSelectMode}
-            />
+          {rowIntent.category == "text" && (
+            <Text rowIndex={rowIndex} stack={stack} setStack={setStack} />
+          )}
+          {rowIntent.category == "table" && (
+            <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />
           )}
         </EditMode>
       )}
