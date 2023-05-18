@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { IntentIdType } from "@/util/data/rowIntentDict";
 import { IntentComponentProps } from "../../Row";
-import { Input } from "@/components/Input";
 import { StackType } from "@/app/(editor)/Editor";
-import { Button } from "@/components/Button";
 import { tableColumn } from "./tableStyle";
 import TableInput from "./TableInput";
 

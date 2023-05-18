@@ -6,7 +6,6 @@ import {
   rowIntentDict,
 } from "@/util/data/rowIntentDict";
 import { StackType } from "@/app/(editor)/Editor";
-import { Input } from "@/components/Input";
 
 export type IntentCategory = "text" | "table" | "list";
 
@@ -69,14 +68,16 @@ const IntentSelect = ({
     <>
       {commandMode ? (
         <>
-          <Input
+          <input
+            autoFocus
             placeholder={"Type MD symbol or name"}
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
+              const inputValueLower = e.target.value.toLowerCase(); // Move this line outside the filter function
+
               const results = rowIntentDictArray.filter(
                 (obj: RowIntentDictType) => {
-                  const inputValueLower = inputValue.toLowerCase();
                   const property1Lower = obj.markdownSymbol.toLowerCase();
                   const property2Lower = obj.name.toLowerCase();
 
@@ -86,6 +87,7 @@ const IntentSelect = ({
                   );
                 }
               );
+
               setSuggestedOptions(results);
             }}
           />

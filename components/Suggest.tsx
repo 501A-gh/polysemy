@@ -1,12 +1,14 @@
 import { Button } from "./Button";
 
-export interface SuggestProps {
-  inputRef?: any;
+export interface SuggestProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  inputRef: any;
   input: string | "";
   setInput: any;
   suggestion: string[];
   children: JSX.Element | JSX.Element[];
   onFocus?: any;
+  focusOnInput?: any;
 }
 
 const Suggest: React.FC<SuggestProps> = ({
@@ -14,7 +16,8 @@ const Suggest: React.FC<SuggestProps> = ({
   suggestion,
   setInput,
   inputRef,
-  onFocus,
+  // onFocus,
+  focusOnInput,
   ...props
 }) => {
   return (
@@ -28,11 +31,13 @@ const Suggest: React.FC<SuggestProps> = ({
               key={s}
               onClick={() => {
                 setInput(s);
-                onFocus(true);
-                if (inputRef.current != null) {
-                  inputRef.current.focus();
-                }
+                focusOnInput();
               }}
+              // onKeyDown={(e) => {
+              //   if (e.key === "Enter") {
+              //   }
+              // }}
+              {...props}
             >
               {s}
             </Button>

@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import Suggest, { SuggestProps } from "./Suggest";
-import { Input } from "./Input";
 import words from "@/util/data/words";
 import { StackType } from "@/app/(editor)/Editor";
 
@@ -59,7 +58,7 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
             w-20 h-fit
             px-0 mr-0.5
             font-mono text-sm
-            border border-transparent
+            border-none
             bg-transparent
             text-orange-500
             placeholder:text-orange-500 ` + (insert && "w-0")
@@ -87,7 +86,7 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
           }}
         />
         {insert && (
-          <Input
+          <input
             autoFocus
             placeholder="Insert ..."
             value={insertInput}

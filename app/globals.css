@@ -16,6 +16,12 @@
   }
 }
 
+/* @layer components {
+  .input-primary {
+    @apply ;
+  }
+} */
+
 @layer base {
   h1 {
     @apply text-black dark:text-white text-2xl my-2;
@@ -54,6 +60,10 @@
 
   td {
     @apply px-4 py-2 border border-gray-300 dark:border-gray-800 bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-400 text-left text-sm;
+  }
+
+  input {
+    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-auto border border-gray-200 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-100 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
   }
 }
 

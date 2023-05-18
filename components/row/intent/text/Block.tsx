@@ -3,7 +3,6 @@ import { setTimeout } from "timers";
 import Suggest, { SuggestProps } from "../../../Suggest";
 import Command from "../../../Command";
 import { VariantProps, cva } from "class-variance-authority";
-import { Input } from "../../../Input";
 import words from "@/util/data/words";
 import { StackType } from "@/app/(editor)/Editor";
 
@@ -56,9 +55,7 @@ const BlockButton: React.FC<ButtonProps> = ({
         outline-none
         cursor-pointer
         select-none
-
         font-sans
-        rounded-sm
         
         px-0.5
         py-0.25
@@ -92,6 +89,12 @@ const Block: React.FC<BlockTypes> = ({
   word,
 }) => {
   const editInputRef = useRef<HTMLInputElement>(null);
+  const focusOnEditInputRef = () => {
+    if (editInputRef.current != null) {
+      editInputRef.current.focus();
+      console.log("bruh");
+    }
+  };
   // const [focus, setFocus] = useState<boolean>(false);
 
   const [currentMode, setCurrentMode] = useState<any>();
@@ -144,7 +147,7 @@ const Block: React.FC<BlockTypes> = ({
   return (
     <>
       {currentMode === "insert" && (
-        <Input
+        <input
           autoFocus
           placeholder="Insert ..."
           value={insertValue}
@@ -223,10 +226,11 @@ const Block: React.FC<BlockTypes> = ({
           // onFocus={setFocus}
           inputRef={editInputRef}
           input={editValue}
+          focusOnInput={focusOnEditInputRef}
           setInput={setEditValue}
           suggestion={suggestion}
         >
-          <Input
+          <input
             autoFocus
             ref={editInputRef}
             onFocus={() => {

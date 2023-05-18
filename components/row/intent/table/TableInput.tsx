@@ -1,9 +1,8 @@
-import { Input, InputProps } from "@/components/Input";
 import { useState } from "react";
 import { TableType } from "./Table";
 import { StackType } from "@/app/(editor)/Editor";
 
-interface TableInputProps extends InputProps {
+interface TableInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   tableRowIndex: number;
   tableColumnIndex: number;
   tableData: TableType["data"];
@@ -100,7 +99,7 @@ const TableInput: React.FC<TableInputProps> = ({
   };
 
   return (
-    <Input
+    <input
       value={inputValue}
       onChange={(e) => setInputValue(e.target.value)}
       {...props}
