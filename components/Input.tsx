@@ -59,13 +59,17 @@ export const Input: React.FC<InputProps> = ({
         m-0.5
         focus:outline-none
         font-mono text-xs
-        w-fit h-fit
-        border-none
+        h-fit w-auto
+        border
+        border-gray-200
+        dark:border-gray-800
+        focus:border-orange-500/50
+        focus:dark:border-orange-600/50
         py-1
         px-2 
         rounded-sm
-        bg-gray-200
-        dark:bg-gray-800
+        bg-gray-100
+        dark:bg-gray-900
       `
     }
     {...props}

@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "../../Button";
-import { IntentIdType } from "@/util/data/rowIntentDict";
+import {
+  IntentIdType,
+  RowIntentDictType,
+  rowIntentDict,
+} from "@/util/data/rowIntentDict";
 import { StackType } from "@/app/(editor)/Editor";
+import { Input } from "@/components/Input";
 
 export type IntentCategory = "text" | "table" | "list";
 
@@ -35,8 +40,10 @@ const IntentSelect = ({
   setSelectMode,
 }: IntentSelectProps) => {
   const [commandMode, setCommandMode] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState();
-  const [filteredRowIntent, setFilteredRowIntent] = useState([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const [suggestedOptions, setSuggestedOptions] = useState<RowIntentDictType[]>(
+    []
+  );
 
   const updateIntentId = (intentId: IntentIdType) => {
     setStack((prevStack: any) => {
@@ -53,40 +60,49 @@ const IntentSelect = ({
     setSelectMode(false);
   };
 
-  // const setRowIntent = (intent: IntentIdType) => {
-  //   setStack(intent);
-  //   setCommandMode(false);
-  //   setSelectMode(false);
-  // };
+  const rowIntentDictArray: RowIntentDictType[] = Object.values(
+    rowIntentDict
+  ) as RowIntentDictType[];
+  console.log(rowIntentDictArray);
 
   return (
-    <div className={`mr-2 flex gap-0.25 items-center`}>
+    <>
       {commandMode ? (
         <>
-          {/* <Input
-            placeholder={"type md symbol or name"}
+          <Input
+            placeholder={"Type MD symbol or name"}
             value={inputValue}
             onChange={(e) => {
-              rowIntent.text.map((obj: TextIntentType) => {
-                if (e.target.value === obj.markdownSymbol) return wrd;
-                return wrd.toLowerCase().includes(e.target.value.toLowerCase());
-              });
-            }}
-          /> */}
+              setInputValue(e.target.value);
+              const results = rowIntentDictArray.filter(
+                (obj: RowIntentDictType) => {
+                  const inputValueLower = inputValue.toLowerCase();
+                  const property1Lower = obj.markdownSymbol.toLowerCase();
+                  const property2Lower = obj.name.toLowerCase();
 
-          {options.map((intent: IntentIdType, i: number) => (
+                  return (
+                    property1Lower.includes(inputValueLower) ||
+                    property2Lower.includes(inputValueLower)
+                  );
+                }
+              );
+              setSuggestedOptions(results);
+            }}
+          />
+
+          {suggestedOptions.map((obj: RowIntentDictType, i: number) => (
             <Button
               key={i}
-              className={`uppercase`}
-              onClick={() => updateIntentId(intent)}
+              className={`capitalize`}
+              onClick={() => updateIntentId(obj.intentId)}
             >
-              {intent}
+              {obj.name}
             </Button>
           ))}
         </>
       ) : (
         <Button
-          className={`capitalize`}
+          className={`uppercase`}
           onClick={() => {
             setCommandMode(true);
           }}
@@ -94,7 +110,7 @@ const IntentSelect = ({
           {stack[rowIndex].intentId}
         </Button>
       )}
-    </div>
+    </>
   );
 };
 

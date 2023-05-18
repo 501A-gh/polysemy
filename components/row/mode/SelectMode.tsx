@@ -1,6 +1,7 @@
 import { StackType } from "@/app/(editor)/Editor";
-import React, { useState } from "react";
+import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface SelectModeProps extends React.HTMLAttributes<HTMLDivElement> {
   rowIndex: number;
@@ -23,7 +24,7 @@ const SelectMode = ({
         intentId: "p",
         data: {
           text: [],
-          table: [[]],
+          table: [[""], [""]],
         },
       });
       return updatedItems;
@@ -37,7 +38,7 @@ const SelectMode = ({
         intentId: "p",
         data: {
           text: [],
-          table: [[]],
+          table: [[""], [""]],
         },
       });
       return updatedItems;
@@ -54,12 +55,16 @@ const SelectMode = ({
   };
 
   const confirmDelete = () => {
-    if (data.text.length == 0 || data.table.length == 0) {
-      deleteStack();
-    } else {
-      if (confirm("Are you sure you want to delete this paragraph?")) {
+    if (stack.length != 1) {
+      if (data.text.length == 0 || data.table.length == 0) {
         deleteStack();
+      } else {
+        if (confirm("Are you sure you want to delete this paragraph?")) {
+          deleteStack();
+        }
       }
+    } else {
+      alert("Last row cannot be deleted");
     }
   };
 
@@ -100,7 +105,7 @@ const SelectMode = ({
           dark:focus:text-black
         `}
       >
-        {rowIndex}
+        {rowIndex + 1}
       </button>
       <div
         className={`
@@ -110,13 +115,14 @@ const SelectMode = ({
       >
         <ReactMarkdown
           className={` 
-          m-0
-          mr-3
-          p-0 w-full
-          text-gray-800
-          dark:text-gray-400
-          print:text-black
-        `}
+            m-0
+            mr-3
+            p-0 w-full
+            text-gray-800
+            dark:text-gray-400
+            print:text-black
+          `}
+          remarkPlugins={[remarkGfm]}
         >
           {`${props.children}`}
         </ReactMarkdown>

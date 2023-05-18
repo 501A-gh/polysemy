@@ -18,9 +18,7 @@ const EditMode: React.FC<EditModeProps> = ({ setSelectMode, ...props }) => {
   return (
     <div
       className={`
-        flex
-        flex-wrap
-        items-center
+        flex flex-wrap items-center
         py-1
         pl-2
         print:hidden

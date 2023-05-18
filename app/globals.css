@@ -44,6 +44,17 @@
   hr {
     @apply my-5 bg-transparent border-gray-300 dark:border-gray-800 rounded;
   }
+  table {
+    @apply border border-gray-400 dark:border-gray-700 divide-y divide-gray-400 dark:divide-gray-700 text-center w-fit shadow-lg;
+  }
+
+  th {
+    @apply px-4 py-2 border border-gray-300 dark:border-gray-800 bg-gray-200 dark:bg-gray-900 text-gray-800 dark:text-gray-300 font-normal text-xs uppercase;
+  }
+
+  td {
+    @apply px-4 py-2 border border-gray-300 dark:border-gray-800 bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-400 text-left text-sm;
+  }
 }
 
 /* body {

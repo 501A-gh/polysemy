@@ -42,7 +42,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
             ? `${rowIntent.markdownSymbol} ${data.text && data.text.join(" ")}`
             : rowIntent.category == "table" &&
               data.table &&
-              markdownTable(data.table)}
+              `${markdownTable(data.table)}`}
         </SelectMode>
       ) : (
         <EditMode setSelectMode={setSelectMode}>

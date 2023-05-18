@@ -15,7 +15,10 @@ const Editor = () => {
   const [stack, setStack] = useState<StackType[]>([
     {
       intentId: "p",
-      data: { text: ["Welcome", "to", "Polysemy."], table: [[]] },
+      data: {
+        text: ["Welcome", "to", "Polysemy."],
+        table: [["Title"], ["Data"]],
+      },
     },
   ]);
 
