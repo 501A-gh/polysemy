@@ -1,26 +1,27 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Block from "./Block";
 import Caret from "@/components/Caret";
 import { StackType } from "@/app/(editor)/Editor";
-import { IntentComponentProps } from "../../Row";
 
-const Text: React.FC<IntentComponentProps> = ({
+interface TextProps {
+  rowIndex: number;
+  stack: StackType[];
+  setStack: any;
+  caretRef: React.Ref<HTMLInputElement>;
+  focusOnCaret: any;
+}
+
+const Text: React.FC<TextProps> = ({
   rowIndex,
   stack,
   setStack,
+  caretRef,
+  focusOnCaret,
 }) => {
   const [highlightPoint, setHighlightPoint] = useState([]);
 
   const currentRow: StackType = stack[rowIndex];
   const data = currentRow.data.text;
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const focusOnInputRef = () => {
-    if (inputRef.current != null) {
-      inputRef.current.focus();
-    }
-  };
 
   return (
     <>
@@ -36,12 +37,12 @@ const Text: React.FC<IntentComponentProps> = ({
             stack={stack}
             setStack={setStack}
             word={word}
-            focusOnInputRef={focusOnInputRef}
+            focusOnCaret={focusOnCaret}
           />
         ))}
       <Caret
-        focusOnInputRef={focusOnInputRef}
-        inputRef={inputRef}
+        focusOnCaret={focusOnCaret}
+        inputRef={caretRef}
         rowIndex={rowIndex}
         stack={stack}
         setStack={setStack}

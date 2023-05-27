@@ -8,7 +8,7 @@ interface CaretProps {
   stack: StackType[];
   setStack: any;
   inputRef: React.Ref<HTMLInputElement>;
-  focusOnInputRef: any;
+  focusOnCaret: any;
 }
 
 const Caret: React.FC<CaretProps> = ({
@@ -16,7 +16,7 @@ const Caret: React.FC<CaretProps> = ({
   stack,
   setStack,
   inputRef,
-  focusOnInputRef,
+  focusOnCaret,
 }) => {
   const [focus, setFocus] = useState<boolean>(false);
   // const inputRef = useRef<HTMLInputElement>(null);
@@ -40,7 +40,7 @@ const Caret: React.FC<CaretProps> = ({
       input={input}
       setInput={setInput}
       suggestion={suggestion}
-      focusOnInput={focusOnInputRef}
+      focusOnClick={focusOnCaret}
     >
       <div
         className={`

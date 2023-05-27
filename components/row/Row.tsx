@@ -10,7 +10,6 @@ import { markdownTable } from "markdown-table";
 import { StackType } from "@/app/(editor)/Editor";
 import Text from "./intent/text/Text";
 import Table from "./intent/table/Table";
-import { Button } from "../Button";
 
 export interface IntentComponentProps {
   rowIndex: number;
@@ -46,20 +45,12 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
               `${markdownTable(data.table)}`}
         </SelectMode>
       ) : (
-        <EditMode setSelectMode={setSelectMode}>
-          <IntentSelect
-            rowIndex={rowIndex}
-            stack={stack}
-            setStack={setStack}
-            setSelectMode={setSelectMode}
-          />
-          {rowIntent.category == "text" && (
-            <Text rowIndex={rowIndex} stack={stack} setStack={setStack} />
-          )}
-          {rowIntent.category == "table" && (
-            <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />
-          )}
-        </EditMode>
+        <EditMode
+          rowIndex={rowIndex}
+          stack={stack}
+          setStack={setStack}
+          setSelectMode={setSelectMode}
+        />
       )}
     </>
   );

@@ -83,7 +83,7 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   stack: StackType[];
   setStack: any;
   word: string;
-  focusOnInputRef: any;
+  focusOnCaret: any;
 }
 
 const Block: React.FC<BlockTypes> = ({
@@ -94,7 +94,7 @@ const Block: React.FC<BlockTypes> = ({
   stack,
   setStack,
   word,
-  focusOnInputRef,
+  focusOnCaret,
   ...props
 }) => {
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -114,7 +114,7 @@ const Block: React.FC<BlockTypes> = ({
 
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
-  const focusOnButtonRef = () => {
+  const focusOnBlock = () => {
     setTimeout(() => {
       if (buttonRef.current) {
         buttonRef.current.focus();
@@ -179,7 +179,7 @@ const Block: React.FC<BlockTypes> = ({
                 .map((w: string) => insert(w));
               setInsertValue("");
               setCurrentMode("standard");
-              focusOnButtonRef();
+              focusOnBlock();
             }
           }}
         />
@@ -200,7 +200,7 @@ const Block: React.FC<BlockTypes> = ({
         }}
         onKeyDown={(e) => {
           if (e.metaKey) {
-            focusOnInputRef();
+            focusOnCaret();
           }
           switch (e.key) {
             case "o":
@@ -237,7 +237,7 @@ const Block: React.FC<BlockTypes> = ({
             case "x":
               copy();
               backspace(blockIndex);
-              focusOnInputRef();
+              focusOnCaret();
               break;
           }
         }}
@@ -250,7 +250,7 @@ const Block: React.FC<BlockTypes> = ({
           input={editValue}
           setInput={setEditValue}
           suggestion={suggestion}
-          focusOnInput={focusOnEditInputRef}
+          focusOnClick={focusOnEditInputRef}
         >
           <input
             autoFocus
@@ -272,7 +272,7 @@ const Block: React.FC<BlockTypes> = ({
               if (e.key === " ") {
                 edit(editValue);
                 setCurrentMode("standard");
-                focusOnButtonRef();
+                focusOnBlock();
               }
             }}
           />
@@ -285,6 +285,7 @@ const Block: React.FC<BlockTypes> = ({
           insert={insert}
           backspace={backspace}
           setCurrentMode={setCurrentMode}
+          focusOnClick={focusOnBlock}
         />
       )}
       {/* {highlightPoint.length === 2 &&

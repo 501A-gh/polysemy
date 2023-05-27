@@ -1,18 +1,16 @@
-import { Button } from "./Button";
-
 export interface SuggestProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   input: string | "";
   setInput: any;
   suggestion: string[];
-  focusOnInput: any;
+  focusOnClick: any;
 }
 
 const Suggest: React.FC<SuggestProps> = ({
   input,
   setInput,
   suggestion,
-  focusOnInput,
+  focusOnClick,
   ...props
 }) => {
   return (
@@ -21,21 +19,17 @@ const Suggest: React.FC<SuggestProps> = ({
       {input?.length > 2 && (
         <>
           {suggestion.map((s: string) => (
-            <Button
-              intent={"word"}
+            <button
+              className={`btn btn-word`}
               key={s}
               onClick={() => {
                 setInput(s);
-                focusOnInput();
+                focusOnClick();
               }}
-              // onKeyDown={(e) => {
-              //   if (e.key === "Enter") {
-              //   }
-              // }}
               {...props}
             >
               {s}
-            </Button>
+            </button>
           ))}
         </>
       )}

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Button, ButtonProps } from "./Button";
 import {
   MagicWandIcon,
   Pencil1Icon,
   TransformIcon,
 } from "@radix-ui/react-icons";
 
-interface CommandButtonProps extends ButtonProps {
+interface CommandButtonProps {
+  icon: JSX.Element;
   name: string;
   apiRoute: string;
 }
@@ -37,6 +37,7 @@ interface CommandProps {
   insert: any;
   backspace: any;
   blockIndex: number;
+  focusOnClick: any;
 }
 
 const Command: React.FC<CommandProps> = ({
@@ -47,6 +48,7 @@ const Command: React.FC<CommandProps> = ({
   insert,
   backspace,
   blockIndex,
+  focusOnClick,
 }) => {
   const [response, setResponse] = useState([]);
 
@@ -73,9 +75,9 @@ const Command: React.FC<CommandProps> = ({
       {response.length > 0 ? (
         <>
           {response.slice(0, 50).map((obj: any, i: number) => (
-            <Button
+            <button
               key={i}
-              intent={"word"}
+              className={`btn btn-word`}
               onClick={() => {
                 backspace(blockIndex);
                 obj.word
@@ -85,29 +87,38 @@ const Command: React.FC<CommandProps> = ({
                     insert(w);
                   });
                 closeCommandMode();
+                focusOnClick();
               }}
               onKeyDown={(e) => {
-                if (e.metaKey) closeCommandMode();
+                if (e.key === "o") {
+                  closeCommandMode();
+                  focusOnClick();
+                }
               }}
             >
               {obj.word}
-            </Button>
+            </button>
           ))}
         </>
       ) : (
         <>
           {options.map((obj: CommandButtonProps, i: number) => (
-            <Button
+            <button
               key={i}
-              intent={"command"}
-              icon={obj.icon}
+              className={`btn btn-command`}
               onClick={() => {
                 fetchApi(obj.apiRoute);
               }}
-              onKeyDown={(e) => e.metaKey && closeCommandMode()}
+              onKeyDown={(e) => {
+                if (e.key === "o") {
+                  closeCommandMode();
+                  focusOnClick();
+                }
+              }}
             >
+              {obj.icon}
               {obj.name}
-            </Button>
+            </button>
           ))}
         </>
       )}

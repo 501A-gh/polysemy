@@ -1,15 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import IntentSelect from "../intent/IntentSelect";
+import { StackType } from "@/app/(editor)/Editor";
+import Text from "../intent/text/Text";
+import Table from "../intent/table/Table";
+import { rowIntentDict } from "@/util/data/rowIntentDict";
 
 interface EditModeProps extends React.HTMLAttributes<HTMLDivElement> {
+  rowIndex: number;
+  stack: StackType[];
+  setStack: any;
   setSelectMode: any;
 }
 
-const EditMode: React.FC<EditModeProps> = ({ setSelectMode, ...props }) => {
+const EditMode: React.FC<EditModeProps> = ({
+  rowIndex,
+  stack,
+  setStack,
+  setSelectMode,
+  ...props
+}) => {
   const [highlightPoint, setHighlightPoint] = useState([]);
+
+  const currentRow: StackType = stack[rowIndex];
+  const rowIntent = rowIntentDict[currentRow.intentId];
+
+  const caretRef = useRef<HTMLInputElement>(null);
+  const intentRef = useRef<HTMLButtonElement>(null);
+  const focusOnCaret = () => {
+    if (caretRef.current != null) {
+      caretRef.current.focus();
+    }
+  };
+  const focusOnIntent = () => {
+    if (intentRef.current != null) {
+      intentRef.current.focus();
+    }
+  };
 
   useEffect(() => {
     const down = (e: any) => {
       if (e.key === "Enter" && e.metaKey) setSelectMode(true);
+      if (e.metaKey) focusOnCaret();
+      if (e.metaKey && e.shiftKey) focusOnIntent();
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -36,7 +68,26 @@ const EditMode: React.FC<EditModeProps> = ({ setSelectMode, ...props }) => {
       `}
       {...props}
     >
-      {props.children}
+      <IntentSelect
+        intentRef={intentRef}
+        focusOnCaret={focusOnCaret}
+        rowIndex={rowIndex}
+        stack={stack}
+        setStack={setStack}
+        setSelectMode={setSelectMode}
+      />
+      {rowIntent.category == "text" && (
+        <Text
+          rowIndex={rowIndex}
+          stack={stack}
+          setStack={setStack}
+          caretRef={caretRef}
+          focusOnCaret={focusOnCaret}
+        />
+      )}
+      {rowIntent.category == "table" && (
+        <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />
+      )}
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Button } from "../../Button";
 import {
   IntentIdType,
   RowIntentDictType,
@@ -11,6 +10,8 @@ export type IntentCategory = "text" | "table" | "list";
 
 interface IntentSelectProps
   extends React.HTMLAttributes<typeof HTMLDivElement> {
+  intentRef: React.Ref<HTMLButtonElement>;
+  focusOnCaret: any;
   rowIndex: number;
   stack: StackType[];
   setStack: any;
@@ -32,12 +33,14 @@ const options: IntentIdType[] = [
   "ol",
 ];
 
-const IntentSelect = ({
+const IntentSelect: React.FC<IntentSelectProps> = ({
+  intentRef,
+  focusOnCaret,
   rowIndex,
   stack,
   setStack,
   setSelectMode,
-}: IntentSelectProps) => {
+}) => {
   const [commandMode, setCommandMode] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>("");
   const [suggestedOptions, setSuggestedOptions] = useState<RowIntentDictType[]>(
@@ -74,8 +77,7 @@ const IntentSelect = ({
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);
-              const inputValueLower = e.target.value.toLowerCase(); // Move this line outside the filter function
-
+              const inputValueLower = e.target.value.toLowerCase();
               const results = rowIntentDictArray.filter(
                 (obj: RowIntentDictType) => {
                   const property1Lower = obj.markdownSymbol.toLowerCase();
@@ -93,25 +95,28 @@ const IntentSelect = ({
           />
 
           {suggestedOptions.map((obj: RowIntentDictType, i: number) => (
-            <Button
+            <button
               key={i}
-              className={`capitalize`}
-              onClick={() => updateIntentId(obj.intentId)}
+              className={`capitalize btn btn-standard`}
+              onClick={() => {
+                updateIntentId(obj.intentId);
+                focusOnCaret();
+              }}
             >
               {obj.name}
-            </Button>
+            </button>
           ))}
         </>
       ) : (
-        <Button
-          autoFocus
-          className={`uppercase`}
+        <button
+          ref={intentRef}
+          className={`uppercase btn btn-standard`}
           onClick={() => {
             setCommandMode(true);
           }}
         >
           {stack[rowIndex].intentId}
-        </Button>
+        </button>
       )}
     </>
   );
