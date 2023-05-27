@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/Button";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -11,9 +10,7 @@ function Page() {
       className={` h-screen flex items-center justify-center flex-col text-center`}
     >
       <h1 className={`font-serif`}>Polysemy.</h1>
-      <p className={`font-serif text-white`}>
-        A different kind of text editor.
-      </p>
+      <h4 className={`font-serif`}>A different kind of text editor.</h4>
       <p className={`my-5 max-w-md`}>
         The text editing experience for programmers is great. But the input
         experience when doing anything else like taking notes or creating a
@@ -22,7 +19,9 @@ function Page() {
         youre interested you can learn more about our design approach{" "}
         <Link href={"/design"}>here.</Link>
       </p>
-      <Button onClick={() => router.push("/")}>Try it out.</Button>
+      <button className={`btn btn-standard`} onClick={() => router.push("/")}>
+        Try it out.
+      </button>
     </div>
   );
 }

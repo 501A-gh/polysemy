@@ -44,6 +44,9 @@
   p {
     @apply text-black dark:text-gray-400 text-sm;
   }
+  a {
+    @apply outline-none text-black dark:text-gray-400 text-sm rounded-sm focus:bg-gray-300 dark:focus:bg-gray-700;
+  }
   blockquote {
     @apply border-l text-black bg-gray-200 border-l-gray-400 dark:text-gray-400 dark:bg-gray-900 dark:border-l-gray-600 text-sm p-2 italic;
   }
