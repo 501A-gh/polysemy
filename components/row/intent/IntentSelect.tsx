@@ -104,6 +104,7 @@ const IntentSelect = ({
         </>
       ) : (
         <Button
+          autoFocus
           className={`uppercase`}
           onClick={() => {
             setCommandMode(true);

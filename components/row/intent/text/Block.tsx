@@ -6,62 +6,68 @@ import { VariantProps, cva } from "class-variance-authority";
 import words from "@/util/data/words";
 import { StackType } from "@/app/(editor)/Editor";
 
-const blockButton = cva("button", {
-  variants: {
-    intent: {
-      standard: [
-        "text-gray-600",
-        "dark:text-gray-400",
-
-        "focus:bg-gray-200",
-        "dark:focus:bg-gray-800 ",
-        "focus:text-black",
-        "focus:dark:text-white",
-      ],
-      command: ["text-gray-400", "dark:text-gray-700", "animate-pulse"],
-      edit: ["text-gray-400", "dark:text-gray-700", "animate-bounce"],
-      highlight: [
-        "rounded-none",
-        "text-gray-900",
-        "bg-green-300",
-        "focus:bg-green-400",
-      ],
-      blur: ["blur-md"],
+const blockButton = cva(
+  [
+    "border",
+    "border-transparent",
+    "outline-none",
+    "cursor-pointer",
+    "select-none",
+    "font-sans",
+    "px-0.5",
+    "py-0.25",
+    "my-0.5",
+  ],
+  {
+    variants: {
+      intent: {
+        standard: [
+          "text-gray-600",
+          "dark:text-gray-400",
+          "border",
+          "rounded-sm",
+          "focus:bg-gray-200",
+          "focus:border-b-gray-300",
+          "dark:focus:bg-gray-800 ",
+          "focus:border-b-gray-700",
+          "focus:text-black",
+          "focus:dark:text-white",
+        ],
+        command: ["text-gray-400", "dark:text-gray-700", "animate-pulse"],
+        edit: ["text-gray-400", "dark:text-gray-700", "animate-bounce"],
+        highlight: [
+          "rounded-none",
+          "text-gray-900",
+          "bg-green-300",
+          "focus:bg-green-400",
+        ],
+        blur: ["blur-md"],
+      },
     },
-  },
-  defaultVariants: {
-    intent: "standard",
-  },
-});
+    defaultVariants: {
+      intent: "standard",
+    },
+  }
+);
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof blockButton> {
   icon?: JSX.Element;
+  buttonRef: React.Ref<HTMLButtonElement>;
 }
 
 const BlockButton: React.FC<ButtonProps> = ({
   className,
   intent,
   icon,
+  buttonRef,
   ...props
 }) => (
   <button
-    className={
-      blockButton({ intent, className }) +
-      ` 
-        border
-        border-none
-        outline-none
-        cursor-pointer
-        select-none
-        font-sans
-        
-        px-0.5
-        py-0.25
-        my-0.5
-      `
-    }
+    ref={buttonRef}
+    type="button"
+    className={blockButton({ intent, className })}
     {...props}
   >
     {icon}
@@ -77,6 +83,7 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
   stack: StackType[];
   setStack: any;
   word: string;
+  focusOnInputRef: any;
 }
 
 const Block: React.FC<BlockTypes> = ({
@@ -87,6 +94,8 @@ const Block: React.FC<BlockTypes> = ({
   stack,
   setStack,
   word,
+  focusOnInputRef,
+  ...props
 }) => {
   const editInputRef = useRef<HTMLInputElement>(null);
   const focusOnEditInputRef = () => {
@@ -95,7 +104,6 @@ const Block: React.FC<BlockTypes> = ({
       console.log("bruh");
     }
   };
-  // const [focus, setFocus] = useState<boolean>(false);
 
   const [currentMode, setCurrentMode] = useState<any>();
 
@@ -103,6 +111,16 @@ const Block: React.FC<BlockTypes> = ({
   const [insertValue, setInsertValue] = useState<string>("");
 
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
+
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+
+  const focusOnButtonRef = () => {
+    setTimeout(() => {
+      if (buttonRef.current) {
+        buttonRef.current.focus();
+      }
+    }, 1);
+  };
 
   const copy = () => navigator.clipboard.writeText(word);
 
@@ -161,12 +179,14 @@ const Block: React.FC<BlockTypes> = ({
                 .map((w: string) => insert(w));
               setInsertValue("");
               setCurrentMode("standard");
+              focusOnButtonRef();
             }
           }}
         />
       )}
 
       <BlockButton
+        buttonRef={buttonRef}
         intent={
           highlightIndex.includes(blockIndex)
             ? "highlight"
@@ -179,6 +199,9 @@ const Block: React.FC<BlockTypes> = ({
           setTimeout(() => setEditValue(""), 1);
         }}
         onKeyDown={(e) => {
+          if (e.metaKey) {
+            focusOnInputRef();
+          }
           switch (e.key) {
             case "o":
               currentMode === "command"
@@ -214,6 +237,7 @@ const Block: React.FC<BlockTypes> = ({
             case "x":
               copy();
               backspace(blockIndex);
+              focusOnInputRef();
               break;
           }
         }}
@@ -223,19 +247,16 @@ const Block: React.FC<BlockTypes> = ({
 
       {currentMode === "edit" && (
         <Suggest
-          // onFocus={setFocus}
-          inputRef={editInputRef}
           input={editValue}
-          focusOnInput={focusOnEditInputRef}
           setInput={setEditValue}
           suggestion={suggestion}
+          focusOnInput={focusOnEditInputRef}
         >
           <input
             autoFocus
             ref={editInputRef}
             onFocus={() => {
               setCurrentMode("edit");
-              // setFocus(true);
             }}
             placeholder="Replace ..."
             value={editValue}
@@ -251,6 +272,7 @@ const Block: React.FC<BlockTypes> = ({
               if (e.key === " ") {
                 edit(editValue);
                 setCurrentMode("standard");
+                focusOnButtonRef();
               }
             }}
           />

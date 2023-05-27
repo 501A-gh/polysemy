@@ -20,7 +20,7 @@ const EditMode: React.FC<EditModeProps> = ({ setSelectMode, ...props }) => {
       className={`
         flex flex-wrap items-center
         py-1
-        pl-2
+        px-2
         print:hidden
         border
         border-x-2

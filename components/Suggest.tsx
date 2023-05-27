@@ -2,21 +2,16 @@ import { Button } from "./Button";
 
 export interface SuggestProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  inputRef: any;
   input: string | "";
   setInput: any;
   suggestion: string[];
-  children: JSX.Element | JSX.Element[];
-  onFocus?: any;
-  focusOnInput?: any;
+  focusOnInput: any;
 }
 
 const Suggest: React.FC<SuggestProps> = ({
   input,
-  suggestion,
   setInput,
-  inputRef,
-  // onFocus,
+  suggestion,
   focusOnInput,
   ...props
 }) => {

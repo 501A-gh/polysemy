@@ -7,11 +7,19 @@ interface CaretProps {
   rowIndex: number;
   stack: StackType[];
   setStack: any;
+  inputRef: React.Ref<HTMLInputElement>;
+  focusOnInputRef: any;
 }
 
-const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
+const Caret: React.FC<CaretProps> = ({
+  rowIndex,
+  stack,
+  setStack,
+  inputRef,
+  focusOnInputRef,
+}) => {
   const [focus, setFocus] = useState<boolean>(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const inputRef = useRef<HTMLInputElement>(null);
 
   const [input, setInput] = useState<SuggestProps["input"]>("");
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
@@ -29,11 +37,10 @@ const Caret: React.FC<CaretProps> = ({ rowIndex, stack, setStack }) => {
 
   return (
     <Suggest
-      onFocus={setFocus}
-      inputRef={inputRef}
       input={input}
       setInput={setInput}
       suggestion={suggestion}
+      focusOnInput={focusOnInputRef}
     >
       <div
         className={`

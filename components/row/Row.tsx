@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { rowIntentDict } from "@/util/data/rowIntentDict";
 import IntentSelect from "./intent/IntentSelect";
 
@@ -10,6 +10,7 @@ import { markdownTable } from "markdown-table";
 import { StackType } from "@/app/(editor)/Editor";
 import Text from "./intent/text/Text";
 import Table from "./intent/table/Table";
+import { Button } from "../Button";
 
 export interface IntentComponentProps {
   rowIndex: number;

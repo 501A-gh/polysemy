@@ -9,11 +9,18 @@ const Text: React.FC<IntentComponentProps> = ({
   stack,
   setStack,
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [highlightPoint, setHighlightPoint] = useState([]);
 
   const currentRow: StackType = stack[rowIndex];
   const data = currentRow.data.text;
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const focusOnInputRef = () => {
+    if (inputRef.current != null) {
+      inputRef.current.focus();
+    }
+  };
 
   return (
     <>
@@ -29,10 +36,12 @@ const Text: React.FC<IntentComponentProps> = ({
             stack={stack}
             setStack={setStack}
             word={word}
+            focusOnInputRef={focusOnInputRef}
           />
         ))}
       <Caret
-        // ref={inputRef}
+        focusOnInputRef={focusOnInputRef}
+        inputRef={inputRef}
         rowIndex={rowIndex}
         stack={stack}
         setStack={setStack}
