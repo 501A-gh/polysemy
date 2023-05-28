@@ -1,86 +1,15 @@
 import React, { useRef, useState } from "react";
 import { setTimeout } from "timers";
 import Suggest, { SuggestProps } from "../../../Suggest";
-import Command from "../../../Command";
-import { VariantProps, cva } from "class-variance-authority";
+import Command from "@/components/Command";
 import words from "@/util/data/words";
 import { StackType } from "@/app/(editor)/Editor";
 
-const blockButton = cva(
-  [
-    "border",
-    "border-transparent",
-    "outline-none",
-    "cursor-pointer",
-    "select-none",
-    "font-sans",
-    "px-0.5",
-    "py-0.25",
-    "my-0.5",
-  ],
-  {
-    variants: {
-      intent: {
-        standard: [
-          "text-gray-600",
-          "dark:text-gray-400",
-          "border",
-          "rounded-sm",
-          "focus:bg-gray-200",
-          "focus:border-b-gray-300",
-          "dark:focus:bg-gray-800 ",
-          "focus:border-b-gray-300",
-          "dark:focus:border-b-gray-700",
-          "focus:text-black",
-          "focus:dark:text-white",
-        ],
-        command: ["text-gray-400", "dark:text-gray-700", "animate-pulse"],
-        edit: ["text-gray-400", "dark:text-gray-700", "animate-bounce"],
-        highlight: [
-          "rounded-none",
-          "text-gray-900",
-          "bg-green-300",
-          "focus:bg-green-400",
-        ],
-        blur: ["blur-md"],
-      },
-    },
-    defaultVariants: {
-      intent: "standard",
-    },
-  }
-);
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof blockButton> {
-  icon?: JSX.Element;
-  buttonRef: React.Ref<HTMLButtonElement>;
-}
-
-const BlockButton: React.FC<ButtonProps> = ({
-  className,
-  intent,
-  icon,
-  buttonRef,
-  ...props
-}) => (
-  <button
-    ref={buttonRef}
-    type="button"
-    className={blockButton({ intent, className })}
-    {...props}
-  >
-    {icon}
-    {props.children}
-  </button>
-);
-
-interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
+interface BlockTypes {
   blockIndex: number;
   rowIndex: number;
-  highlightPoint: number[];
-  setHighlightPoint: any;
+  selected: number[];
+  selectBlock: any;
   stack: StackType[];
   setStack: any;
   word: string;
@@ -90,8 +19,8 @@ interface BlockTypes extends React.HTMLProps<HTMLButtonElement> {
 const Block: React.FC<BlockTypes> = ({
   blockIndex,
   rowIndex,
-  highlightPoint,
-  setHighlightPoint,
+  selected,
+  selectBlock,
   stack,
   setStack,
   word,
@@ -106,7 +35,29 @@ const Block: React.FC<BlockTypes> = ({
     }
   };
 
-  const [currentMode, setCurrentMode] = useState<any>();
+  const [currentMode, setCurrentMode] = useState<
+    "standard" | "edit" | "insert" | "command"
+  >();
+
+  let blockStyle:
+    | "block-standard"
+    | "block-edit"
+    | "block-insert"
+    | "block-command";
+  switch (currentMode) {
+    case "edit":
+      blockStyle = "block-edit";
+      break;
+    case "insert":
+      blockStyle = "block-insert";
+      break;
+    case "command":
+      blockStyle = "block-command";
+      break;
+    default:
+      blockStyle = "block-standard";
+      break;
+  }
 
   const [editValue, setEditValue] = useState<SuggestProps["input"]>("");
   const [insertValue, setInsertValue] = useState<string>("");
@@ -153,16 +104,6 @@ const Block: React.FC<BlockTypes> = ({
     });
   };
 
-  let highlightIndex: number[] = [];
-  let sortedHighlightPoint = highlightPoint.sort();
-  let highlightPointStart: number = sortedHighlightPoint[0];
-  let highlightPointEnd: number =
-    sortedHighlightPoint[highlightPoint.length - 1];
-
-  for (let i = highlightPointStart; i < highlightPointEnd + 1; i++) {
-    highlightIndex.push(i);
-  }
-
   return (
     <>
       {currentMode === "insert" && (
@@ -186,15 +127,12 @@ const Block: React.FC<BlockTypes> = ({
         />
       )}
 
-      <BlockButton
-        buttonRef={buttonRef}
-        intent={
-          highlightIndex.includes(blockIndex)
-            ? "highlight"
-            : currentMode === "insert"
-            ? "standard"
-            : currentMode
-        }
+      <button
+        type="button"
+        ref={buttonRef}
+        className={`block ${
+          selected.includes(blockIndex) ? "block-highlight" : blockStyle
+        }`}
         onClick={() => {
           setCurrentMode("edit");
           setTimeout(() => setEditValue(""), 1);
@@ -227,13 +165,7 @@ const Block: React.FC<BlockTypes> = ({
               setTimeout(() => setInsertValue(""), 1);
               break;
             case "h":
-              if (highlightIndex.includes(blockIndex)) {
-                setHighlightPoint([]);
-              } else if (highlightPoint.length == 2) {
-                alert("cannot highlight");
-              } else {
-                setHighlightPoint([...highlightPoint, blockIndex]);
-              }
+              selectBlock();
               break;
             case "x":
               copy();
@@ -244,7 +176,7 @@ const Block: React.FC<BlockTypes> = ({
         }}
       >
         {word}
-      </BlockButton>
+      </button>
 
       {currentMode === "edit" && (
         <Suggest
@@ -289,19 +221,6 @@ const Block: React.FC<BlockTypes> = ({
           focusOnClick={focusOnBlock}
         />
       )}
-      {/* {highlightPoint.length === 2 &&
-        sortedHighlightPoint[highlightPoint.length - 1] === index && (
-          <Highlight
-            stack={stack}
-            setStack={setStack}
-            text={text}
-            backspace={backspace}
-            highlightIndex={highlightIndex}
-            highlightPoint={highlightPoint}
-            setHighlightPoint={setHighlightPoint}
-            setCurrentMode={setCurrentMode}
-          />
-        )} */}
     </>
   );
 };

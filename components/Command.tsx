@@ -32,8 +32,6 @@ const options: CommandButtonProps[] = [
 interface CommandProps {
   setCurrentMode: any;
   word: string;
-  // stack: any;
-  // setStack: any;
   insert: any;
   backspace: any;
   blockIndex: number;
@@ -42,8 +40,6 @@ interface CommandProps {
 
 const Command: React.FC<CommandProps> = ({
   setCurrentMode,
-  // stack,
-  // setStack,
   word,
   insert,
   backspace,

@@ -14,13 +14,20 @@ module.exports = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       keyframes: {
-        blurShowKeyframes: {
-          "0%": { opacity: "0" },
-          "50%": { filter: "blur(10px)" },
+        showAni: {
+          "0%": {
+            opacity: "0",
+            borderRadiux: "300px",
+            transform: " scale(0.5)",
+          },
+          "40%": {
+            filter: "blur(2px)",
+            transform: " scale(1.01)",
+          },
         },
       },
       animation: {
-        "blur-show-ani": "blurShowKeyframes 2s linear infinite",
+        show: "showAni 0.5s ease",
       },
       fontFamily: {
         sans: ["var(--font-inter)"],
