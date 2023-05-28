@@ -1,4 +1,6 @@
 import { StackType } from "@/app/(editor)/Editor";
+import { rowIntentDict } from "@/util/data/rowIntentDict";
+import { markdownTable } from "markdown-table";
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import remarkGfm from "remark-gfm";
@@ -10,13 +12,13 @@ interface SelectModeProps extends React.HTMLAttributes<HTMLDivElement> {
   setSelectMode: any;
 }
 
-const SelectMode = ({
+const SelectMode: React.FC<SelectModeProps> = ({
   rowIndex,
   stack,
   setStack,
   setSelectMode,
   ...props
-}: SelectModeProps) => {
+}) => {
   const addStackAbove = () => {
     setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
@@ -46,6 +48,7 @@ const SelectMode = ({
   };
 
   const currentRow: StackType = stack[rowIndex];
+  const rowIntent = rowIntentDict[currentRow.intentId];
   const data = currentRow.data;
 
   const deleteStack = () => {
@@ -124,7 +127,15 @@ const SelectMode = ({
           `}
           remarkPlugins={[remarkGfm]}
         >
-          {`${props.children}`}
+          {`${
+            rowIntent.category == "text"
+              ? `${rowIntent.markdownSymbol} ${
+                  data.text && data.text.join(" ")
+                }`
+              : rowIntent.category == "table" &&
+                data.table &&
+                `${markdownTable(data.table)}`
+          }`}
         </ReactMarkdown>
       </div>
     </div>

@@ -25,9 +25,6 @@ interface RowProps {
 
 const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
   const [selectMode, setSelectMode] = useState<boolean>(true);
-  const currentRow: StackType = stack[rowIndex];
-  const rowIntent = rowIntentDict[currentRow.intentId];
-  const data = currentRow.data;
 
   return (
     <>
@@ -37,13 +34,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
           stack={stack}
           setStack={setStack}
           setSelectMode={setSelectMode}
-        >
-          {rowIntent.category == "text"
-            ? `${rowIntent.markdownSymbol} ${data.text && data.text.join(" ")}`
-            : rowIntent.category == "table" &&
-              data.table &&
-              `${markdownTable(data.table)}`}
-        </SelectMode>
+        ></SelectMode>
       ) : (
         <EditMode
           rowIndex={rowIndex}
