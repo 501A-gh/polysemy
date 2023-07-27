@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Block from "./Block";
-import Caret from "@/components/Caret";
+import Caret from "@/components/ui/Caret";
 import { StackType } from "@/app/(editor)/Editor";
-import FunctionBar from "@/components/FunctionBar";
-import { ClipboardIcon, Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+import {
+  ClipboardIcon,
+  CounterClockwiseClockIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
+import FunctionBar from "@/components/ui/FunctionBar";
+import nlp from "compromise/three";
 
 interface TextProps {
   rowIndex: number;
@@ -66,6 +72,27 @@ const Text: React.FC<TextProps> = ({
     exitSelect();
   };
 
+  const convertToPastTense = () => {
+    const doc = nlp(sentence());
+    doc.verbs().toPastTense();
+    const pastTenseSentence = doc.text().split(/\W+/);
+    pastTenseSentence.map((w: string, i: number) => {
+      setStack((prevItems: StackType[]) => {
+        const updatedItems = [...prevItems];
+        const updatedRow = [...prevItems[rowIndex].data.text];
+        updatedRow.splice(selectBlocks[i], 0, w);
+        updatedItems[rowIndex].data.text = updatedRow;
+        return updatedItems;
+      });
+    });
+
+    const updatedSelectBlocks = selectBlocks.map((blockIndex) => {
+      return blockIndex + pastTenseSentence.length;
+    });
+
+    backspaceMultiple(updatedSelectBlocks);
+  };
+
   const options = [
     {
       icon: <ClipboardIcon />,
@@ -84,6 +111,17 @@ const Text: React.FC<TextProps> = ({
       },
     },
   ];
+
+  if (nlp(sentence()).has("#Verb")) {
+    options.push({
+      icon: <CounterClockwiseClockIcon />,
+      name: "Past Tense",
+      action: () => {
+        convertToPastTense();
+        focusOnCaret();
+      },
+    });
+  }
 
   return (
     <>
@@ -112,7 +150,7 @@ const Text: React.FC<TextProps> = ({
       {data.length > 0 && (
         <span
           className={`
-            font-mono text-xs text-orange-600 ml-auto mr-3
+            font-mono text-xs text-orange-600 ml-auto p-0 mr-3
             whitespace-nowrap print:hidden
           `}
         >

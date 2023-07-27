@@ -1,9 +1,9 @@
 import React, { useRef, useState } from "react";
 import { setTimeout } from "timers";
-import Suggest, { SuggestProps } from "../../../Suggest";
-import Command from "@/components/Command";
 import words from "@/util/data/words";
 import { StackType } from "@/app/(editor)/Editor";
+import Command from "@/components/ui/Command";
+import Suggest, { SuggestProps } from "@/components/ui/Suggest";
 
 interface BlockTypes {
   blockIndex: number;
@@ -42,14 +42,14 @@ const Block: React.FC<BlockTypes> = ({
   let blockStyle:
     | "block-standard"
     | "block-edit"
-    | "block-insert"
+    // | "block-insert"
     | "block-command";
   switch (currentMode) {
     case "edit":
       blockStyle = "block-edit";
       break;
     case "insert":
-      blockStyle = "block-insert";
+      blockStyle = "block-standard";
       break;
     case "command":
       blockStyle = "block-command";

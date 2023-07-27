@@ -4,7 +4,8 @@ const Wallpaper = ({ src }: { src: string | false }) => {
   return (
     <>
       <div
-        className={`fixed w-full h-screen object-cover backdrop-blur  -z-10`}
+        className={`fixed w-full h-screen object-cover backdrop-blur -z-20 bg-gray-200/50
+        dark:bg-gray-950/80`}
       ></div>
       {src && (
         <Image
@@ -15,7 +16,7 @@ const Wallpaper = ({ src }: { src: string | false }) => {
           width="0"
           height="0"
           sizes="100vw"
-          className={`fixed w-full -z-20 h-screen object-cover`}
+          className={`fixed w-full -z-30 h-screen object-cover`}
         />
       )}
     </>

@@ -34,7 +34,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
           stack={stack}
           setStack={setStack}
           setSelectMode={setSelectMode}
-        ></SelectMode>
+        />
       ) : (
         <EditMode
           rowIndex={rowIndex}

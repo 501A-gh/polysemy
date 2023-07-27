@@ -16,12 +16,6 @@
   }
 }
 
-/* @layer components {
-  .input-primary {
-    @apply ;
-  }
-} */
-
 @layer base {
   h1 {
     @apply text-black dark:text-white text-2xl my-2;
@@ -67,6 +61,22 @@
 
   input {
     @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-auto border border-gray-200 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-100 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
+  }
+
+  label {
+    @apply text-black dark:text-white w-[90px] text-right text-xs;
+  }
+
+  fieldset {
+    @apply flex gap-3 items-center;
+  }
+
+  fieldset input {
+    @apply w-full inline-flex items-center justify-center;
+  }
+
+  textarea {
+    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-full resize-none border border-gray-200 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-100 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
   }
 }
 
@@ -132,6 +142,43 @@
     focus:bg-purple-500
     focus:border-purple-500
     dark:focus:border-purple-500;
+  }
+
+  .btn-close {
+    @apply rounded-full h-[20px] w-[20px] flex items-center justify-center absolute top-[5px] right-[5px] outline-none cursor-default 
+    text-gray-400 
+    focus:text-white 
+    focus:bg-orange-500
+    dark:text-gray-700 
+    dark:focus:text-black 
+    dark:focus:bg-orange-700;
+  }
+
+  .btn-tab {
+    @apply border-r
+    outline-none
+    cursor-pointer
+    select-none
+    font-mono
+    text-sm h-7
+    py-1
+    px-3
+    flex
+    items-center
+    gap-1.5
+    whitespace-nowrap
+    bg-gray-200
+    dark:bg-gray-900
+    text-gray-500
+    dark:text-gray-500
+    border-r-gray-300
+    dark:border-r-gray-800
+    focus:bg-gradient-to-r 
+    from-orange-500 dark:from-orange-500
+    to-red-400 dark:to-red-500
+    focus:border-r-orange-500
+    focus:text-white
+    focus:dark:text-black;
   }
 
   /* BLOCK */

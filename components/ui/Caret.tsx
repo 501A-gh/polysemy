@@ -63,7 +63,7 @@ const Caret: React.FC<CaretProps> = ({
             focus:outline-none
             rounded-sm
             w-20 h-fit
-            px-0 mr-0.5
+            px-0 py-0 my-0 mr-0.5
             font-mono text-sm
             border-none
             bg-transparent
