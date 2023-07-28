@@ -106,6 +106,8 @@ const SelectMode: React.FC<SelectModeProps> = ({
           to-red-400 dark:to-red-500
           focus:text-white
           dark:focus:text-black
+          hover:bg-gray-300/80
+          dark:hover:bg-gray-900
         `}
       >
         {rowIndex + 1}

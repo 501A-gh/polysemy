@@ -1,6 +1,7 @@
 import Header from "@/app/(editor)/Header";
 import Editor from "./(editor)/Editor";
 import Wallpaper from "./(editor)/Wallpaper";
+import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
       />
       <Header />
       <Editor />
+      <NoSpaceScroll />
     </>
   );
 }

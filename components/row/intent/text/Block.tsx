@@ -36,8 +36,8 @@ const Block: React.FC<BlockTypes> = ({
   };
 
   const [currentMode, setCurrentMode] = useState<
-    "standard" | "edit" | "insert" | "command"
-  >();
+    "standard" | "edit" | "insert" | "command" | ""
+  >("");
 
   let blockStyle:
     | "block-standard"
@@ -106,27 +106,59 @@ const Block: React.FC<BlockTypes> = ({
 
   return (
     <>
-      {currentMode === "insert" && (
-        <input
-          autoFocus
-          placeholder="Insert ..."
-          value={insertValue}
-          onChange={(e) => setInsertValue(e.target.value)}
-          onBlur={() => setCurrentMode("insert")}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              insertValue
-                .split(/\W+/)
-                .reverse()
-                .map((w: string) => insert(w));
+      {currentMode === "insert" ? (
+        <>
+          <input
+            autoFocus
+            placeholder="Insert ..."
+            value={insertValue}
+            onChange={(e) => setInsertValue(e.target.value)}
+            onBlur={() => setCurrentMode("insert")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                insertValue
+                  .split(/\W+/)
+                  .reverse()
+                  .map((w: string) => insert(w));
+                setInsertValue("");
+                setCurrentMode("standard");
+                focusOnBlock();
+              }
+            }}
+            className={`animate-show duration-700`}
+          />
+          <button
+            type="button"
+            className="btn btn-standard"
+            onClick={() => {
               setInsertValue("");
-              setCurrentMode("standard");
-              focusOnBlock();
-            }
-          }}
+              setCurrentMode("");
+            }}
+          >
+            Cancel
+          </button>
+        </>
+      ) : (
+        <div
+          title="Click To Insert"
+          className={`
+            w-2 h-6 -mx-1 duration-700
+            transition-all cursor-text
+            border
+            border-dashed
+            border-transparent
+            rounded
+            hover:w-20 
+            hover:border-gray-400
+            dark:hover:border-gray-700
+            hover:-mx-0.5
+            hover:animate-pulse
+            hover:scale-105
+            hover:shadow-lg
+          `}
+          onClick={() => setCurrentMode("insert")}
         />
       )}
-
       <button
         type="button"
         ref={buttonRef}
@@ -177,7 +209,6 @@ const Block: React.FC<BlockTypes> = ({
       >
         {word}
       </button>
-
       {currentMode === "edit" && (
         <Suggest
           input={editValue}
@@ -208,7 +239,18 @@ const Block: React.FC<BlockTypes> = ({
                 focusOnBlock();
               }
             }}
+            className={`animate-show duration-700`}
           />
+          <button
+            type="button"
+            className="btn btn-standard"
+            onClick={() => {
+              setEditValue("");
+              setCurrentMode("");
+            }}
+          >
+            Cancel
+          </button>
         </Suggest>
       )}
       {currentMode === "command" && (

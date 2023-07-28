@@ -73,7 +73,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
         <>
           <input
             autoFocus
-            placeholder={"Type MD symbol or name"}
+            placeholder={"Type MD intent"}
             value={inputValue}
             onChange={(e) => {
               setInputValue(e.target.value);

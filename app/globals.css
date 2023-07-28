@@ -60,7 +60,7 @@
   }
 
   input {
-    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-auto border border-gray-200 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-100 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
+    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-auto border border-gray-300/70 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-200/20 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
   }
 
   label {
@@ -76,7 +76,7 @@
   }
 
   textarea {
-    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-full resize-none border border-gray-200 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-100 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
+    @apply m-0.5 focus:outline-none font-mono text-xs h-fit w-full resize-none border border-gray-300/70 dark:border-gray-800 focus:border-orange-500/50  focus:dark:border-orange-600/50 py-1 px-2 rounded-sm bg-gray-200/20 dark:bg-gray-900 text-orange-500 focus:placeholder:text-orange-500;
   }
 }
 
@@ -91,7 +91,7 @@
     rounded-sm
     py-1
     px-2
-    mr-0.5
+    mx-[1px]
     my-0.5
     flex
     items-center
@@ -202,7 +202,12 @@
     focus:border-b-gray-300
     dark:focus:border-b-gray-700
     focus:text-black
-    focus:dark:text-white;
+    focus:dark:text-white
+    duration-200
+    hover:rounded-md
+    hover:bg-gray-200
+    dark:hover:bg-gray-800
+    hover:scale-105;
   }
   .block-command {
     @apply text-gray-400

@@ -62,11 +62,15 @@ const Caret: React.FC<CaretProps> = ({
             `
             focus:outline-none
             rounded-sm
-            w-20 h-fit
-            px-0 py-0 my-0 mr-0.5
+            w-24 h-fit
+            p-0.5 m-0 mr-0.5
             font-mono text-sm
-            border-none
-            bg-transparent
+            border
+            border-transparent
+            bg-transparent 
+            hover:bg-gray-900
+            hover:border-gray-800
+            focus:border-transparent
             text-orange-500
             placeholder:text-orange-500 ` + (insert && "w-0")
           }

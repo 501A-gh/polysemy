@@ -40,8 +40,8 @@ const EditMode: React.FC<EditModeProps> = ({
   useEffect(() => {
     const down = (e: any) => {
       if (e.key === "Enter" && e.metaKey) setSelectMode(true);
-      if (e.metaKey) focusOnCaret();
-      if (e.metaKey && e.shiftKey) focusOnIntent();
+      if (e.ctrlKey) focusOnCaret();
+      if (e.ctrlKey && e.shiftKey) focusOnIntent();
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -50,6 +50,7 @@ const EditMode: React.FC<EditModeProps> = ({
   return (
     <div
       className={`
+        top-7 sticky backdrop-blur
         flex flex-wrap items-center
         py-1
         px-2
