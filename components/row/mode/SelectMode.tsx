@@ -1,4 +1,4 @@
-import { StackType } from "@/app/(editor)/Editor";
+import { StackType } from "@/components/ui/Editor";
 import { rowIntentDict } from "@/util/data/rowIntentDict";
 import { markdownTable } from "markdown-table";
 import React from "react";
@@ -72,46 +72,48 @@ const SelectMode: React.FC<SelectModeProps> = ({
   };
 
   return (
-    <div className={`flex items-center select-none py-1 print:p-0`}>
-      <button
-        autoFocus={false}
-        onClick={() => setSelectMode(false)}
-        onKeyDown={(e) => {
-          switch (e.key) {
-            case "m":
-              addStackAbove();
-              break;
-            case "n":
-              addStackBelow();
-              break;
-            case "c":
-              break;
-            case "Backspace" || "Delete":
-              confirmDelete();
-              break;
-          }
-        }}
+    <button
+      className={`
+        flex items-center text-left
+        select-none py-1 print:p-0 group
+        focus:outline-none border border-dashed border-transparent 
+        focus:border-gray-300 
+        dark:focus:border-gray-800
+        focus:animate-pulse
+        `}
+      autoFocus={false}
+      onClick={() => setSelectMode(false)}
+      onKeyDown={(e) => {
+        switch (e.key) {
+          case "m":
+            addStackAbove();
+            break;
+          case "n":
+            addStackBelow();
+            break;
+          case "c":
+            break;
+          case "Backspace" || "Delete":
+            confirmDelete();
+            break;
+        }
+      }}
+    >
+      <div
         className={`
-          ml-1
-          mr-2
-          py-0.5
-          px-2
-          focus:outline-none
+          ml-1 mr-2 py-0.5 px-1 w-10 text-right
           font-mono max-h-full min-h-20 rounded-sm
           print:hidden text-sm
           text-gray-400
           dark:text-gray-600
-          focus:bg-gradient-to-b 
-          from-orange-500 dark:from-orange-500
-          to-red-400 dark:to-red-500
-          focus:text-white
-          dark:focus:text-black
-          hover:bg-gray-300/80
-          dark:hover:bg-gray-900
+          group-focus:text-orange-600
+          dark:group-focus:text-orange-500
+          group-hover:bg-gray-300/80
+          dark:group-hover:bg-gray-900
         `}
       >
         {rowIndex + 1}
-      </button>
+      </div>
       <div
         className={`
           flex items-center
@@ -140,7 +142,7 @@ const SelectMode: React.FC<SelectModeProps> = ({
           }`}
         </ReactMarkdown>
       </div>
-    </div>
+    </button>
   );
 };
 

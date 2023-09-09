@@ -9,9 +9,10 @@ function Page() {
     <div
       className={` h-screen flex items-center justify-center flex-col text-center`}
     >
-      <h1 className={`font-serif`}>Polysemy.</h1>
+      {/* <h1 className={`font-serif`}>Polysemy.</h1> */}
       <h4 className={`font-serif`}>A different kind of text editor.</h4>
-      <p className={`my-5 max-w-md`}>
+
+      <p className={`my-5 max-w-md text-xs`}>
         The text editing experience for programmers is great. But the input
         experience when doing anything else like taking notes or creating a
         document is just fine but not great. Polysemy is a different kind of

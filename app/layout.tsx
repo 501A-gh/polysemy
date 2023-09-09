@@ -1,3 +1,4 @@
+import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 import "./globals.css";
 import {
   Inter,
@@ -6,6 +7,7 @@ import {
   Inter_Tight,
   Space_Grotesk,
 } from "next/font/google";
+import Header from "@/components/ui/Header";
 
 const inter = Space_Grotesk({
   subsets: ["latin"],
@@ -53,6 +55,7 @@ export default function RootLayout({
       >
         {children}
       </body>
+      <NoSpaceScroll />
     </html>
   );
 }

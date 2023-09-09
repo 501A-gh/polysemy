@@ -4,14 +4,13 @@ import {
   RowIntentDictType,
   rowIntentDict,
 } from "@/util/data/rowIntentDict";
-import { StackType } from "@/app/(editor)/Editor";
+import { StackType } from "@/components/ui/Editor";
 
 export type IntentCategory = "text" | "table" | "list";
 
 interface IntentSelectProps
   extends React.HTMLAttributes<typeof HTMLDivElement> {
   intentRef: React.Ref<HTMLButtonElement>;
-  focusOnCaret: any;
   rowIndex: number;
   stack: StackType[];
   setStack: any;
@@ -35,7 +34,6 @@ const options: IntentIdType[] = [
 
 const IntentSelect: React.FC<IntentSelectProps> = ({
   intentRef,
-  focusOnCaret,
   rowIndex,
   stack,
   setStack,
@@ -65,7 +63,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const rowIntentDictArray: RowIntentDictType[] = Object.values(
     rowIntentDict
   ) as RowIntentDictType[];
-  console.log(rowIntentDictArray);
 
   return (
     <>
@@ -89,7 +86,6 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
                   );
                 }
               );
-
               setSuggestedOptions(results);
             }}
           />
@@ -98,10 +94,7 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
             <button
               key={i}
               className={`capitalize btn btn-standard`}
-              onClick={() => {
-                updateIntentId(obj.intentId);
-                focusOnCaret();
-              }}
+              onClick={() => updateIntentId(obj.intentId)}
             >
               {obj.name}
             </button>

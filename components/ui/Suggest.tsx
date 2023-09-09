@@ -4,6 +4,7 @@ export interface SuggestProps
   setInput: any;
   suggestion: string[];
   focusOnClick: any;
+  className: string;
 }
 
 const Suggest: React.FC<SuggestProps> = ({
@@ -11,28 +12,25 @@ const Suggest: React.FC<SuggestProps> = ({
   setInput,
   suggestion,
   focusOnClick,
+  className,
   ...props
 }) => {
   return (
     <>
-      {props.children}
-      {input?.length > 2 && (
-        <>
-          {suggestion.map((s: string) => (
-            <button
-              className={`btn btn-word`}
-              key={s}
-              onClick={() => {
-                setInput(s);
-                focusOnClick();
-              }}
-              {...props}
-            >
-              {s}
-            </button>
-          ))}
-        </>
-      )}
+      {input?.length > 2 &&
+        suggestion.map((s: string) => (
+          <button
+            className={`btn ${className}`}
+            key={s}
+            onClick={() => {
+              setInput(s);
+              focusOnClick();
+            }}
+            {...props}
+          >
+            {s}
+          </button>
+        ))}
     </>
   );
 };

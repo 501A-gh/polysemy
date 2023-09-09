@@ -1,12 +1,25 @@
 import Image from "next/image";
+import React from "react";
 
-const Wallpaper = ({ src }: { src: string | false }) => {
+interface WallpaperProps {
+  src: string | false;
+}
+
+const Wallpaper: React.FC<WallpaperProps> = ({ src }) => {
   return (
     <>
       <div
-        className={`fixed w-full h-screen object-cover backdrop-blur -z-20 bg-gray-200/50
-        dark:bg-gray-950/80`}
-      ></div>
+        className={`
+          transition-all
+          fixed
+          w-full
+          h-screen
+          object-cover
+          -z-20
+          bg-gray-200/50
+          dark:bg-gray-950/80
+        `}
+      />
       {src && (
         <Image
           alt={"Wallpaper"}

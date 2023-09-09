@@ -1,49 +1,52 @@
-import React, { useEffect, useState } from "react";
-import Block from "./Block";
-import Caret from "@/components/ui/Caret";
-import { StackType } from "@/app/(editor)/Editor";
+import React, { useRef, useState } from "react";
+import Caret from "@/components/ui/caret/Caret";
+import { StackType } from "@/components/ui/Editor";
+import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons";
+import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import {
-  ClipboardIcon,
-  CounterClockwiseClockIcon,
-  Pencil1Icon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
-import FunctionBar from "@/components/ui/FunctionBar";
-import nlp from "compromise/three";
-import RadixDialog from "@/components/ui/RadixDialog";
+  checkBlockIntent,
+  selectBlockIndex,
+} from "@/util/helper/blockUtilities";
+import LinkInsert from "@/components/ui/function-bar/LinkInsert";
+import Block from "./block/Block";
+import { BlockModeTypes } from "./primitive-block/PrimitiveBlock";
+import GroupBlock from "./group-block/GroupBlock";
 
 interface TextProps {
   rowIndex: number;
   stack: StackType[];
-  setStack: any;
-  caretRef: React.Ref<HTMLInputElement>;
-  focusOnCaret: any;
+  setStack: (stack: any) => void;
 }
 
-const Text: React.FC<TextProps> = ({
-  rowIndex,
-  stack,
-  setStack,
-  caretRef,
-  focusOnCaret,
-}) => {
+const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
   const currentRow: StackType = stack[rowIndex];
   const data = currentRow.data.text;
 
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
-  const selectBlockIndex = (index: number) => {
-    if (selectBlocks.length === 1 && index !== selectBlocks[0]) {
-      const start = Math.min(index, selectBlocks[0]);
-      const end = Math.max(index, selectBlocks[0]);
-      const indexesInBetween = Array.from(
-        { length: end - start + 1 },
-        (_, i) => start + i
-      );
-      setSelectBlocks(indexesInBetween);
-    } else {
-      setSelectBlocks([index]);
+
+  // const selectGroupBlockIndex = (index: number) => {
+  //   const getGroupIndex = (blockLocation: number) =>
+  //     parseInt(blockLocation.toString().split(".")[1]);
+  //   if (selectGroupBlocks.length === 1 && index !== selectGroupBlocks[0]) {
+  //     const start = Math.min(index, getGroupIndex(selectBlocks[0]));
+  //     const end = Math.max(index, getGroupIndex(selectBlocks[0]));
+  //     const indexesInBetween = Array.from(
+  //       { length: end - start + 1 },
+  //       (_, i) => start + i
+  //     );
+  //     setSelectGroupBlocks(indexesInBetween);
+  //   } else {
+  //     setSelectGroupBlocks([index]);
+  //   }
+  // };
+
+  const caretRef = useRef<HTMLInputElement>(null);
+  const focusOnCaret = () => {
+    if (caretRef.current != null) {
+      caretRef.current.focus();
     }
   };
+
   const exitSelect = () => {
     setSelectBlocks([]);
   };
@@ -53,6 +56,25 @@ const Text: React.FC<TextProps> = ({
       const updatedItems = [...prevItems];
       updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
       updatedItems[rowIndex].data.text.splice(deletingIndex, 1);
+      return updatedItems;
+    });
+  };
+
+  const edit = (newValue: string, blockIndex: number) => {
+    setStack((prevItems: StackType[]) => {
+      const updatedItems = [...prevItems];
+      updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
+      updatedItems[rowIndex].data.text[blockIndex] = newValue;
+      return updatedItems;
+    });
+  };
+
+  const insert = (newValue: string, blockIndex: number) => {
+    setStack((prevItems: StackType[]) => {
+      const updatedItems = [...prevItems];
+      const updatedRow = [...prevItems[rowIndex].data.text];
+      updatedRow.splice(blockIndex, 0, newValue);
+      updatedItems[rowIndex].data.text = updatedRow;
       return updatedItems;
     });
   };
@@ -92,6 +114,35 @@ const Text: React.FC<TextProps> = ({
     focusOnCaret();
   };
 
+  const applyLink = (link: string) => {
+    const startIndex = selectBlocks[0];
+    backspaceMultiple(selectBlocks);
+    setStack((prevItems: StackType[]) => {
+      const updatedItems = [...prevItems];
+      const updatedRow = [...prevItems[rowIndex].data.text];
+      updatedRow.splice(startIndex, 0, `[${sentence()}](${link})`);
+      updatedItems[rowIndex].data.text = updatedRow;
+      return updatedItems;
+    });
+  };
+
+  const blockModeOriginal = new Array(data.length + 1).fill("standard");
+  const [blockMode, setBlockMode] =
+    useState<BlockModeTypes[]>(blockModeOriginal);
+  console.log(blockMode, data.length);
+
+  const createBlockModeAtIndex = (index: number) => {
+    const updatedArray = [...blockMode];
+    updatedArray.splice(index, 0, "standard");
+    setBlockMode(updatedArray);
+  };
+
+  const updateBlockModeAtIndex = (index: number, newValue: BlockModeTypes) => {
+    const updatedArray = [...blockMode];
+    updatedArray[index] = newValue;
+    setBlockMode(updatedArray);
+  };
+
   const options = [
     {
       icon: <ClipboardIcon />,
@@ -111,36 +162,66 @@ const Text: React.FC<TextProps> = ({
     },
   ];
 
-  const [convertedText, setConvertedText] = useState<string>("");
-
   return (
     <>
       {data &&
         data.length > 0 &&
         data.map((word: string, i: number) => (
-          <Block
-            key={i}
-            blockIndex={i}
-            rowIndex={rowIndex}
-            selected={selectBlocks}
-            selectBlock={() => selectBlockIndex(i)}
-            stack={stack}
-            setStack={setStack}
-            word={word}
-            focusOnCaret={focusOnCaret}
-          />
+          <>
+            {checkBlockIntent(word) === "standard" && (
+              <Block
+                key={i}
+                blockIndex={i}
+                selected={selectBlocks}
+                selectBlock={() =>
+                  selectBlockIndex(i, selectBlocks, setSelectBlocks)
+                }
+                word={word}
+                focusOnCaret={() => focusOnCaret()}
+                backspace={() => backspace(i)}
+                insert={(input: string) => insert(input, i)}
+                edit={(input: string) => edit(input, i)}
+                blockMode={blockMode[i]}
+                createBlockMode={() => createBlockModeAtIndex(i)}
+                updateBlockMode={(mode: BlockModeTypes) =>
+                  updateBlockModeAtIndex(i, mode)
+                }
+              />
+            )}
+            {checkBlockIntent(word) === "group" && (
+              <GroupBlock
+                key={i}
+                blockIndex={i}
+                selected={selectBlocks}
+                selectBlock={() =>
+                  selectBlockIndex(i, selectBlocks, setSelectBlocks)
+                }
+                word={word}
+                focusOnCaret={() => focusOnCaret()}
+                backspace={() => backspace(i)}
+                insert={(input: string) => insert(input, i)}
+                edit={(input: string) => edit(input, i)}
+                blockMode={blockMode[i]}
+                createBlockMode={() => createBlockModeAtIndex(i)}
+                updateBlockMode={(mode: BlockModeTypes) =>
+                  updateBlockModeAtIndex(i, mode)
+                }
+              />
+            )}
+            {/* {checkBlockIntent(word) === "link" && } */}
+          </>
         ))}
       <Caret
-        focusOnCaret={focusOnCaret}
         inputRef={caretRef}
-        rowIndex={rowIndex}
-        stack={stack}
-        setStack={setStack}
+        focusOnCaret={() => focusOnCaret()}
+        insert={(input: string) => insert(input, data.length)}
+        createBlockMode={() => createBlockModeAtIndex(blockMode.length)}
       />
       {data.length > 0 && (
         <span
           className={`
-            font-mono text-xs text-orange-600 ml-auto p-0 mr-3
+            font-mono text-xs text-orange-600 
+            ml-auto p-0 mr-3
             whitespace-nowrap print:hidden
           `}
         >
@@ -150,68 +231,20 @@ const Text: React.FC<TextProps> = ({
 
       {selectBlocks.length > 1 && (
         <FunctionBar>
-          {options.map((obj, i: number) => (
-            <button
-              autoFocus={i == 0}
-              key={i}
-              className={`btn btn-selectop`}
-              onClick={obj.action}
-            >
-              {obj.icon}
-              {obj.name}
-            </button>
-          ))}
-          {nlp(sentence()).has("#Verb") && (
-            <RadixDialog
-              title={"Past Tense"}
-              trigger={
-                <button
-                  className={`btn btn-selectop`}
-                  onClick={() => {
-                    const doc = nlp(sentence());
-                    doc.verbs().toPastTense();
-                    setConvertedText(doc.text());
-                  }}
-                >
-                  <CounterClockwiseClockIcon />
-                  Past Tense
-                </button>
-              }
-              description={`convert the following text to past tense.`}
-              save={
-                <button
-                  className={`btn btn-standard`}
-                  onClick={() => convertToPastTense(convertedText)}
-                >
-                  Establish Changes
-                </button>
-              }
-            >
-              <section className={`grid grid-cols-2 gap-1`}>
-                <h6 className={`mb-0 ml-1 font-serif italic`}>Original</h6>
-                <h6 className={`mb-0 ml-1 font-serif italic`}>Modified</h6>
-                <div
-                  className={`
-                    text-gray-400
-                    dark:text-gray-500
-                    border border-dashed 
-                    border-gray-300 
-                    dark:border-gray-700 
-                    text-xs p-1 rounded-sm 
-                    m-0.5 py-1 px-2 font-mono
-                  `}
-                >
-                  {sentence()}
-                </div>
-                <textarea
-                  placeholder="Converted text"
-                  value={convertedText}
-                  onChange={(e) => setConvertedText(e.target.value)}
-                  rows={5}
-                />
-              </section>
-            </RadixDialog>
-          )}
+          <LinkInsert applyLink={applyLink} />
+          <>
+            {options.map((obj, i: number) => (
+              <button
+                autoFocus={i == 0}
+                key={i}
+                className={`btn btn-selectop`}
+                onClick={obj.action}
+              >
+                {obj.icon}
+                {obj.name}
+              </button>
+            ))}
+          </>
         </FunctionBar>
       )}
     </>

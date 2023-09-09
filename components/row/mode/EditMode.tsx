@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import IntentSelect from "../intent/IntentSelect";
-import { StackType } from "@/app/(editor)/Editor";
+import { StackType } from "@/components/ui/Editor";
 import Text from "../intent/text/Text";
 import Table from "../intent/table/Table";
 import { rowIntentDict } from "@/util/data/rowIntentDict";
@@ -8,7 +8,7 @@ import { rowIntentDict } from "@/util/data/rowIntentDict";
 interface EditModeProps extends React.HTMLAttributes<HTMLDivElement> {
   rowIndex: number;
   stack: StackType[];
-  setStack: any;
+  setStack: (stack: any) => void;
   setSelectMode: any;
 }
 
@@ -19,18 +19,10 @@ const EditMode: React.FC<EditModeProps> = ({
   setSelectMode,
   ...props
 }) => {
-  const [highlightPoint, setHighlightPoint] = useState([]);
-
   const currentRow: StackType = stack[rowIndex];
   const rowIntent = rowIntentDict[currentRow.intentId];
 
-  const caretRef = useRef<HTMLInputElement>(null);
   const intentRef = useRef<HTMLButtonElement>(null);
-  const focusOnCaret = () => {
-    if (caretRef.current != null) {
-      caretRef.current.focus();
-    }
-  };
   const focusOnIntent = () => {
     if (intentRef.current != null) {
       intentRef.current.focus();
@@ -40,8 +32,7 @@ const EditMode: React.FC<EditModeProps> = ({
   useEffect(() => {
     const down = (e: any) => {
       if (e.key === "Enter" && e.metaKey) setSelectMode(true);
-      if (e.ctrlKey) focusOnCaret();
-      if (e.ctrlKey && e.shiftKey) focusOnIntent();
+      if (e.altKey && e.shiftKey) focusOnIntent();
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
@@ -50,14 +41,11 @@ const EditMode: React.FC<EditModeProps> = ({
   return (
     <div
       className={`
-        top-7 sticky backdrop-blur
+        backdrop-blur
         flex flex-wrap items-center
-        py-1
-        px-2
+        py-1 px-2
         print:hidden
-        border
-        border-x-2
-        
+        border border-x-2        
         bg-white/80
         border-y-gray-200
         
@@ -71,20 +59,13 @@ const EditMode: React.FC<EditModeProps> = ({
     >
       <IntentSelect
         intentRef={intentRef}
-        focusOnCaret={focusOnCaret}
         rowIndex={rowIndex}
         stack={stack}
         setStack={setStack}
         setSelectMode={setSelectMode}
       />
       {rowIntent.category == "text" && (
-        <Text
-          rowIndex={rowIndex}
-          stack={stack}
-          setStack={setStack}
-          caretRef={caretRef}
-          focusOnCaret={focusOnCaret}
-        />
+        <Text rowIndex={rowIndex} stack={stack} setStack={setStack} />
       )}
       {rowIntent.category == "table" && (
         <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />

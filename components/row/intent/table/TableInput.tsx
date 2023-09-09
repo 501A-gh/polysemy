@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { TableType } from "./Table";
-import { StackType } from "@/app/(editor)/Editor";
+import { StackType } from "@/components/ui/Editor";
 
 interface TableInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   tableRowIndex: number;

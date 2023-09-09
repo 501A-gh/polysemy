@@ -80,7 +80,7 @@ const Command: React.FC<CommandProps> = ({
                   .split(/\W+/)
                   .reverse()
                   .map((w: string) => {
-                    insert(w);
+                    insert(w, blockIndex);
                   });
                 closeCommandMode();
                 focusOnClick();

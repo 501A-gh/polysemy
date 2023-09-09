@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+const { default: plugin } = require("tailwindcss");
+
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -17,17 +19,27 @@ module.exports = {
         showAni: {
           "0%": {
             opacity: "0",
-            borderRadiux: "300px",
-            transform: " scale(0.5)",
+            transform: "scale(0.5)",
           },
           "40%": {
             filter: "blur(2px)",
             transform: " scale(1.01)",
           },
         },
+        slideFromAbove: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(-50%)",
+          },
+          "40%": {
+            filter: "blur(2px)",
+            transform: "translateY(10%)",
+          },
+        },
       },
       animation: {
         show: "showAni 0.5s ease",
+        "slide-from-above": "slideFromAbove 0.8s ease",
       },
       fontFamily: {
         sans: ["var(--font-inter)"],
@@ -45,5 +57,9 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant("hocus", ["&:hover", "&:focus"]);
+    },
+  ],
 };

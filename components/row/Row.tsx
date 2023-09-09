@@ -7,7 +7,7 @@ import EditMode from "./mode/EditMode";
 
 // Intent Types
 import { markdownTable } from "markdown-table";
-import { StackType } from "@/app/(editor)/Editor";
+import { StackType } from "@/components/ui/Editor";
 import Text from "./intent/text/Text";
 import Table from "./intent/table/Table";
 
