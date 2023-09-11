@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { selectBlockIndex } from "@/util/helper/blockUtilities";
+import { BlockModeTypes, selectBlockIndex } from "@/util/helper/blockUtilities";
 import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import Block from "../block/Block";
-import { BlockModeTypes } from "../primitive-block/PrimitiveBlock";
 import GroupBlockWrapper from "./GroupBlockWrapper";
 import {
   createGroupBlockModeAtIndex,
@@ -13,17 +12,17 @@ import {
   updateGroupBlockModeAtIndex,
 } from "@/util/helper/groupBlockUtilities";
 
-interface GroupBlockInsertProps {
+export interface GroupBlockInsertProps {
   updateBlockMode: (mode: BlockModeTypes) => void;
-  insertGroupBlock: (text: string) => void;
-  groupBlockText: string;
+  insert: (text: string) => void;
+  groupBlockText?: string | "";
   groupBlockIntent: GroupBlockDictType | undefined;
   createCaretBlockMode?: () => void;
 }
 
 const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
   updateBlockMode,
-  insertGroupBlock,
+  insert,
   groupBlockText,
   groupBlockIntent,
   createCaretBlockMode,
@@ -43,7 +42,7 @@ const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
   const insertAndSave = () => {
-    insertGroupBlock(
+    insert(
       `${groupBlockIntent?.start}${groupBlock.join(" ")}${
         groupBlockIntent?.end
       }`

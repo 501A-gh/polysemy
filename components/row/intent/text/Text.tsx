@@ -4,13 +4,14 @@ import { StackType } from "@/components/ui/Editor";
 import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons";
 import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import {
+  BlockModeTypes,
   checkBlockIntent,
   selectBlockIndex,
 } from "@/util/helper/blockUtilities";
 import LinkInsert from "@/components/ui/function-bar/LinkInsert";
 import Block from "./block/Block";
-import { BlockModeTypes } from "./primitive-block/PrimitiveBlock";
 import GroupBlock from "./group-block/GroupBlock";
+import LinkBlock from "./link-block/LinkBlock";
 
 interface TextProps {
   rowIndex: number;
@@ -208,7 +209,7 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
                 }
               />
             )}
-            {/* {checkBlockIntent(word) === "link" && } */}
+            {checkBlockIntent(word) === "link" && <LinkBlock key={i} />}
           </>
         ))}
       <Caret

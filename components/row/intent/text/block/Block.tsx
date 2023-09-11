@@ -2,15 +2,16 @@ import React, { useRef, useState } from "react";
 import GroupBlockEdit from "../group-block/GroupBlockEdit";
 import { GroupBlockDictType, groupBlockDict } from "@/util/data/groupBlockDict";
 import InputSpace from "../primitive-block/insert/InsertInputSpace";
-import { copy, getGroupBlockIntentData } from "@/util/helper/blockUtilities";
+import {
+  BlockModeTypes,
+  copy,
+  getGroupBlockIntentData,
+} from "@/util/helper/blockUtilities";
 import InsertInput from "../primitive-block/insert/InsertInput";
 import Command from "@/components/ui/Command";
-import PrimitiveBlock, {
-  BlockModeTypes,
-} from "../primitive-block/PrimitiveBlock";
 import BlockEdit from "./BlockEdit";
-import GroupBlockInsert from "../group-block/GroupBlockInsert";
-import GroupBlockWrapper from "../group-block/GroupBlockWrapper";
+import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
+import PrimitiveBlock from "../primitive-block/PrimitiveBlock";
 
 interface BlockProps {
   blockIndex: number;
@@ -53,33 +54,18 @@ const Block: React.FC<BlockProps> = ({
 
   return (
     <>
-      {blockMode === "groupInsert" ? (
-        <GroupBlockInsert
-          groupBlockIntent={groupBlockIntent}
-          updateBlockMode={updateBlockMode}
-          insertGroupBlock={insert}
-          groupBlockText={""}
-        />
-      ) : (
-        <>
-          {blockMode === "insert" ? (
-            <InsertInput
-              insert={insert}
-              createBlockMode={createBlockMode}
-              updateBlockMode={updateBlockMode}
-              symbolToGroupBlockIntent={(symbol: string) =>
-                setGroupBlockIntent(getGroupBlockIntentData(symbol))
-              }
-            />
-          ) : (
-            <InputSpace
-              selected={selected}
-              blockIndex={blockIndex}
-              onClick={() => updateBlockMode("insert")}
-            />
-          )}
-        </>
-      )}
+      <PrimitiveBlockInsert
+        blockMode={blockMode}
+        blockIndex={blockIndex}
+        selected={selected}
+        insert={insert}
+        createBlockMode={createBlockMode}
+        updateBlockMode={updateBlockMode}
+        groupBlockIntent={groupBlockIntent}
+        symbolToGroupBlockIntent={(symbol: string) =>
+          setGroupBlockIntent(getGroupBlockIntentData(symbol))
+        }
+      />
 
       <PrimitiveBlock
         ref={buttonRef}

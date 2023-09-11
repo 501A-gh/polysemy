@@ -77,10 +77,9 @@ const SelectMode: React.FC<SelectModeProps> = ({
         flex items-center text-left
         select-none py-1 print:p-0 group
         focus:outline-none border border-dashed border-transparent 
-        focus:border-gray-300 
-        dark:focus:border-gray-800
-        focus:animate-pulse
-        `}
+        focus:border-gray-400/50
+        focus:dark:border-gray-800 animate-slide-from-above
+      `}
       autoFocus={false}
       onClick={() => setSelectMode(false)}
       onKeyDown={(e) => {
@@ -101,15 +100,19 @@ const SelectMode: React.FC<SelectModeProps> = ({
     >
       <div
         className={`
+          border
+          border-transparent
+          group-focus:border-gray-300
+          dark:group-focus:border-gray-800
           ml-1 mr-2 py-0.5 px-1 w-10 text-right
           font-mono max-h-full min-h-20 rounded-sm
           print:hidden text-sm
           text-gray-400
           dark:text-gray-600
-          group-focus:text-orange-600
+          group-focus:text-orange-500
           dark:group-focus:text-orange-500
-          group-hover:bg-gray-300/80
-          dark:group-hover:bg-gray-900
+          group-focus:bg-gray-100
+          dark:group-focus:bg-gray-900
         `}
       >
         {rowIndex + 1}

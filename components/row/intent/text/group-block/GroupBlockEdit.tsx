@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { selectBlockIndex } from "@/util/helper/blockUtilities";
+import { BlockModeTypes, selectBlockIndex } from "@/util/helper/blockUtilities";
 import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import Block from "../block/Block";
-import { BlockModeTypes } from "../primitive-block/PrimitiveBlock";
 import GroupBlockWrapper from "./GroupBlockWrapper";
 
 interface GroupBlockEditProps {
@@ -98,21 +97,6 @@ const GroupBlockEdit: React.FC<GroupBlockEditProps> = ({
         {groupBlock.length > 0 &&
           groupBlock.map((word: string, i: number) => (
             <Block
-              // key={i}
-              // blockIndex={i}
-              // selected={selectBlocks}
-              // selectBlock={() =>
-              //   selectBlockIndex(i, selectBlocks, setSelectBlocks)
-              // }
-              // word={word}
-              // focusOnCaret={() => focusOnCaret()}
-              // backspaceFx={backspace}
-              // insertFx={insert}
-              // editFx={edit}
-              // blockIntent="standard"
-              // blockMode={groupBlockMode[i]}
-              // updateBlockModeAtIndex={updateGroupBlockModeAtIndex}
-              // createBlockModeAtIndex={createGroupBlockModeAtIndex}
               key={i}
               blockIndex={i}
               selected={selectBlocks}

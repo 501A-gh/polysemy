@@ -249,23 +249,7 @@
     px-0.5
     my-0.5;
   }
-  .block-standard {
-    @apply border
-    rounded-sm
-    text-gray-600
-    dark:text-gray-400
-    focus:bg-gray-200
-    dark:focus:bg-gray-800 
-    focus:border-b-gray-300
-    dark:focus:border-b-gray-700
-    focus:text-black
-    focus:dark:text-white
-    duration-200
-    hover:rounded-md
-    hover:bg-gray-200
-    dark:hover:bg-gray-800
-    hover:scale-105;
-  }
+
   .block-command {
     @apply text-gray-400
     dark:text-gray-700
@@ -274,19 +258,6 @@
 
   .block-edit {
     @apply text-gray-400 dark:text-gray-700 animate-bounce;
-  }
-
-  .block-highlight {
-    @apply rounded-none
-    text-gray-900
-    focus:text-black
-    focus:shadow-green-400/40
-    bg-green-300
-    focus:bg-green-400
-    border-green-300
-    dark:bg-green-500
-    dark:focus:bg-green-200
-    dark:border-green-500;
   }
 
   .block-insert {
@@ -300,23 +271,6 @@
     dark:border-b-orange-500;
   }
 
-  /* INPUT */
-  .input-caret {
-    @apply focus:outline-none h-fit
-    transition-all delay-100
-    font-mono
-    border
-    border-transparent
-    bg-transparent 
-    text-orange-500
-    placeholder:text-orange-500 
-    w-24 text-sm my-0.5 py-0.5 px-1 
-    hover:scale-105 hover:rounded-md 
-    focus:border-transparent hover:bg-gray-200/80
-    hover:border-gray-200
-    hover:dark:bg-gray-900
-    hover:dark:border-gray-800;
-  }
   /* .insert-border {
     @apply rounded-t-full rounded-br-full;
   } */

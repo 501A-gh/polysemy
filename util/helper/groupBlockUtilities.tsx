@@ -1,4 +1,4 @@
-import { BlockModeTypes } from "@/components/row/intent/text/primitive-block/PrimitiveBlock";
+import { BlockModeTypes } from "./blockUtilities";
 
 export const groupBackspace = (
   index: number,

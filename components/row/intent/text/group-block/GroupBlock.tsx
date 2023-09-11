@@ -1,13 +1,13 @@
 import React, { useRef, useState } from "react";
 import GroupBlockEdit from "../group-block/GroupBlockEdit";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { copy, getGroupBlockIntentData } from "@/util/helper/blockUtilities";
-import PrimitiveBlock, {
+import {
   BlockModeTypes,
-} from "../primitive-block/PrimitiveBlock";
-import GroupBlockInsert from "./GroupBlockInsert";
-import GroupBlockWrapper from "./GroupBlockWrapper";
-import InsertBlock from "../primitive-block/insert/InsertBlock";
+  copy,
+  getGroupBlockIntentData,
+} from "@/util/helper/blockUtilities";
+import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
+import GroupPrimitiveBlock from "../primitive-block/GroupPrimitiveBlock";
 
 interface GroupBlockProps {
   blockIndex: number;
@@ -18,7 +18,7 @@ interface GroupBlockProps {
   insert: (input: string) => void;
   edit: (input: string) => void;
   backspace: () => void;
-  blockMode: any;
+  blockMode: BlockModeTypes;
   createBlockMode: () => void;
   updateBlockMode: (mode: BlockModeTypes) => void;
 }
@@ -50,26 +50,18 @@ const GroupBlock: React.FC<GroupBlockProps> = ({
 
   return (
     <>
-      {blockMode === "groupInsert" ? (
-        <GroupBlockInsert
-          groupBlockIntent={groupBlockIntent}
-          updateBlockMode={updateBlockMode}
-          insertGroupBlock={insert}
-          groupBlockText={""}
-        />
-      ) : (
-        <InsertBlock
-          blockMode={blockMode}
-          blockIndex={blockIndex}
-          selected={selected}
-          insert={insert}
-          createBlockMode={createBlockMode}
-          updateBlockMode={updateBlockMode}
-          symbolToGroupBlockIntent={(symbol: string) =>
-            setGroupBlockIntent(getGroupBlockIntentData(symbol))
-          }
-        />
-      )}
+      <PrimitiveBlockInsert
+        blockMode={blockMode}
+        blockIndex={blockIndex}
+        selected={selected}
+        insert={insert}
+        createBlockMode={createBlockMode}
+        updateBlockMode={updateBlockMode}
+        groupBlockIntent={groupBlockIntent}
+        symbolToGroupBlockIntent={(symbol: string) =>
+          setGroupBlockIntent(getGroupBlockIntentData(symbol))
+        }
+      />
 
       {blockMode === "groupEdit" ? (
         <GroupBlockEdit
@@ -79,43 +71,80 @@ const GroupBlock: React.FC<GroupBlockProps> = ({
           groupBlockText={word}
         />
       ) : (
-        <PrimitiveBlock
-          ref={buttonRef}
-          blockIndex={blockIndex}
-          selected={selected}
-          text={word}
-          blockMode={blockMode}
-          onClick={() => {
-            console.log(word);
-            setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-            updateBlockMode("groupEdit");
-          }}
-          onKeyDown={(e) => {
-            if (e.metaKey) focusOnCaret();
-            switch (e.key) {
-              case "c":
-                copy(word);
-                break;
-              case "Backspace" || "Delete":
-                backspace();
-                break;
-              case "/":
-                updateBlockMode("insert");
-                break;
-              case "h":
-                selectBlock();
-                break;
-              case "x":
-                copy(word);
-                backspace();
-                focusOnCaret();
-                break;
-              case "k":
-                focusOnCaret();
-                break;
-            }
-          }}
-        />
+        <>
+          <GroupPrimitiveBlock
+            ref={buttonRef}
+            blockIndex={blockIndex}
+            selected={selected}
+            text={word}
+            blockMode={blockMode}
+            onClick={() => {
+              setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
+              updateBlockMode("groupEdit");
+            }}
+            onKeyDown={(e) => {
+              if (e.metaKey) focusOnCaret();
+              switch (e.key) {
+                case "c":
+                  copy(word);
+                  break;
+                case "Backspace" || "Delete":
+                  backspace();
+                  break;
+                case "/":
+                  updateBlockMode("insert");
+                  break;
+                case "h":
+                  selectBlock();
+                  break;
+                case "x":
+                  copy(word);
+                  backspace();
+                  focusOnCaret();
+                  break;
+                case "k":
+                  focusOnCaret();
+                  break;
+              }
+            }}
+          />
+          {/* <PrimitiveBlock
+            ref={buttonRef}
+            blockIndex={blockIndex}
+            selected={selected}
+            text={word}
+            blockMode={blockMode}
+            onClick={() => {
+              setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
+              updateBlockMode("groupEdit");
+            }}
+            onKeyDown={(e) => {
+              if (e.metaKey) focusOnCaret();
+              switch (e.key) {
+                case "c":
+                  copy(word);
+                  break;
+                case "Backspace" || "Delete":
+                  backspace();
+                  break;
+                case "/":
+                  updateBlockMode("insert");
+                  break;
+                case "h":
+                  selectBlock();
+                  break;
+                case "x":
+                  copy(word);
+                  backspace();
+                  focusOnCaret();
+                  break;
+                case "k":
+                  focusOnCaret();
+                  break;
+              }
+            }}
+          /> */}
+        </>
       )}
     </>
   );

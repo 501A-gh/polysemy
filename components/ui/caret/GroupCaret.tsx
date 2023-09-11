@@ -3,6 +3,7 @@ import GroupBlockWrapper from "@/components/row/intent/text/group-block/GroupBlo
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
   BlockIntentType,
+  BlockModeTypes,
   selectBlockIndex,
 } from "@/util/helper/blockUtilities";
 import {
@@ -14,7 +15,6 @@ import {
 } from "@/util/helper/groupBlockUtilities";
 import React, { useRef, useState } from "react";
 import FunctionBar from "../function-bar/FunctionBar";
-import { BlockModeTypes } from "@/components/row/intent/text/primitive-block/PrimitiveBlock";
 
 interface GroupCaretProps {
   groupBlockIntent: GroupBlockDictType | undefined;

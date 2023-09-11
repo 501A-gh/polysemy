@@ -38,7 +38,21 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
             .split(/\W+/)
             .map((word: string) => insert(word));
         }}
-        className={`input-caret`}
+        className={`
+          focus:outline-none h-fit
+          transition-all delay-100
+          font-mono
+          border border-transparent
+          bg-transparent 
+          text-orange-500
+          placeholder:text-orange-500 
+          w-24 text-sm my-0.5 py-0.5 px-1 
+          focus:border-transparent 
+          hover:bg-gray-200/80
+          hover:border-gray-200
+          hover:dark:bg-gray-900
+          hover:dark:border-gray-800
+        `}
         placeholder={focus ? "Type ..." : ""}
         value={input}
         onChange={(e) => {

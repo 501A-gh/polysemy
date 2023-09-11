@@ -1,6 +1,29 @@
 import words from "@/util/data/words";
 import { GroupBlockDictType, groupBlockDict } from "../data/groupBlockDict";
 
+// export const primitiveBlockMode = cva("block", {
+//   variants: {
+//     blockMode: {
+//       standard: ["block-standard"],
+//       edit: ["block-edit"],
+//       insert: ["block-standard"],
+//       command: ["block-command"],
+//       highlight: ["block-highlight"],
+//       groupEdit: ["block-standard"],
+//       groupInsert: ["block-standard"],
+//     },
+//   },
+// });
+
+export type BlockModeTypes =
+  | "standard"
+  | "edit"
+  | "insert"
+  | "command"
+  | "highlight"
+  | "groupEdit"
+  | "groupInsert";
+
 export const filterWord = (query: string): string[] =>
   words.filter((wrd: any) => {
     if (query === "") return wrd;

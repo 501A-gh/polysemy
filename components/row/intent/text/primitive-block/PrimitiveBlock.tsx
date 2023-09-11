@@ -1,32 +1,13 @@
-import { VariantProps, cva } from "class-variance-authority";
+import { BlockModeTypes } from "@/util/helper/blockUtilities";
 import React from "react";
-import BlockMdRender from "./BlockMdRender";
-
-const primitiveBlockMode = cva("block", {
-  variants: {
-    blockMode: {
-      standard: ["block-standard"],
-      edit: ["block-edit"],
-      insert: ["block-standard"],
-      command: ["block-command"],
-      highlight: ["block-highlight"],
-      groupEdit: ["block-standard"],
-      groupInsert: ["block-standard"],
-    },
-  },
-});
-
-export type BlockModeTypes = VariantProps<
-  typeof primitiveBlockMode
->["blockMode"];
 
 interface PrimitiveBlockProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof primitiveBlockMode> {
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   ref: any;
   blockIndex: number;
   selected: number[];
   text: string;
+  blockMode: BlockModeTypes;
 }
 
 const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
@@ -38,16 +19,58 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
   ...props
 }) => {
   return (
-    <button
-      ref={ref}
-      type="button"
-      className={primitiveBlockMode({
-        blockMode: selected.includes(blockIndex) ? "highlight" : blockMode,
-      })}
-      {...props}
-    >
-      <BlockMdRender content={text} />
-    </button>
+    <>
+      <button
+        ref={ref}
+        type="button"
+        className={`
+          block
+          ${
+            selected.includes(blockIndex)
+              ? `
+              rounded-none
+              text-gray-900
+              focus:text-black
+              focus:shadow-green-400/40
+              bg-green-300
+              focus:bg-green-400
+              border-green-300
+              dark:bg-green-500
+              dark:focus:bg-green-200
+              dark:border-green-500
+            `
+              : `
+              ${
+                blockMode === "standard"
+                  ? `
+                  border
+                  rounded-sm
+                  text-gray-600
+                  dark:text-gray-400
+                  focus:bg-gray-200
+                  dark:focus:bg-gray-800 
+                  focus:border-b-gray-300
+                  dark:focus:border-b-gray-700
+                  focus:text-black
+                  focus:dark:text-white
+                  duration-200
+                `
+                  : ""
+              }
+              ${blockMode === "edit" ? "block-edit" : ""}
+              ${blockMode === "insert" ? "block-standard" : ""}
+              ${blockMode === "command" ? "block-command" : ""}
+              ${blockMode === "highlight" ? "block-highlight" : ""}
+              ${blockMode === "groupEdit" ? "block-standard" : ""}
+              ${blockMode === "groupInsert" ? "block-standard" : ""}
+            `
+          }
+        `}
+        {...props}
+      >
+        {text}
+      </button>
+    </>
   );
 };
 

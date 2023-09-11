@@ -14,7 +14,10 @@ const BlockMdRender: React.FC<MarkdownRenderProps> = ({ content }) => {
     a: (props) => (
       <Link
         href={`${props.href}`}
-        className={`flex gap-1 items-center border border-transparent border-b-slate-200`}
+        className={`
+          flex gap-1 items-center border border-transparent border-b-slate-200
+          focus:bg-green-600 focus:outline-none
+        `}
         target="_blank"
         rel="noopener noreferrer"
       >
