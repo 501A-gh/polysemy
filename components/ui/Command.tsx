@@ -101,7 +101,7 @@ const Command: React.FC<CommandProps> = ({
           {options.map((obj: CommandButtonProps, i: number) => (
             <button
               key={i}
-              className={`btn btn-command`}
+              className={`btn btn-standard`}
               onClick={() => {
                 fetchApi(obj.apiRoute);
               }}

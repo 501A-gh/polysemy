@@ -53,7 +53,7 @@ const EditMode: React.FC<EditModeProps> = ({
         dark:border-y-gray-900
         
         border-x-orange-500
-        dark:border-x-orange-600
+        dark:border-x-orange-900
       `}
       {...props}
     >

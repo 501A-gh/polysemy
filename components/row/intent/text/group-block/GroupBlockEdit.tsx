@@ -4,6 +4,13 @@ import { BlockModeTypes, selectBlockIndex } from "@/util/helper/blockUtilities";
 import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import Block from "../block/Block";
 import GroupBlockWrapper from "./GroupBlockWrapper";
+import {
+  createGroupBlockModeAtIndex,
+  groupBackspace,
+  groupEdit,
+  groupInsert,
+  updateGroupBlockModeAtIndex,
+} from "@/util/helper/groupBlockUtilities";
 
 interface GroupBlockEditProps {
   updateBlockMode: (mode: BlockModeTypes) => void;
@@ -30,39 +37,8 @@ const GroupBlockEdit: React.FC<GroupBlockEditProps> = ({
   const [groupBlock, setGroupBlock] = useState<string[]>(
     groupBlockText ? groupBlockText.slice(1, -1).split(" ") : []
   );
+
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
-
-  const backspace = (index: number) => {
-    if (index >= 0 && index < groupBlock.length) {
-      const newGroupBlock = [...groupBlock];
-      newGroupBlock.splice(index, 1);
-      setGroupBlock(newGroupBlock);
-    }
-  };
-
-  const edit = (newValue: string, blockIndex: number) => {
-    if (blockIndex >= 0 && blockIndex < groupBlock.length) {
-      const newGroupBlock = [...groupBlock];
-      newGroupBlock[blockIndex] = newValue;
-      setGroupBlock(newGroupBlock);
-    }
-  };
-
-  const insert = (newValue: string, blockIndex: number) => {
-    if (blockIndex >= 0 && blockIndex <= groupBlock.length) {
-      const newGroupBlock = [...groupBlock];
-      newGroupBlock.splice(blockIndex, 0, newValue);
-      setGroupBlock(newGroupBlock);
-    }
-  };
-
-  const addItemToEndInGroup = (newValue: string): void => {
-    setGroupBlock((prevString: string[]) => {
-      const updatedStack = [...prevString];
-      updatedStack.push(newValue);
-      return updatedStack;
-    });
-  };
 
   const editAndSave = () => {
     editGroupBlock(
@@ -75,21 +51,6 @@ const GroupBlockEdit: React.FC<GroupBlockEditProps> = ({
 
   const groupBlockModeOriginal = new Array(groupBlock.length).fill("standard");
   const [groupBlockMode, setGroupBlockMode] = useState(groupBlockModeOriginal);
-
-  const updateGroupBlockModeAtIndex = (
-    index: number,
-    newValue: BlockModeTypes
-  ) => {
-    const updatedArray = [...groupBlockMode];
-    updatedArray[index] = newValue;
-    setGroupBlockMode(updatedArray);
-  };
-
-  const createGroupBlockModeAtIndex = (index: number) => {
-    const updatedArray = [...groupBlockMode];
-    updatedArray.splice(index, 0, "standard");
-    setGroupBlockMode(updatedArray);
-  };
 
   return (
     <GroupBlockWrapper groupBlockIntent={groupBlockIntent}>
@@ -105,13 +66,28 @@ const GroupBlockEdit: React.FC<GroupBlockEditProps> = ({
               }
               word={word}
               focusOnCaret={() => focusOnCaret()}
-              backspace={() => backspace(i)}
-              insert={(input: string) => insert(input, i)}
-              edit={(input: string) => edit(input, i)}
+              backspace={() => groupBackspace(i, groupBlock, setGroupBlock)}
+              insert={(input: string) =>
+                groupInsert(input, i, groupBlock, setGroupBlock)
+              }
+              edit={(input: string) =>
+                groupEdit(input, i, groupBlock, setGroupBlock)
+              }
               blockMode={groupBlockMode[i]}
-              createBlockMode={() => createGroupBlockModeAtIndex(i)}
+              createBlockMode={() =>
+                createGroupBlockModeAtIndex(
+                  i,
+                  groupBlockMode,
+                  setGroupBlockMode
+                )
+              }
               updateBlockMode={(mode: BlockModeTypes) =>
-                updateGroupBlockModeAtIndex(i, mode)
+                updateGroupBlockModeAtIndex(
+                  i,
+                  mode,
+                  groupBlockMode,
+                  setGroupBlockMode
+                )
               }
             />
           ))}
@@ -124,8 +100,17 @@ const GroupBlockEdit: React.FC<GroupBlockEditProps> = ({
           onKeyDown={(e) => {
             switch (e.key) {
               case " ":
-                addItemToEndInGroup(input);
-                createGroupBlockModeAtIndex(groupBlockMode.length);
+                groupInsert(
+                  input,
+                  groupBlockMode.length,
+                  groupBlock,
+                  setGroupBlock
+                );
+                createGroupBlockModeAtIndex(
+                  groupBlockMode.length,
+                  groupBlockMode,
+                  setGroupBlockMode
+                );
                 setTimeout(() => setInput(""), 1);
                 break;
               case "Enter":

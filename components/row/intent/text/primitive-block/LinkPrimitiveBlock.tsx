@@ -1,7 +1,8 @@
 import { BlockModeTypes } from "@/util/helper/blockUtilities";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-interface GroupPrimitiveBlockProps
+interface LinkPrimitiveBlockProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   ref: any;
   blockIndex: number;
@@ -10,7 +11,7 @@ interface GroupPrimitiveBlockProps
   blockMode: BlockModeTypes;
 }
 
-const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
+const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
   ref,
   blockIndex,
   selected,
@@ -19,6 +20,7 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -37,32 +39,19 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
           className={`
             block
             ${selected.includes(blockIndex)
-              ? `
-                rounded-none
-                text-gray-900
-                focus:text-black
-                focus:shadow-green-400/40
-                bg-green-300
-                focus:bg-green-400
-                border-green-300
-                dark:bg-green-500
-                dark:focus:bg-green-200
-                dark:border-green-500
-              `
+              ? `block-mode-highlight`
               : `
                 ${i === 0 && "rounded-l-sm"} ${i === text.split(" ").length - 1 && "rounded-r-sm"
               }
-                ${blockMode === "standard" && `text-gray-600 dark:text-gray-400`
-              }
+                ${blockMode === "standard" && `orange-text`}
                 ${focus &&
               `
-                    peer-focus:bg-gray-200
-                    peer-focus:dark:bg-gray-800
-                    peer-focus:border-b-gray-300
-                    peer-focus:dark:border-b-gray-700
+                    peer-focus:bg-orange-200
+                    peer-focus:dark:bg-orange-800
+                    peer-focus:border-b-orange-300
+                    peer-focus:dark:border-b-orange-700
                     peer-focus:text-black
                     peer-focus:dark:text-white
-                    peer-focus:animate-pulse
                     duration-200
                   `
               }
@@ -77,4 +66,4 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
   );
 };
 
-export default GroupPrimitiveBlock;
+export default LinkPrimitiveBlock;

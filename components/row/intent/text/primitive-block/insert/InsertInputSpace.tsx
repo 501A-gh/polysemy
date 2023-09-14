@@ -16,13 +16,9 @@ const InsertInputSpace: React.FC<InsertInputSpaceProps> = ({
       title="Click To Insert"
       tabIndex={-1}
       className={`
-        select-none
-        h-6 cursor-text group
-        duration-700
-        transition-all 
-        hover:mx-0
-        hover:w-20 
-        hover:px-1
+        select-none h-6 cursor-text group
+        duration-700 transition-all 
+        hover:mx-0 hover:w-20 hover:px-1
         ${selected.includes(blockIndex) ? " w-0" : "w-3 -mx-1"}
       `}
       {...props}

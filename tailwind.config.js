@@ -39,7 +39,7 @@ module.exports = {
       },
       animation: {
         show: "showAni 0.5s ease",
-        "slide-from-above": "slideFromAbove 0.8s ease",
+        "slide-from-above": "slideFromAbove 0.6s ease",
       },
       fontFamily: {
         sans: ["var(--font-inter)"],

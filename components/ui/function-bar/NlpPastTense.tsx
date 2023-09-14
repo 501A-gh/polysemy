@@ -6,6 +6,23 @@ import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 const NlpPastTense = (sentence: string) => {
   const [convertedText, setConvertedText] = useState<string>("");
 
+  const convertToPastTense = (pastTenseSentence: string) => {
+    // pastTenseSentence.split(/\W+/).map((w: string, i: number) => {
+    //   setStack((prevItems: StackType[]) => {
+    //     const updatedItems = [...prevItems];
+    //     const updatedRow = [...prevItems[rowIndex].data.text];
+    //     updatedRow.splice(selectBlocks[i], 0, w);
+    //     updatedItems[rowIndex].data.text = updatedRow;
+    //     return updatedItems;
+    //   });
+    // });
+    // const updatedSelectBlocks = selectBlocks.map((blockIndex) => {
+    //   return blockIndex + pastTenseSentence.split(/\W+/).length;
+    // });
+    // backspaceMultiple(updatedSelectBlocks);
+    // focusOnCaret();
+  };
+
   return (
     <>
       {nlp(sentence).has("#Verb") && (

@@ -40,9 +40,10 @@ export const PolysemyTweet: React.FC<{ tweet: EnrichedTweet }> = ({
             }
           >
             {tweet.mediaDetails?.map((media: any) => (
-              <div>
+              <div
+                key={media.media_url_https}
+              >
                 <Link
-                  key={media.media_url_https}
                   href={tweet.url}
                   target="_blank"
                   className={`p-[1px] rounded-md h-fit w-fit focus:bg-orange-600 inline-block`}

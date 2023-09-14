@@ -2,6 +2,7 @@
 import Row from "@/components/row/Row";
 import { IntentIdType } from "@/util/data/rowIntentDict";
 import React, { useState } from "react";
+import NoSpaceScroll from "./NoScrollSpace";
 
 export interface StackType {
   intentId: IntentIdType;
@@ -23,11 +24,14 @@ const Editor = () => {
   ]);
 
   return (
-    <section className={`flex flex-col h-auto pb-auto print:pt-1`}>
-      {stack.map((_, i) => (
-        <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
-      ))}
-    </section>
+    <>
+      <section className={`flex flex-col h-auto pb-auto print:pt-1`}>
+        {stack.map((_, i) => (
+          <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
+        ))}
+      </section>
+      <NoSpaceScroll />
+    </>
   );
 };
 

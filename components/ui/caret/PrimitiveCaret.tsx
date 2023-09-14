@@ -41,12 +41,9 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
         className={`
           focus:outline-none h-fit
           transition-all delay-100
-          font-mono
           border border-transparent
-          bg-transparent 
-          text-orange-500
-          placeholder:text-orange-500 
-          w-24 text-sm my-0.5 py-0.5 px-1 
+          bg-transparent py-0.5 px-1
+          w-24 text-sm my-0.5 
           focus:border-transparent 
           hover:bg-gray-200/80
           hover:border-gray-200

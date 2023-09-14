@@ -96,25 +96,6 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
     exitSelect();
   };
 
-  const convertToPastTense = (pastTenseSentence: string) => {
-    pastTenseSentence.split(/\W+/).map((w: string, i: number) => {
-      setStack((prevItems: StackType[]) => {
-        const updatedItems = [...prevItems];
-        const updatedRow = [...prevItems[rowIndex].data.text];
-        updatedRow.splice(selectBlocks[i], 0, w);
-        updatedItems[rowIndex].data.text = updatedRow;
-        return updatedItems;
-      });
-    });
-
-    const updatedSelectBlocks = selectBlocks.map((blockIndex) => {
-      return blockIndex + pastTenseSentence.split(/\W+/).length;
-    });
-
-    backspaceMultiple(updatedSelectBlocks);
-    focusOnCaret();
-  };
-
   const applyLink = (link: string) => {
     const startIndex = selectBlocks[0];
     backspaceMultiple(selectBlocks);
@@ -209,7 +190,26 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
                 }
               />
             )}
-            {checkBlockIntent(word) === "link" && <LinkBlock key={i} />}
+            {checkBlockIntent(word) === "link" && (
+              <LinkBlock
+                key={i}
+                blockIndex={i}
+                selected={selectBlocks}
+                selectBlock={() =>
+                  selectBlockIndex(i, selectBlocks, setSelectBlocks)
+                }
+                word={word}
+                focusOnCaret={() => focusOnCaret()}
+                backspace={() => backspace(i)}
+                insert={(input: string) => insert(input, i)}
+                edit={(input: string) => edit(input, i)}
+                blockMode={blockMode[i]}
+                createBlockMode={() => createBlockModeAtIndex(i)}
+                updateBlockMode={(mode: BlockModeTypes) =>
+                  updateBlockModeAtIndex(i, mode)
+                }
+              />
+            )}
           </>
         ))}
       <Caret
@@ -221,7 +221,7 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
       {data.length > 0 && (
         <span
           className={`
-            font-mono text-xs text-orange-600 
+            font-mono text-xs orange-text
             ml-auto p-0 mr-3
             whitespace-nowrap print:hidden
           `}
@@ -238,7 +238,7 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
               <button
                 autoFocus={i == 0}
                 key={i}
-                className={`btn btn-selectop`}
+                className={`btn btn-standard`}
                 onClick={obj.action}
               >
                 {obj.icon}

@@ -8,6 +8,7 @@ import {
   Space_Grotesk,
 } from "next/font/google";
 import Header from "@/components/ui/Header";
+import { Toaster } from "sonner";
 
 const inter = Space_Grotesk({
   subsets: ["latin"],

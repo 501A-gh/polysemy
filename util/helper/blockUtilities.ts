@@ -1,5 +1,7 @@
+import { CopyIcon } from "@radix-ui/react-icons";
 import words from "@/util/data/words";
 import { GroupBlockDictType, groupBlockDict } from "../data/groupBlockDict";
+import { notify } from "@/components/ui/notify/Notify";
 
 // export const primitiveBlockMode = cva("block", {
 //   variants: {
@@ -22,7 +24,8 @@ export type BlockModeTypes =
   | "command"
   | "highlight"
   | "groupEdit"
-  | "groupInsert";
+  | "groupInsert"
+  | "linkEdit";
 
 export const filterWord = (query: string): string[] =>
   words.filter((wrd: any) => {
@@ -31,7 +34,10 @@ export const filterWord = (query: string): string[] =>
   });
 
 // Block CRUD Operations
-export const copy = (text: string) => navigator.clipboard.writeText(text);
+export const copy = (text: string) => {
+  notify("Copied to clipboard", "action");
+  navigator.clipboard.writeText(text);
+};
 
 export const selectBlockIndex = (
   index: number,
@@ -92,4 +98,17 @@ export const checkGroupBlockIntent = (text: string) => {
   if (singleQuotesRegex.test(text)) {
     return;
   }
+};
+
+export const splitMarkdownLink = (
+  markdownText: string
+): { text: string; url: string } | null => {
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/;
+  const match = linkPattern.exec(markdownText);
+  if (match) {
+    const text = match[1];
+    const url = match[2];
+    return { text, url };
+  }
+  return null;
 };

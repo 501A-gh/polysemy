@@ -20,7 +20,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
         title={"Set Link"}
         trigger={
           <button
-            className={`btn btn-selectop`}
+            className={`btn btn-standard`}
             onClick={() => setShowLinkInput(true)}
           >
             <LinkNone2Icon />
@@ -30,18 +30,8 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
         description={`add a link to the highlighted text.`}
         save={
           <>
-            {/* <button
-              className={`btn btn-selectop`}
-              onClick={() => {
-                setShowLinkInput(false);
-                setLink("");
-              }}
-            >
-              <LinkBreak2Icon />
-              Cancel
-            </button> */}
             <button
-              className={`btn btn-selectop`}
+              className={`btn btn-standard`}
               onClick={() => {
                 setShowLinkInput(false);
                 applyLink(link);
@@ -60,7 +50,6 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
             id="inputTitle"
             type="url"
             placeholder="https://"
-            className={`highlight-input`}
             value={link}
             onChange={(e) => setLink(e.target.value)}
           />

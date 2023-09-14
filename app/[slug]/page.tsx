@@ -5,6 +5,8 @@ import Wallpaper from "@/components/ui/Wallpaper";
 import CommandPalette from "@/components/ui/CommandPalette";
 import { cva } from "class-variance-authority";
 import Header from "@/components/ui/Header";
+import NoSpaceScroll from "@/components/ui/NoScrollSpace";
+import { Toaster } from "sonner";
 
 const editor = cva(["border", "transition-all"], {
   variants: {
@@ -45,6 +47,11 @@ export default function EditorPage() {
         }
       />
       <CommandPalette open={cmdPalette} setOpen={setCmdPalette} />
+      <Toaster
+        toastOptions={{
+          className: "toast",
+        }}
+      />
       {/* {!cmdPalette && <Header />} */}
       <section onClick={() => setCmdPalette(false)}>
         <div className={editor({ select: cmdPalette })}>

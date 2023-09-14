@@ -1,8 +1,19 @@
 import React, { useRef, useState } from "react";
-import { BlockModeTypes } from "../primitive-block/PrimitiveBlock";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
-import { getGroupBlockIntentData } from "@/util/helper/blockUtilities";
+import {
+  BlockModeTypes,
+  copy,
+  getGroupBlockIntentData,
+  splitMarkdownLink,
+} from "@/util/helper/blockUtilities";
+import LinkBlockEdit from "./LinkBlockEdit";
+import LinkPrimitiveBlock from "../primitive-block/LinkPrimitiveBlock";
+import { CopyIcon, ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";
+import RadixPopover from "@/components/ui/RadixPopover";
+import { Tweet } from "@/components/tweet/Tweet";
+import RadixDialog from "@/components/ui/RadixDialog";
+import RadixHoverCard from "@/components/ui/RadixHoverCard";
 
 interface LinkBlockProps {
   blockIndex: number;
@@ -43,6 +54,8 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();
 
+  const result = splitMarkdownLink(word);
+
   return (
     <>
       <PrimitiveBlockInsert
@@ -57,25 +70,23 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-
-      {blockMode === "groupEdit" ? (
-        <GroupBlockEdit
-          groupBlockIntent={groupBlockIntent}
+      {blockMode === "linkEdit" ? (
+        <LinkBlockEdit
           updateBlockMode={updateBlockMode}
-          editGroupBlock={(text: string) => edit(text)}
-          groupBlockText={word}
+          editLinkBlock={(text: string) => edit(text)}
+          text={result?.text ? result?.text : ""}
+          url={result?.url ? result?.url : ""}
         />
       ) : (
-        <PrimitiveBlock
+        <LinkPrimitiveBlock
           ref={buttonRef}
           blockIndex={blockIndex}
           selected={selected}
-          text={word}
+          text={result?.text ? result?.text : ""}
           blockMode={blockMode}
           onClick={() => {
-            console.log(word);
             setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-            updateBlockMode("groupEdit");
+            updateBlockMode("linkEdit");
           }}
           onKeyDown={(e) => {
             if (e.metaKey) focusOnCaret();
@@ -100,9 +111,44 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
               case "k":
                 focusOnCaret();
                 break;
+              case "o":
+                focusOnBlock();
+                blockMode === "command"
+                  ? updateBlockMode("standard")
+                  : updateBlockMode("command");
+                break;
             }
           }}
         />
+      )}
+      {blockMode === "command" && (
+        <>
+          <RadixPopover
+            title={"Tweet"}
+            trigger={
+              <button className={`btn btn-standard`}>
+                <EyeOpenIcon />
+                Glance
+              </button>
+            }
+          >
+            <Tweet id={"1701954745316041209"} />
+          </RadixPopover>
+          <button
+            className={`btn btn-standard`}
+            onClick={() => window.open(result?.url, "_blank")}
+          >
+            <ExternalLinkIcon />
+            Open Link
+          </button>
+          <button
+            className={`btn btn-standard`}
+            onClick={() => copy(result?.url ? result?.url : "")}
+          >
+            <CopyIcon />
+            Copy Link
+          </button>
+        </>
       )}
     </>
   );

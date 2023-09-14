@@ -108,42 +108,6 @@ const GroupBlock: React.FC<GroupBlockProps> = ({
               }
             }}
           />
-          {/* <PrimitiveBlock
-            ref={buttonRef}
-            blockIndex={blockIndex}
-            selected={selected}
-            text={word}
-            blockMode={blockMode}
-            onClick={() => {
-              setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-              updateBlockMode("groupEdit");
-            }}
-            onKeyDown={(e) => {
-              if (e.metaKey) focusOnCaret();
-              switch (e.key) {
-                case "c":
-                  copy(word);
-                  break;
-                case "Backspace" || "Delete":
-                  backspace();
-                  break;
-                case "/":
-                  updateBlockMode("insert");
-                  break;
-                case "h":
-                  selectBlock();
-                  break;
-                case "x":
-                  copy(word);
-                  backspace();
-                  focusOnCaret();
-                  break;
-                case "k":
-                  focusOnCaret();
-                  break;
-              }
-            }}
-          /> */}
         </>
       )}
     </>

@@ -72,51 +72,44 @@ const SelectMode: React.FC<SelectModeProps> = ({
   };
 
   return (
-    <button
+    <div
       className={`
         flex items-center text-left
-        select-none py-1 print:p-0 group
-        focus:outline-none border border-dashed border-transparent 
-        focus:border-gray-400/50
-        focus:dark:border-gray-800 animate-slide-from-above
+        select-none py-1 print:p-0
+        animate-slide-from-above
       `}
-      autoFocus={false}
-      onClick={() => setSelectMode(false)}
-      onKeyDown={(e) => {
-        switch (e.key) {
-          case "m":
-            addStackAbove();
-            break;
-          case "n":
-            addStackBelow();
-            break;
-          case "c":
-            break;
-          case "Backspace" || "Delete":
-            confirmDelete();
-            break;
-        }
-      }}
     >
-      <div
+      <button
         className={`
+          focus:outline-none
           border
           border-transparent
-          group-focus:border-gray-300
-          dark:group-focus:border-gray-800
           ml-1 mr-2 py-0.5 px-1 w-10 text-right
-          font-mono max-h-full min-h-20 rounded-sm
+          font-mono h-full rounded-sm
           print:hidden text-sm
           text-gray-400
           dark:text-gray-600
-          group-focus:text-orange-500
-          dark:group-focus:text-orange-500
-          group-focus:bg-gray-100
-          dark:group-focus:bg-gray-900
+          orange-focus
         `}
+        onClick={() => setSelectMode(false)}
+        onKeyDown={(e) => {
+          switch (e.key) {
+            case "m":
+              addStackAbove();
+              break;
+            case "n":
+              addStackBelow();
+              break;
+            case "c":
+              break;
+            case "Backspace" || "Delete":
+              confirmDelete();
+              break;
+          }
+        }}
       >
         {rowIndex + 1}
-      </div>
+      </button>
       <div
         className={`
           flex items-center
@@ -145,7 +138,7 @@ const SelectMode: React.FC<SelectModeProps> = ({
           }`}
         </ReactMarkdown>
       </div>
-    </button>
+    </div>
   );
 };
 

@@ -12,9 +12,10 @@ const RadixPopover: React.FC<PopoverProps> = ({ trigger, title, children }) => (
   <Popover.Root>
     <Popover.Trigger asChild>{trigger}</Popover.Trigger>
     <Popover.Portal>
+      {/* w-[260px] */}
       <Popover.Content
         className={`
-          rounded p-5 w-[260px] mx-2 shadow-md
+          rounded p-5  mx-2 shadow-md w-96
           bg-gray-50/50 dark:bg-gray-950/70
           border border-gray-300/70 dark:border-gray-800 backdrop-blur-lg
           will-change-[transform,opacity] 
