@@ -1,17 +1,14 @@
 import {
   ArrowLeftIcon,
   ChevronDownIcon,
-  ChevronUpIcon,
   CubeIcon,
   GearIcon,
-  MagnifyingGlassIcon,
   MixIcon,
   Pencil1Icon,
   RocketIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
-import Doc from "../doc-primitive/Doc";
 import RadixDialog from "./RadixDialog";
 
 interface CommandPaletteProps {
@@ -62,12 +59,12 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ open, setOpen }) => {
                 autoFocus
                 placeholder={`Search Command`}
                 className={`
-                  m-0 outline-none font-mono text-xs h-fit w-full border-none p-2 rounded-sm bg-transparent text-center text-orange-500 focus:placeholder:text-orange-500
+                  m-0 outline-none font-mono text-xs h-fit w-full border-none p-2 rounded-sm bg-transparent
                 `}
               />
             </div>
             <div className={`flex items-center justify-between px-2 py-0`}>
-              <h6 className={`font-serif italic`}>Commands</h6>
+              <h6>Commands</h6>
               <div>
                 <span className={`text-hint`}>Use {">"} to Search</span>
               </div>
@@ -112,7 +109,7 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ open, setOpen }) => {
             </section>
             <hr />
             <div className={`flex items-center justify-between px-2 py-0`}>
-              <h6 className={`font-serif italic`}>Pages</h6>
+              <h6>Pages</h6>
               <div>
                 <span className={`text-hint`}>Use {"@"} to envoke</span>
               </div>

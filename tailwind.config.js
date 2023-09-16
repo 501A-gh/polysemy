@@ -42,9 +42,9 @@ module.exports = {
         "slide-from-above": "slideFromAbove 0.6s ease",
       },
       fontFamily: {
-        sans: ["var(--font-inter)"],
+        sans: ["var(--font-spaceGrotesk)"],
         mono: ["var(--font-spaceMono)"],
-        serif: ["var(--font-playfairDisplay)"],
+        serif: ["var(--font-ibarraRealNova)"],
       },
       boxShadow: {
         "gray-700-highlight": `inset 0 1px 0 0 #374151`,

@@ -35,7 +35,7 @@ export const filterWord = (query: string): string[] =>
 
 // Block CRUD Operations
 export const copy = (text: string) => {
-  notify("Copied to clipboard", "action");
+  notify("Copied to clipboard");
   navigator.clipboard.writeText(text);
 };
 

@@ -6,12 +6,15 @@ import FunctionBar from "@/components/ui/function-bar/FunctionBar";
 import {
   BlockModeTypes,
   checkBlockIntent,
+  copy,
   selectBlockIndex,
 } from "@/util/helper/blockUtilities";
 import LinkInsert from "@/components/ui/function-bar/LinkInsert";
 import Block from "./block/Block";
 import GroupBlock from "./group-block/GroupBlock";
 import LinkBlock from "./link-block/LinkBlock";
+import { notify } from "@/components/ui/notify/Notify";
+import NlpPastTense from "@/components/ui/function-bar/NlpPastTense";
 
 interface TextProps {
   rowIndex: number;
@@ -80,19 +83,20 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
     });
   };
 
-  const sentence = () => {
+  const sentence = (): string => {
     let highlightedSectence: string[] = [];
     selectBlocks.forEach((i) => highlightedSectence.push(data[i]));
     return highlightedSectence.join(" ");
   };
 
   const copyRawText = () => {
-    navigator.clipboard.writeText(sentence());
+    copy(sentence());
     exitSelect();
   };
 
   const backspaceMultiple = (array: number[]) => {
     array.reverse().forEach((i) => backspace(i));
+    notify("Deleted multiple blocks");
     exitSelect();
   };
 
@@ -232,6 +236,7 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
 
       {selectBlocks.length > 1 && (
         <FunctionBar>
+          <NlpPastTense sentence={sentence()} />
           <LinkInsert applyLink={applyLink} />
           <>
             {options.map((obj, i: number) => (

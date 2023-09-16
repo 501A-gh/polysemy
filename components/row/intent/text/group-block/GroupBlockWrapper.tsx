@@ -14,7 +14,7 @@ const GroupBlockWrapper: React.FC<GroupBlockWrapperProps> = ({
       <div
         className={`
           text-lg pl-1.5 pr-1 bold 
-          text-orange-400 dark:text-orange-500
+          orange-text
         `}
       >
         {groupBlockIntent?.start}
@@ -23,7 +23,7 @@ const GroupBlockWrapper: React.FC<GroupBlockWrapperProps> = ({
       <div
         className={`
           text-lg pr-1.5 pl-1 bold 
-          text-orange-400 dark:text-orange-500
+          orange-text 
         `}
       >
         {groupBlockIntent?.end}

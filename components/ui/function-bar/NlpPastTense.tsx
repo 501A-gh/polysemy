@@ -3,7 +3,7 @@ import RadixDialog from "../RadixDialog";
 import nlp from "compromise/three";
 import { CounterClockwiseClockIcon } from "@radix-ui/react-icons";
 
-const NlpPastTense = (sentence: string) => {
+const NlpPastTense = ({ sentence }: { sentence: string }) => {
   const [convertedText, setConvertedText] = useState<string>("");
 
   const convertToPastTense = (pastTenseSentence: string) => {
@@ -52,8 +52,8 @@ const NlpPastTense = (sentence: string) => {
           }
         >
           <section className={`grid grid-cols-2 gap-1`}>
-            <h6 className={`mb-0 ml-1 italic`}>Original</h6>
-            <h6 className={`mb-0 ml-1 italic`}>Modified</h6>
+            <h6 className={`mb-0 ml-1`}>Original</h6>
+            <h6 className={`mb-0 ml-1`}>Modified</h6>
             <div
               className={`
                 text-gray-400

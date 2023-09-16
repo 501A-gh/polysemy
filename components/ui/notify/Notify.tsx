@@ -6,7 +6,7 @@ import {
 import React from "react";
 import { toast } from "sonner";
 
-export const notify = (description: string, type?: "alert" | "action") =>
+export const notify = (description: string) =>
   toast.custom((t) => (
     <div
       className={`
@@ -16,12 +16,6 @@ export const notify = (description: string, type?: "alert" | "action") =>
         shadow-2xl cursor-pointer grid gap-2
       `}
     >
-      <hgroup className={`flex items-center gap-1`}>
-        <h5 className={`p-0 m-0`}>
-          {type === "alert" && "Alert"}
-          {type === "action" && "Action"}
-        </h5>
-      </hgroup>
       <p className={`gray-text`}>{description}</p>
       {/* {type === "action" && (
         <div className={`flex items-center justify-end `}>

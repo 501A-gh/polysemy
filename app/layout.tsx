@@ -1,19 +1,11 @@
 import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 import "./globals.css";
-import {
-  Inter,
-  Space_Mono,
-  Playfair_Display,
-  Inter_Tight,
-  Space_Grotesk,
-} from "next/font/google";
-import Header from "@/components/ui/Header";
-import { Toaster } from "sonner";
+import { Space_Mono, Space_Grotesk, Ibarra_Real_Nova } from "next/font/google";
 
-const inter = Space_Grotesk({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-inter",
+  variable: "--font-spaceGrotesk",
   display: "swap",
 });
 const spaceMono = Space_Mono({
@@ -21,10 +13,10 @@ const spaceMono = Space_Mono({
   weight: ["400", "700"],
   variable: "--font-spaceMono  ",
 });
-const playfairDisplay = Playfair_Display({
+const ibarraRealNova = Ibarra_Real_Nova({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
-  variable: "--font-playfairDisplay",
+  variable: "--font-ibarraRealNova",
   display: "swap",
 });
 
@@ -42,9 +34,9 @@ export default function RootLayout({
     <html
       lang="en"
       className={`
-        ${inter.variable}
+        ${spaceGrotesk.variable}
         ${spaceMono.variable}
-        ${playfairDisplay.variable}
+        ${ibarraRealNova.variable}
       `}
     >
       <body

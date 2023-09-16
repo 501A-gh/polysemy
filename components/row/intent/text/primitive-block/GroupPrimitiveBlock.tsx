@@ -36,26 +36,19 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
           key={i}
           className={`
             block
-            ${selected.includes(blockIndex)
-              ? `
-                rounded-none
-                text-gray-900
-                focus:text-black
-                focus:shadow-green-400/40
-                bg-green-300
-                focus:bg-green-400
-                border-green-300
-                dark:bg-green-500
-                dark:focus:bg-green-200
-                dark:border-green-500
-              `
-              : `
-                ${i === 0 && "rounded-l-sm"} ${i === text.split(" ").length - 1 && "rounded-r-sm"
-              }
-                ${blockMode === "standard" && `text-gray-600 dark:text-gray-400`
-              }
-                ${focus &&
-              `
+            ${
+              selected.includes(blockIndex)
+                ? `block-mode-highlight`
+                : `
+                ${i === 0 && "rounded-l-sm"} ${
+                    i === text.split(" ").length - 1 && "rounded-r-sm"
+                  }
+                ${
+                  blockMode === "standard" && `text-gray-600 dark:text-gray-400`
+                }
+                ${
+                  focus &&
+                  `
                     peer-focus:bg-gray-200
                     peer-focus:dark:bg-gray-800
                     peer-focus:border-b-gray-300
@@ -65,7 +58,7 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
                     peer-focus:animate-pulse
                     duration-200
                   `
-              }
+                }
               `
             }
           `}
