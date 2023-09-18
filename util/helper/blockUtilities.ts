@@ -27,36 +27,6 @@ export type BlockModeTypes =
   | "groupInsert"
   | "linkEdit";
 
-export const filterWord = (query: string): string[] =>
-  words.filter((wrd: any) => {
-    if (query === "") return wrd;
-    return wrd.toLowerCase().includes(query.toLowerCase());
-  });
-
-// Block CRUD Operations
-export const copy = (text: string) => {
-  notify("Copied to clipboard");
-  navigator.clipboard.writeText(text);
-};
-
-export const selectBlockIndex = (
-  index: number,
-  state: number[],
-  setState: (state: number[]) => void
-) => {
-  if (state.length === 1 && index !== state[0]) {
-    const start = Math.min(index, state[0]);
-    const end = Math.max(index, state[0]);
-    const indexesInBetween = Array.from(
-      { length: end - start + 1 },
-      (_, i) => start + i
-    );
-    setState(indexesInBetween);
-  } else {
-    setState([index]);
-  }
-};
-
 export const getGroupBlockIntentData = (symbol: string) =>
   Object.values(groupBlockDict).filter(
     (obj: GroupBlockDictType) => obj.start === symbol

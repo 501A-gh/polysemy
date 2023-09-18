@@ -26,13 +26,16 @@ const RadixDialog: React.FC<DialogProps> = ({
       <Dialog.Content
         //  data-[state=open]:animate-show
         className={`
-          fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-md
-          bg-gray-50/50 dark:bg-gray-950/50 
-          border border-gray-300/50 dark:border-gray-800 backdrop-blur
-          p-6 focus:outline-none shadow-xl z-30
+          fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] z-30 
+          p-4 rounded-md material-solid shadow-2xl cursor-pointer grid gap-2
         `}
       >
-        <Dialog.Title className={`font-serif m-0`}>{title}</Dialog.Title>
+        <hgroup className={`flex items-center justify-between`}>
+          <Dialog.Title className={`font-serif m-0`}>{title}</Dialog.Title>
+          <Dialog.Close className={`btn-close`}>
+            <Cross2Icon />
+          </Dialog.Close>
+        </hgroup>
         <Dialog.Description className={`my-4`}>
           <p>{description}</p>
         </Dialog.Description>
@@ -40,9 +43,6 @@ const RadixDialog: React.FC<DialogProps> = ({
         <div className="mt-[25px] flex justify-end">
           <Dialog.Close asChild>{save}</Dialog.Close>
         </div>
-        <Dialog.Close className={`btn-close`}>
-          <Cross2Icon />
-        </Dialog.Close>
       </Dialog.Content>
     </Dialog.Portal>
   </Dialog.Root>

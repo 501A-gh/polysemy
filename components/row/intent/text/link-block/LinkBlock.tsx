@@ -3,7 +3,6 @@ import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import {
   BlockModeTypes,
-  copy,
   getGroupBlockIntentData,
   splitMarkdownLink,
 } from "@/util/helper/blockUtilities";
@@ -14,6 +13,7 @@ import RadixPopover from "@/components/ui/RadixPopover";
 import { Tweet } from "@/components/tweet/Tweet";
 import RadixDialog from "@/components/ui/RadixDialog";
 import RadixHoverCard from "@/components/ui/RadixHoverCard";
+import { copy } from "@/util/helper/globalUtilities";
 
 interface LinkBlockProps {
   blockIndex: number;
@@ -125,6 +125,7 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
         <>
           <RadixPopover
             title={"Tweet"}
+            size="large"
             trigger={
               <button className={`btn btn-standard`}>
                 <EyeOpenIcon />

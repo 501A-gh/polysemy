@@ -1,5 +1,6 @@
 import Suggest, { SuggestProps } from "@/components/ui/Suggest";
-import { BlockModeTypes, filterWord } from "@/util/helper/blockUtilities";
+import { BlockModeTypes } from "@/util/helper/blockUtilities";
+import { filterWord } from "@/util/helper/globalUtilities";
 import React, { useEffect, useRef, useState } from "react";
 
 export interface InsertInputProps {

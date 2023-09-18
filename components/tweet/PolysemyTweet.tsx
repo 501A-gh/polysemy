@@ -15,7 +15,7 @@ export const PolysemyTweet: React.FC<{ tweet: EnrichedTweet }> = ({
   return (
     // border border-gray-300 dark:border-gray-800
     // bg-gray-50 dark:bg-gray-950
-    <div className={`break-inside-avoid p-3`}>
+    <div className={`break-inside-avoid p-1`}>
       <div>
         {tweet.in_reply_to_status_id_str && tweet.in_reply_to_screen_name && (
           <div className="text-xs text-gray-500 dark:text-gray-200 mb-2">
@@ -40,9 +40,7 @@ export const PolysemyTweet: React.FC<{ tweet: EnrichedTweet }> = ({
             }
           >
             {tweet.mediaDetails?.map((media: any) => (
-              <div
-                key={media.media_url_https}
-              >
+              <div key={media.media_url_https}>
                 <Link
                   href={tweet.url}
                   target="_blank"

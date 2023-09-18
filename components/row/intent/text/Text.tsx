@@ -1,25 +1,29 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Caret from "@/components/ui/caret/Caret";
 import { StackType } from "@/components/ui/Editor";
-import { ClipboardIcon, TrashIcon } from "@radix-ui/react-icons";
-import FunctionBar from "@/components/ui/function-bar/FunctionBar";
-import {
-  BlockModeTypes,
-  checkBlockIntent,
-  copy,
-  selectBlockIndex,
-} from "@/util/helper/blockUtilities";
+import { BlockModeTypes, checkBlockIntent } from "@/util/helper/blockUtilities";
 import LinkInsert from "@/components/ui/function-bar/LinkInsert";
 import Block from "./block/Block";
 import GroupBlock from "./group-block/GroupBlock";
 import LinkBlock from "./link-block/LinkBlock";
 import { notify } from "@/components/ui/notify/Notify";
 import NlpPastTense from "@/components/ui/function-bar/NlpPastTense";
+import RadixPopover from "@/components/ui/RadixPopover";
+import { useFxBar } from "@/components/ui/function-bar/FxBarProvider";
+import TextFxBar from "@/components/ui/function-bar/text-layer/TextFxBar";
+import {
+  textApplyLink,
+  textBackspace,
+  textBackspaceMultiple,
+  textEdit,
+  textInsert,
+} from "@/util/helper/textUtilities";
+import { selectBlockIndex, sentence } from "@/util/helper/globalUtilities";
 
 interface TextProps {
   rowIndex: number;
   stack: StackType[];
-  setStack: (stack: any) => void;
+  setStack: (stack: any) => StackType[];
 }
 
 const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
@@ -28,22 +32,6 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
 
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
-  // const selectGroupBlockIndex = (index: number) => {
-  //   const getGroupIndex = (blockLocation: number) =>
-  //     parseInt(blockLocation.toString().split(".")[1]);
-  //   if (selectGroupBlocks.length === 1 && index !== selectGroupBlocks[0]) {
-  //     const start = Math.min(index, getGroupIndex(selectBlocks[0]));
-  //     const end = Math.max(index, getGroupIndex(selectBlocks[0]));
-  //     const indexesInBetween = Array.from(
-  //       { length: end - start + 1 },
-  //       (_, i) => start + i
-  //     );
-  //     setSelectGroupBlocks(indexesInBetween);
-  //   } else {
-  //     setSelectGroupBlocks([index]);
-  //   }
-  // };
-
   const caretRef = useRef<HTMLInputElement>(null);
   const focusOnCaret = () => {
     if (caretRef.current != null) {
@@ -51,71 +39,9 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
     }
   };
 
-  const exitSelect = () => {
-    setSelectBlocks([]);
-  };
-
-  const backspace = (deletingIndex: number) => {
-    setStack((prevItems: StackType[]) => {
-      const updatedItems = [...prevItems];
-      updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
-      updatedItems[rowIndex].data.text.splice(deletingIndex, 1);
-      return updatedItems;
-    });
-  };
-
-  const edit = (newValue: string, blockIndex: number) => {
-    setStack((prevItems: StackType[]) => {
-      const updatedItems = [...prevItems];
-      updatedItems[rowIndex].data.text = [...prevItems[rowIndex].data.text];
-      updatedItems[rowIndex].data.text[blockIndex] = newValue;
-      return updatedItems;
-    });
-  };
-
-  const insert = (newValue: string, blockIndex: number) => {
-    setStack((prevItems: StackType[]) => {
-      const updatedItems = [...prevItems];
-      const updatedRow = [...prevItems[rowIndex].data.text];
-      updatedRow.splice(blockIndex, 0, newValue);
-      updatedItems[rowIndex].data.text = updatedRow;
-      return updatedItems;
-    });
-  };
-
-  const sentence = (): string => {
-    let highlightedSectence: string[] = [];
-    selectBlocks.forEach((i) => highlightedSectence.push(data[i]));
-    return highlightedSectence.join(" ");
-  };
-
-  const copyRawText = () => {
-    copy(sentence());
-    exitSelect();
-  };
-
-  const backspaceMultiple = (array: number[]) => {
-    array.reverse().forEach((i) => backspace(i));
-    notify("Deleted multiple blocks");
-    exitSelect();
-  };
-
-  const applyLink = (link: string) => {
-    const startIndex = selectBlocks[0];
-    backspaceMultiple(selectBlocks);
-    setStack((prevItems: StackType[]) => {
-      const updatedItems = [...prevItems];
-      const updatedRow = [...prevItems[rowIndex].data.text];
-      updatedRow.splice(startIndex, 0, `[${sentence()}](${link})`);
-      updatedItems[rowIndex].data.text = updatedRow;
-      return updatedItems;
-    });
-  };
-
   const blockModeOriginal = new Array(data.length + 1).fill("standard");
   const [blockMode, setBlockMode] =
     useState<BlockModeTypes[]>(blockModeOriginal);
-  console.log(blockMode, data.length);
 
   const createBlockModeAtIndex = (index: number) => {
     const updatedArray = [...blockMode];
@@ -129,24 +55,38 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
     setBlockMode(updatedArray);
   };
 
-  const options = [
-    {
-      icon: <ClipboardIcon />,
-      name: "Copy raw text ",
-      action: () => {
-        copyRawText();
-        focusOnCaret();
-      },
-    },
-    {
-      icon: <TrashIcon />,
-      name: "Delete",
-      action: () => {
-        backspaceMultiple(selectBlocks);
-        focusOnCaret();
-      },
-    },
-  ];
+  const { showFxBar, closeFxBar } = useFxBar();
+
+  useEffect(() => {
+    if (selectBlocks.length > 1) {
+      console.log("bruh");
+      showFxBar(
+        <>
+          <TextFxBar
+            sentence={() => sentence(selectBlocks, data)}
+            resetSelect={() => {
+              focusOnCaret();
+              setSelectBlocks([]);
+            }}
+            backspaceMultiple={() =>
+              textBackspaceMultiple(selectBlocks, setStack, rowIndex)
+            }
+            applyLink={(link: string) =>
+              textApplyLink(link, selectBlocks, setStack, rowIndex, () =>
+                sentence(selectBlocks, data)
+              )
+            }
+          />
+          {/* <button className={`btn btn-standard`} onClick={closeFxBar}>
+  <Cross2Icon />
+  Close
+</button> */}
+        </>
+      );
+    } else {
+      closeFxBar();
+    }
+  }, [selectBlocks, showFxBar]);
 
   return (
     <>
@@ -164,9 +104,11 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
                 }
                 word={word}
                 focusOnCaret={() => focusOnCaret()}
-                backspace={() => backspace(i)}
-                insert={(input: string) => insert(input, i)}
-                edit={(input: string) => edit(input, i)}
+                backspace={() => textBackspace(i, setStack, rowIndex)}
+                insert={(input: string) =>
+                  textInsert(input, i, setStack, rowIndex)
+                }
+                edit={(input: string) => textEdit(input, i, setStack, rowIndex)}
                 blockMode={blockMode[i]}
                 createBlockMode={() => createBlockModeAtIndex(i)}
                 updateBlockMode={(mode: BlockModeTypes) =>
@@ -184,9 +126,11 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
                 }
                 word={word}
                 focusOnCaret={() => focusOnCaret()}
-                backspace={() => backspace(i)}
-                insert={(input: string) => insert(input, i)}
-                edit={(input: string) => edit(input, i)}
+                backspace={() => textBackspace(i, setStack, rowIndex)}
+                insert={(input: string) =>
+                  textInsert(input, i, setStack, rowIndex)
+                }
+                edit={(input: string) => textEdit(input, i, setStack, rowIndex)}
                 blockMode={blockMode[i]}
                 createBlockMode={() => createBlockModeAtIndex(i)}
                 updateBlockMode={(mode: BlockModeTypes) =>
@@ -204,9 +148,11 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
                 }
                 word={word}
                 focusOnCaret={() => focusOnCaret()}
-                backspace={() => backspace(i)}
-                insert={(input: string) => insert(input, i)}
-                edit={(input: string) => edit(input, i)}
+                backspace={() => textBackspace(i, setStack, rowIndex)}
+                insert={(input: string) =>
+                  textInsert(input, i, setStack, rowIndex)
+                }
+                edit={(input: string) => textEdit(input, i, setStack, rowIndex)}
                 blockMode={blockMode[i]}
                 createBlockMode={() => createBlockModeAtIndex(i)}
                 updateBlockMode={(mode: BlockModeTypes) =>
@@ -219,7 +165,9 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
       <Caret
         inputRef={caretRef}
         focusOnCaret={() => focusOnCaret()}
-        insert={(input: string) => insert(input, data.length)}
+        insert={(input: string) =>
+          textInsert(input, data.length, setStack, rowIndex)
+        }
         createBlockMode={() => createBlockModeAtIndex(blockMode.length)}
       />
       {data.length > 0 && (
@@ -234,25 +182,95 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
         </span>
       )}
 
-      {selectBlocks.length > 1 && (
+      {/* {selectBlocks.length > 1 && (
         <FunctionBar>
-          <NlpPastTense sentence={sentence()} />
-          <LinkInsert applyLink={applyLink} />
-          <>
-            {options.map((obj, i: number) => (
-              <button
-                autoFocus={i == 0}
-                key={i}
-                className={`btn btn-standard`}
-                onClick={obj.action}
-              >
-                {obj.icon}
-                {obj.name}
+          <button
+            autoFocus
+            className={`btn btn-standard`}
+            onClick={() => {
+              copyRawText();
+              focusOnCaret();
+            }}
+          >
+            <ClipboardIcon />
+            Copy Raw Text
+          </button>
+          <RadixPopover
+            title="Modify"
+            size="small"
+            trigger={
+              <button className={`btn btn-standard`}>
+                <CursorArrowIcon />
+                Modify
               </button>
-            ))}
-          </>
+            }
+          >
+            <div className={`grid`}>
+              <LinkInsert applyLink={applyLink} />
+              <button
+                className={`btn btn-standard`}
+                onClick={() => {
+                  backspaceMultiple(selectBlocks);
+                  focusOnCaret();
+                }}
+              >
+                <TrashIcon />
+                Delete
+              </button>
+            </div>
+          </RadixPopover>
+          <RadixPopover
+            title="Format"
+            size="small"
+            trigger={
+              <button className={`btn btn-standard`}>
+                <RulerHorizontalIcon />
+                Format
+              </button>
+            }
+          >
+            <div className={`grid`}>
+              <button className={`btn btn-standard`}>
+                <FontBoldIcon />
+                Bold
+              </button>
+              <button className={`btn btn-standard`}>
+                <FontItalicIcon />
+                Italic
+              </button>
+              <button className={`btn btn-standard`}>
+                <StrikethroughIcon />
+                Strike Through
+              </button>
+              <button className={`btn btn-standard`}>
+                <LetterCaseUppercaseIcon />
+                Uppercase
+              </button>
+              <button className={`btn btn-standard`}>
+                <LetterCaseLowercaseIcon />
+                Lowercase
+              </button>
+            </div>
+          </RadixPopover>
+          <RadixPopover
+            title="Others"
+            size="small"
+            trigger={
+              <button className={`btn btn-standard`}>
+                <DotsVerticalIcon />
+              </button>
+            }
+          >
+            <div className={`grid`}>
+              <button className={`btn btn-standard`}>
+                <ExternalLinkIcon />
+                Search New Tab
+              </button>
+              <NlpPastTense sentence={sentence()} />
+            </div>
+          </RadixPopover>
         </FunctionBar>
-      )}
+      )} */}
     </>
   );
 };

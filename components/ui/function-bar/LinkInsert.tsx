@@ -1,17 +1,12 @@
-import {
-  Link2Icon,
-  LinkBreak2Icon,
-  LinkNone2Icon,
-} from "@radix-ui/react-icons";
+import { Link2Icon, LinkNone2Icon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import RadixDialog from "../RadixDialog";
 
-interface LinkInputProps {
+interface LinkInsertProps {
   applyLink: (link: string) => void;
 }
 
-const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
-  const [showLinkInput, setShowLinkInput] = useState<boolean>(false);
+const LinkInsert: React.FC<LinkInsertProps> = ({ applyLink }) => {
   const [link, setLink] = useState<string>("");
 
   return (
@@ -19,10 +14,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
       <RadixDialog
         title={"Set Link"}
         trigger={
-          <button
-            className={`btn btn-standard`}
-            onClick={() => setShowLinkInput(true)}
-          >
+          <button className={`btn btn-standard`}>
             <LinkNone2Icon />
             Set Link
           </button>
@@ -32,10 +24,7 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
           <>
             <button
               className={`btn btn-standard`}
-              onClick={() => {
-                setShowLinkInput(false);
-                applyLink(link);
-              }}
+              onClick={() => applyLink(link)}
             >
               <Link2Icon />
               Set link
@@ -59,4 +48,4 @@ const LinkInput: React.FC<LinkInputProps> = ({ applyLink }) => {
   );
 };
 
-export default LinkInput;
+export default LinkInsert;

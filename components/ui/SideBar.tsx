@@ -65,6 +65,7 @@ export default function SideBar() {
             <button className={`btn btn-standard`}>Import MD File</button>
             <RadixPopover
               title="Export"
+              size={"medium"}
               trigger={<button className={`btn btn-standard`}>Export</button>}
             >
               <div className={`grid gap-2`}>

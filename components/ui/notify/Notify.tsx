@@ -1,22 +1,32 @@
 import {
-  Cross1Icon,
+  CopyIcon,
   ExclamationTriangleIcon,
   LightningBoltIcon,
+  TrashIcon,
 } from "@radix-ui/react-icons";
 import React from "react";
 import { toast } from "sonner";
 
-export const notify = (description: string) =>
+export const notify = (
+  description: string,
+  intent: "copy" | "backspace" | "action" | "alert"
+) =>
   toast.custom((t) => (
     <div
       className={`
-        bg-gray-100 dark:bg-gray-900
-        p-4 rounded-md w-[356px]
-        border border-gray-300 dark:border-gray-800 
-        shadow-2xl cursor-pointer grid gap-2
+        material-solid
+        p-3 rounded-md w-[356px]
+        shadow-2xl cursor-pointer
+        flex items-center gap-2
       `}
     >
-      <p className={`gray-text`}>{description}</p>
+      <div className={`gray-text`}>
+        {intent === "copy" && <CopyIcon />}
+        {intent === "backspace" && <TrashIcon />}
+        {intent === "action" && <LightningBoltIcon />}
+        {intent === "alert" && <ExclamationTriangleIcon />}
+      </div>
+      <p className={`gray-text text-sm`}>{description}</p>
       {/* {type === "action" && (
         <div className={`flex items-center justify-end `}>
           <button className="btn btn-standard">Commit</button>

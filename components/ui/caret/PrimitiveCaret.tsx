@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Suggest, { SuggestProps } from "../Suggest";
-import { BlockIntentType, filterWord } from "@/util/helper/blockUtilities";
+import { BlockIntentType } from "@/util/helper/blockUtilities";
+import { filterWord } from "@/util/helper/globalUtilities";
 
 interface PrimitiveCaretProps {
   inputRef: React.Ref<HTMLInputElement>;

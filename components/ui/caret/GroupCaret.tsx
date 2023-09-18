@@ -1,11 +1,8 @@
 import Block from "@/components/row/intent/text/block/Block";
 import GroupBlockWrapper from "@/components/row/intent/text/group-block/GroupBlockWrapper";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import {
-  BlockIntentType,
-  BlockModeTypes,
-  selectBlockIndex,
-} from "@/util/helper/blockUtilities";
+import { BlockIntentType, BlockModeTypes } from "@/util/helper/blockUtilities";
+import { selectBlockIndex } from "@/util/helper/globalUtilities";
 import {
   createGroupBlockModeAtIndex,
   groupBackspace,
@@ -14,7 +11,6 @@ import {
   updateGroupBlockModeAtIndex,
 } from "@/util/helper/groupBlockUtilities";
 import React, { useRef, useState } from "react";
-import FunctionBar from "../function-bar/FunctionBar";
 
 interface GroupCaretProps {
   groupBlockIntent: GroupBlockDictType | undefined;
@@ -124,7 +120,7 @@ const GroupCaret: React.FC<GroupCaretProps> = ({
         <button className={`btn btn-standard`} onClick={() => insertAndSave()}>
           Done
         </button>
-        {selectBlocks.length > 1 && (
+        {/* {selectBlocks.length > 1 && (
           <FunctionBar>
             <button
               autoFocus
@@ -134,7 +130,7 @@ const GroupCaret: React.FC<GroupCaretProps> = ({
               Test
             </button>
           </FunctionBar>
-        )}
+        )} */}
       </>
     </GroupBlockWrapper>
   );

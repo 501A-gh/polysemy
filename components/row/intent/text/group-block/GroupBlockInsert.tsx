@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { BlockModeTypes, selectBlockIndex } from "@/util/helper/blockUtilities";
-import FunctionBar from "@/components/ui/function-bar/FunctionBar";
+import { BlockModeTypes } from "@/util/helper/blockUtilities";
 import Block from "../block/Block";
 import GroupBlockWrapper from "./GroupBlockWrapper";
 import {
@@ -11,6 +10,7 @@ import {
   groupInsert,
   updateGroupBlockModeAtIndex,
 } from "@/util/helper/groupBlockUtilities";
+import { selectBlockIndex } from "@/util/helper/globalUtilities";
 
 export interface GroupBlockInsertProps {
   updateBlockMode: (mode: BlockModeTypes) => void;
@@ -125,7 +125,7 @@ const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
         <button className={`btn btn-standard`} onClick={() => insertAndSave()}>
           Done
         </button>
-        {selectBlocks.length > 1 && (
+        {/* {selectBlocks.length > 1 && (
           <FunctionBar>
             <button
               autoFocus
@@ -135,7 +135,7 @@ const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
               Test
             </button>
           </FunctionBar>
-        )}
+        )} */}
       </>
     </GroupBlockWrapper>
   );

@@ -3,11 +3,11 @@ import GroupBlockEdit from "../group-block/GroupBlockEdit";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
   BlockModeTypes,
-  copy,
   getGroupBlockIntentData,
 } from "@/util/helper/blockUtilities";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import GroupPrimitiveBlock from "../primitive-block/GroupPrimitiveBlock";
+import { copy } from "@/util/helper/globalUtilities";
 
 interface GroupBlockProps {
   blockIndex: number;

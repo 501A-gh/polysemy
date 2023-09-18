@@ -4,7 +4,6 @@ import { GroupBlockDictType, groupBlockDict } from "@/util/data/groupBlockDict";
 import InputSpace from "../primitive-block/insert/InsertInputSpace";
 import {
   BlockModeTypes,
-  copy,
   getGroupBlockIntentData,
 } from "@/util/helper/blockUtilities";
 import InsertInput from "../primitive-block/insert/InsertInput";
@@ -12,6 +11,7 @@ import Command from "@/components/ui/Command";
 import BlockEdit from "./BlockEdit";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import PrimitiveBlock from "../primitive-block/PrimitiveBlock";
+import { copy } from "@/util/helper/globalUtilities";
 
 interface BlockProps {
   blockIndex: number;

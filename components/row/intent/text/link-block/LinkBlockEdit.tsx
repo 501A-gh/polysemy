@@ -1,4 +1,4 @@
-import { BlockModeTypes, selectBlockIndex } from "@/util/helper/blockUtilities";
+import { BlockModeTypes } from "@/util/helper/blockUtilities";
 import React, { useRef, useState } from "react";
 import Block from "../block/Block";
 import {
@@ -8,6 +8,7 @@ import {
   groupInsert,
   updateGroupBlockModeAtIndex,
 } from "@/util/helper/groupBlockUtilities";
+import { selectBlockIndex } from "@/util/helper/globalUtilities";
 
 interface LinkBlockEditProps {
   updateBlockMode: (mode: BlockModeTypes) => void;

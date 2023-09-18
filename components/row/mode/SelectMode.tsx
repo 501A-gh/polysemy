@@ -1,5 +1,7 @@
 import { StackType } from "@/components/ui/Editor";
+import { notify } from "@/components/ui/notify/Notify";
 import { rowIntentDict } from "@/util/data/rowIntentDict";
+import { DrawingPinIcon } from "@radix-ui/react-icons";
 import { markdownTable } from "markdown-table";
 import React from "react";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
@@ -64,32 +66,28 @@ const SelectMode: React.FC<SelectModeProps> = ({
       } else {
         if (confirm("Are you sure you want to delete this paragraph?")) {
           deleteStack();
+          notify("Deleted populated row", "backspace");
         }
       }
     } else {
-      alert("Last row cannot be deleted");
+      notify("Last row cannot be deleted", "alert");
     }
   };
 
   return (
     <div
       className={`
-        flex items-center text-left
-        select-none py-1 print:p-0
-        animate-slide-from-above
+        flex gap-4 text-left
+        select-none p-1 print:p-0
       `}
     >
       <button
         className={`
-          focus:outline-none
-          border
-          border-transparent
-          ml-1 mr-2 py-0.5 px-1 w-10 text-right
-          font-mono h-full rounded-sm
+          focus:outline-none border border-transparent
+          py-0.5 px-1 w-full max-w-[100px] min-w-[50px] text-right
+          font-mono h-fit rounded-sm  
           print:hidden text-sm
-          text-gray-400
-          dark:text-gray-600
-          orange-focus
+          group flex items-center justify-between
         `}
         onClick={() => setSelectMode(false)}
         onKeyDown={(e) => {
@@ -108,22 +106,22 @@ const SelectMode: React.FC<SelectModeProps> = ({
           }
         }}
       >
-        {rowIndex + 1}
+        <div
+          className={`text-gray-300 dark:text-gray-800 group-focus:gray-text rounded-sm uppercase`}
+        >
+          {currentRow.intentId}
+        </div>
+        <div
+          className={`text-gray-400 dark:text-gray-600 group-focus:orange-text `}
+        >
+          {rowIndex + 1}
+        </div>
       </button>
-      <div
-        className={`
-          flex items-center
-          flex-grow
-        `}
-      >
+      <div className={`col-span-11 border border-transparent pt-0.5`}>
         <ReactMarkdown
           className={` 
-            m-0
-            mr-3
-            p-0 w-full
-            text-gray-800
-            dark:text-gray-400
-            print:text-black
+            m-0 mr-3 p-0 w-full
+            text-gray-800 dark:text-gray-400 print:text-black
           `}
           remarkPlugins={[remarkGfm]}
         >

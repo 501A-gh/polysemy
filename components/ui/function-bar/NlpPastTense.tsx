@@ -30,7 +30,7 @@ const NlpPastTense = ({ sentence }: { sentence: string }) => {
           title={"Past Tense"}
           trigger={
             <button
-              className={`btn btn-selectop`}
+              className={`btn btn-standard`}
               onClick={() => {
                 const doc = nlp(sentence);
                 doc.verbs().toPastTense();

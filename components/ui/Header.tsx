@@ -20,6 +20,7 @@ const Header = ({ children }: { children?: JSX.Element | JSX.Element[] }) => {
         <div className={`flex items-center`}>
           <RadixPopover
             title={"Details"}
+            size={"medium"}
             trigger={
               <button className={`btn-tab`}>
                 <FileTextIcon />

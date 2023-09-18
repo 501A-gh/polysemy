@@ -1,11 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Editor from "../../components/ui/Editor";
 import Wallpaper from "@/components/ui/Wallpaper";
 import CommandPalette from "@/components/ui/CommandPalette";
 import { cva } from "class-variance-authority";
-import Header from "@/components/ui/Header";
-import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 import { Toaster } from "sonner";
 
 const editor = cva(["border", "transition-all"], {
@@ -37,6 +35,13 @@ const editor = cva(["border", "transition-all"], {
 
 export default function EditorPage() {
   const [cmdPalette, setCmdPalette] = useState(false);
+  useEffect(() => {
+    const down = (e: any) => {
+      if (e.metaKey && e.shiftKey && e.key === "p") setCmdPalette(true);
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
 
   return (
     <>
