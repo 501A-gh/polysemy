@@ -1,8 +1,9 @@
 "use client";
 import Row from "@/components/row/Row";
 import { IntentIdType } from "@/util/data/rowIntentDict";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NoSpaceScroll from "./NoScrollSpace";
+import { notify } from "./notify/Notify";
 
 export interface StackType {
   intentId: IntentIdType;
@@ -23,9 +24,17 @@ const Editor = () => {
     },
   ]);
 
+  useEffect(() => {
+    const down = (e: any) => {
+      if (e.key === "s" && e.metaKey) notify("Saved", "action");
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   return (
     <>
-      <section className={`flex flex-col h-auto pb-auto print:pt-1`}>
+      <section className={`flex flex-col h-auto p-4 print:pt-1`}>
         {stack.map((_, i) => (
           <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
         ))}

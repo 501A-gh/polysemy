@@ -10,6 +10,7 @@ import {
 } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import RadixDialog from "./RadixDialog";
+import FocusTrap from "focus-trap-react";
 
 interface CommandPaletteProps {
   open: boolean;
@@ -22,120 +23,115 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ open, setOpen }) => {
   return (
     <>
       {open ? (
-        <div
-          className={`
-            outline-none h-72 w-96 overflow-y-scroll 
-            fixed top-0 left-1/2 -ml-48 mt-2
-            transition-all duration-300 z-10
-            group rounded-md
-            cursor-pointer 
-            backdrop-blur 
-            bg-gray-50/70 
-            dark:bg-gray-950/70
-            border
-            border-gray-300
-            dark:border-gray-800
-            animate-slide-from-above
-            shadow-gray-300 dark:shadow-gray-900
-            shadow-xl
-          `}
-        >
-          <div className={`grid gap-2`}>
-            <div
-              className={`
-                sticky top-0 
-                border-b 
-                border-b-gray-300 
-                dark:border-b-gray-800
-                bg-gray-50/70 
-                dark:bg-gray-950/70
-                backdrop-blur-md
-                flex items-center z-20
-                shadow-lg 
-                shadow-gray-200/50 dark:shadow-gray-900/50
-              `}
-            >
-              <input
-                autoFocus
-                placeholder={`Search Command`}
+        <FocusTrap>
+          <div
+            className={`
+              outline-none h-72 w-96 overflow-y-scroll 
+              fixed top-0 left-1/2 -ml-48 mt-2
+              transition-all duration-300 z-10
+              group rounded-md cursor-pointer backdrop-blur 
+              bg-gray-50/70 dark:bg-gray-950/70
+              border border-gray-300 dark:border-gray-800
+              animate-slide-from-above
+              shadow-gray-300 dark:shadow-gray-900
+              shadow-xl
+            `}
+          >
+            <div className={`grid gap-2`}>
+              <div
                 className={`
-                  m-0 outline-none font-mono text-xs h-fit w-full border-none p-2 rounded-sm bg-transparent
+                  border-b 
+                  border-b-gray-300 
+                  dark:border-b-gray-800
+                  bg-gray-50/70 
+                  dark:bg-gray-950/70
+                  backdrop-blur-md
+                  flex items-center z-20
+                  shadow-lg 
+                  shadow-gray-200/50 dark:shadow-gray-900/50
                 `}
-              />
-            </div>
-            <div className={`flex items-center justify-between px-2 py-0`}>
-              <h6>Commands</h6>
-              <div>
-                <span className={`text-hint`}>Use {">"} to Search</span>
-              </div>
-            </div>
-            <section className={`grid px-2`}>
-              <button
-                className={`btn btn-standard`}
-                onClick={() => setOpen(false)}
               >
-                <Pencil1Icon />
-                Back to editing
-              </button>
-              <RadixDialog
-                title={"Import Markdown File"}
-                trigger={
-                  <button
-                    className={`btn btn-standard`}
-                    // onClick={() => setOpen(false)}
-                  >
-                    <CubeIcon />
-                    Import Markdown File
-                  </button>
-                }
-                description={`Edit pre-exisiting markdown files in polysemy.`}
-                save={
-                  <>
-                    <button className={`btn btn-standard`}>
-                      Upload Markdown File
+                <input
+                  autoFocus
+                  placeholder={`Search Command`}
+                  className={`
+                    m-0 outline-none font-mono text-xs h-fit w-full border-none p-2 rounded-sm bg-transparent
+                  `}
+                />
+              </div>
+              <section className={`grid px-2`}>
+                <button
+                  className={`btn btn-standard`}
+                  onClick={() => setOpen(false)}
+                >
+                  <Pencil1Icon />
+                  Back to editing
+                </button>
+                <RadixDialog
+                  title={"Import Markdown File"}
+                  trigger={
+                    <button
+                      className={`btn btn-standard`}
+                      // onClick={() => setOpen(false)}
+                    >
+                      <CubeIcon />
+                      Import Markdown File
                     </button>
-                    <button className={`btn btn-standard`}>Add File</button>
-                  </>
-                }
-              />
-              <button className={`btn btn-standard`}>
-                <RocketIcon />
-                Export File
-              </button>
-              <button className={`btn btn-standard`}>
-                <TrashIcon />
-                Delete Current File
-              </button>
-            </section>
-            <hr />
-            <div className={`flex items-center justify-between px-2 py-0`}>
-              <h6>Pages</h6>
-              <div>
-                <span className={`text-hint`}>Use {"@"} to envoke</span>
-              </div>
+                  }
+                  description={`Edit pre-exisiting markdown files in polysemy.`}
+                  save={
+                    <>
+                      <button className={`btn btn-standard`}>
+                        Upload Markdown File
+                      </button>
+                      <button className={`btn btn-standard`}>Add File</button>
+                    </>
+                  }
+                />
+                <button className={`btn btn-standard`}>
+                  <RocketIcon />
+                  Export File
+                </button>
+                <button className={`btn btn-standard`}>
+                  <TrashIcon />
+                  Delete Current File
+                </button>
+                <button className={`btn btn-standard`}>
+                  <GearIcon />
+                  Open Settings
+                </button>
+                <button
+                  className={`btn btn-standard`}
+                  onClick={() => router.push("/design")}
+                >
+                  <MixIcon />
+                  About Design
+                </button>
+                <button
+                  className={`btn btn-standard`}
+                  onClick={() => router.push("/")}
+                >
+                  <ArrowLeftIcon />
+                  Back to Main
+                </button>
+                <button
+                  className={`btn btn-standard`}
+                  onClick={() => router.push("/design")}
+                >
+                  <MixIcon />
+                  About Design
+                </button>
+                <button
+                  className={`btn btn-standard`}
+                  onClick={() => router.push("/")}
+                >
+                  <ArrowLeftIcon />
+                  Back to Main
+                </button>
+              </section>
             </div>
-            <section className={`grid px-2 pb-2`}>
-              <button className={`btn btn-standard`}>
-                <GearIcon />
-                Open Settings
-              </button>
-              <button
-                className={`btn btn-standard`}
-                onClick={() => router.push("/design")}
-              >
-                <MixIcon />
-                About Design
-              </button>
-              <button
-                className={`btn btn-standard`}
-                onClick={() => router.push("/")}
-              >
-                <ArrowLeftIcon />
-                Back to Main
-              </button>
-            </section>
           </div>
-        </div>
+        </FocusTrap>
       ) : (
         <button
           className={`

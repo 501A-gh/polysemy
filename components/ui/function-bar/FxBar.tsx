@@ -1,14 +1,12 @@
-import { Cross1Icon, Cross2Icon } from "@radix-ui/react-icons";
-import React, { useState, ReactNode } from "react";
+import React from "react";
 
 interface FxBarProps {
-  isOpen: boolean;
-  onClose: () => void;
+  show: boolean;
   children: React.ReactNode;
 }
 
-const FxBar: React.FC<FxBarProps> = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null;
+const FxBar: React.FC<FxBarProps> = ({ show, children }) => {
+  if (!show) return null;
 
   return (
     <footer className={` fixed bottom-0 w-full flex justify-center p-2.5 z-40`}>
@@ -28,44 +26,4 @@ const FxBar: React.FC<FxBarProps> = ({ isOpen, onClose, children }) => {
   );
 };
 
-interface FxBarContextProps {
-  showFxBar: (content: ReactNode) => void;
-  closeFxBar: () => void;
-}
-
-export const FxBarContext = React.createContext<FxBarContextProps | undefined>(
-  undefined
-);
-
-export const FxBarProvider: React.FC<{ children: JSX.Element }> = ({
-  children,
-}) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [dialogContent, setDialogContent] = useState<ReactNode | null>(null);
-
-  const showFxBar = (content: ReactNode) => {
-    setDialogContent(content);
-    setIsOpen(true);
-  };
-
-  const closeFxBar = () => {
-    setIsOpen(false);
-    setDialogContent(null);
-  };
-
-  const contextValue: FxBarContextProps = {
-    showFxBar,
-    closeFxBar,
-  };
-
-  return (
-    <FxBarContext.Provider value={contextValue}>
-      {children}
-      <FxBar isOpen={isOpen} onClose={closeFxBar}>
-        {dialogContent}
-      </FxBar>
-    </FxBarContext.Provider>
-  );
-};
-
-export { FxBar };
+export default FxBar;

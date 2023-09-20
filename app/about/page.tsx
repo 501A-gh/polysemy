@@ -9,7 +9,7 @@ function Page() {
     <div
       className={` h-screen flex items-center justify-center flex-col text-center`}
     >
-      {/* <h1 className={`font-serif`}>Polysemy.</h1> */}
+      <h1 className={`font-serif`}>Polysemy.</h1>
       <h4 className={`font-serif`}>A different kind of text editor.</h4>
 
       <p className={`my-5 max-w-md text-xs`}>

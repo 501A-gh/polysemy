@@ -11,8 +11,6 @@ import LinkPrimitiveBlock from "../primitive-block/LinkPrimitiveBlock";
 import { CopyIcon, ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import RadixPopover from "@/components/ui/RadixPopover";
 import { Tweet } from "@/components/tweet/Tweet";
-import RadixDialog from "@/components/ui/RadixDialog";
-import RadixHoverCard from "@/components/ui/RadixHoverCard";
 import { copy } from "@/util/helper/globalUtilities";
 
 interface LinkBlockProps {
@@ -133,7 +131,9 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
               </button>
             }
           >
-            <Tweet id={"1701954745316041209"} />
+            <div className={`p-1`}>
+              <Tweet id={"1701954745316041209"} />
+            </div>
           </RadixPopover>
           <button
             className={`btn btn-standard`}

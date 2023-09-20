@@ -9,7 +9,6 @@ import LinkBlock from "./link-block/LinkBlock";
 import { notify } from "@/components/ui/notify/Notify";
 import NlpPastTense from "@/components/ui/function-bar/NlpPastTense";
 import RadixPopover from "@/components/ui/RadixPopover";
-import { useFxBar } from "@/components/ui/function-bar/FxBarProvider";
 import TextFxBar from "@/components/ui/function-bar/text-layer/TextFxBar";
 import {
   textApplyLink,
@@ -19,6 +18,7 @@ import {
   textInsert,
 } from "@/util/helper/textUtilities";
 import { selectBlockIndex, sentence } from "@/util/helper/globalUtilities";
+import FxBar from "@/components/ui/function-bar/FxBar";
 
 interface TextProps {
   rowIndex: number;
@@ -54,39 +54,6 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
     updatedArray[index] = newValue;
     setBlockMode(updatedArray);
   };
-
-  const { showFxBar, closeFxBar } = useFxBar();
-
-  useEffect(() => {
-    if (selectBlocks.length > 1) {
-      console.log("bruh");
-      showFxBar(
-        <>
-          <TextFxBar
-            sentence={() => sentence(selectBlocks, data)}
-            resetSelect={() => {
-              focusOnCaret();
-              setSelectBlocks([]);
-            }}
-            backspaceMultiple={() =>
-              textBackspaceMultiple(selectBlocks, setStack, rowIndex)
-            }
-            applyLink={(link: string) =>
-              textApplyLink(link, selectBlocks, setStack, rowIndex, () =>
-                sentence(selectBlocks, data)
-              )
-            }
-          />
-          {/* <button className={`btn btn-standard`} onClick={closeFxBar}>
-  <Cross2Icon />
-  Close
-</button> */}
-        </>
-      );
-    } else {
-      closeFxBar();
-    }
-  }, [selectBlocks, showFxBar]);
 
   return (
     <>
@@ -181,6 +148,24 @@ const Text: React.FC<TextProps> = ({ rowIndex, stack, setStack }) => {
           {data.length} Words
         </span>
       )}
+
+      <FxBar show={selectBlocks.length > 1}>
+        <TextFxBar
+          sentence={() => sentence(selectBlocks, data)}
+          resetSelect={() => {
+            focusOnCaret();
+            setSelectBlocks([]);
+          }}
+          backspaceMultiple={() =>
+            textBackspaceMultiple(selectBlocks, setStack, rowIndex)
+          }
+          applyLink={(link: string) =>
+            textApplyLink(link, selectBlocks, setStack, rowIndex, () =>
+              sentence(selectBlocks, data)
+            )
+          }
+        />
+      </FxBar>
 
       {/* {selectBlocks.length > 1 && (
         <FunctionBar>
