@@ -8,13 +8,13 @@ import { StackType } from "@/components/ui/Editor";
 
 export type IntentCategory = "text" | "table" | "list";
 
-interface IntentSelectProps
+export interface IntentSelectProps
   extends React.HTMLAttributes<typeof HTMLDivElement> {
   intentRef: React.Ref<HTMLButtonElement>;
   rowIndex: number;
   stack: StackType[];
-  setStack: any;
-  setSelectMode: any;
+  setStack: (stack: any) => void;
+  setSelectMode: (selectMode: boolean) => void;
 }
 
 const options: IntentIdType[] = [

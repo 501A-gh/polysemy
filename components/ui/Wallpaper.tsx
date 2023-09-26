@@ -16,8 +16,8 @@ const Wallpaper: React.FC<WallpaperProps> = ({ src }) => {
           h-screen
           object-cover
           -z-20
-          bg-gray-200/50
-          dark:bg-gray-950/80
+          bg-zinc-200/50
+          dark:bg-zinc-950/80
         `}
       />
       {src && (

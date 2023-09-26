@@ -33,7 +33,6 @@ module.exports = {
           },
           "40%": {
             filter: "blur(2px)",
-            transform: "translateY(10%)",
           },
         },
       },
@@ -42,8 +41,8 @@ module.exports = {
         "slide-from-above": "slideFromAbove 0.6s ease",
       },
       fontFamily: {
-        sans: ["var(--font-spaceGrotesk)"],
-        mono: ["var(--font-spaceMono)"],
+        sans: ["var(--font-dmSans)"],
+        mono: ["var(--font-dmMono)"],
         serif: ["var(--font-ibarraRealNova)"],
       },
       boxShadow: {

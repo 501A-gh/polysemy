@@ -1,16 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { rowIntentDict } from "@/util/data/rowIntentDict";
-import IntentSelect from "./intent/IntentSelect";
+import { RowIntentDictType, rowIntentDict } from "@/util/data/rowIntentDict";
 
 // Intent Types
-import { markdownTable } from "markdown-table";
 import { StackType } from "@/components/ui/Editor";
-import Text from "./intent/text/Text";
-import Table from "./intent/table/Table";
+import Text from "./edit/intent/text/Text";
 import { notify } from "../ui/notify/Notify";
-import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import remarkGfm from "remark-gfm";
-import FocusTrap from "focus-trap-react";
 
 export interface IntentComponentProps {
   rowIndex: number;
@@ -26,9 +20,13 @@ interface RowProps {
 
 const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
   const [selectMode, setSelectMode] = useState<boolean>(true);
+
   const currentRow: StackType = stack[rowIndex];
-  const rowIntent = rowIntentDict[currentRow.intentId];
-  const data = currentRow.data;
+  const rowIntent: RowIntentDictType | undefined = rowIntentDict.find(
+    (obj: RowIntentDictType) => obj.intentId === currentRow.intentId
+  );
+
+  const data: StackType["data"] = currentRow.data;
 
   const addStackAbove = () => {
     setStack((prevItems: StackType[]) => {
@@ -88,25 +86,30 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
 
   useEffect(() => {
     const down = (e: any) => {
-      if (e.key === "Enter" && e.metaKey) setSelectMode(true);
+      if (e.key === "Enter" && e.metaKey) {
+        setSelectMode(true);
+      }
       if (e.altKey && e.shiftKey) focusOnIntent();
     };
     document.addEventListener("keydown", down);
     return () => document.removeEventListener("keydown", down);
   }, []);
 
-  const [selectRows, setSelectRows] = useState<number[]>([]);
-
   return (
-    <div className={`flex items-stretch gap-1.5`}>
+    <section
+      className={`flex items-stretch ${selectMode ? "gap-3" : "gap-1.5"}`}
+    >
       <button
-        onClick={() => setSelectMode(false)}
+        onClick={() =>
+          selectMode ? setSelectMode(false) : setSelectMode(true)
+        }
+        title={selectMode ? `Enter edit mode` : `Exit edit mode`}
         className={`
-          transition-all outline-none rounded-full peer group
+          transition-all outline-none rounded-full peer 
           ${
             selectMode
-              ? `focus:bg-orange-500 focus:dark:bg-orange-700 w-3 h-3 my-auto`
-              : `bg-gray-300 dark:bg-gray-800 w-0.5 my-2`
+              ? `focus:bg-zinc-900 focus:dark:bg-zinc-100 w-3 h-3 my-auto`
+              : `bg-zinc-300 dark:bg-zinc-800 w-0.5 my-1 hocus:w-1.5 hocus:my-2.5`
           }
         `}
         onKeyDown={(e) => {
@@ -126,92 +129,38 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
               break;
           }
         }}
-      >
-        {/* <span
-          className={`hidden group-focus:block text-xs text-center capitalize`}
-        >
-          {stack[rowIndex].intentId}
-        </span> */}
-      </button>
-      <div
+      />
+
+      <section
         className={`
-          border    
-          peer-focus:border-y-gray-300/80
-          peer-focus:dark:border-y-gray-800/80
-          w-full flex transition-all 
+          grid gap-1 w-full rounded-sm
           ${
-            selectMode
-              ? `
-              border-transparent bg-transparent backdrop-blur-0
-              rounded-none gap-2 text-left select-none
+            selectMode &&
             `
-              : `
-              border-gray-200 dark:border-gray-900  
-              backdrop-blur bg-white/80 dark:bg-gray-950/90
-              p-1 px-1.5 rounded-md
+              peer-focus:bg-zinc-200
+              peer-focus:dark:bg-zinc-900
             `
-          }`}
+          }
+        `}
       >
-        {selectMode ? (
-          <>
-            <div
-              className={`
-                group flex items-stretch justify-between 
-                w-full max-w-[40px] min-w-[40px]
-              `}
-            >
-              <div
-                className={`
-                  focus:outline-none w-full
-                  border border-transparent
-                  py-0.5 px-1 flex items-center justify-end
-                  font-mono rounded  
-                  print:hidden text-sm
-                  orange-focus text-gray-400 dark:text-gray-700
-                `}
-              >
-                {rowIndex + 1}
-              </div>
-            </div>
-            <ReactMarkdown
-              className={` 
-                m-0 flex items-center
-                text-gray-800 dark:text-gray-400 print:text-black
-              `}
-              remarkPlugins={[remarkGfm]}
-            >
-              {`${
-                rowIntent.category == "text"
-                  ? `${rowIntent.markdownSymbol} ${
-                      data.text && data.text.join(" ")
-                    }`
-                  : rowIntent.category == "table" &&
-                    data.table &&
-                    `${markdownTable(data.table)}`
-              }`}
-            </ReactMarkdown>
-          </>
-        ) : (
-          <FocusTrap>
-            <div className={`flex flex-wrap items-center`}>
-              <IntentSelect
-                intentRef={intentRef}
-                rowIndex={rowIndex}
-                stack={stack}
-                setStack={setStack}
-                setSelectMode={setSelectMode}
-              />
-              {rowIntent.category == "text" && (
-                <Text rowIndex={rowIndex} stack={stack} setStack={setStack} />
-              )}
-              {rowIntent.category == "table" && (
-                <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />
-              )}
-            </div>
-          </FocusTrap>
+        {rowIntent?.category == "text" && (
+          <Text
+            selectMode={selectMode}
+            rowIndex={rowIndex}
+            rowIntent={rowIntent}
+            data={data}
+            intentRef={intentRef}
+            stack={stack}
+            setStack={setStack}
+            setSelectMode={setSelectMode}
+          />
         )}
-      </div>
-    </div>
+
+        {/* {rowIntent?.category == "table" && (
+            <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />
+          )} */}
+      </section>
+    </section>
   );
 };
 

@@ -34,7 +34,7 @@ const Editor = () => {
 
   return (
     <>
-      <section className={`flex flex-col h-auto p-4 print:pt-1`}>
+      <section className={`flex flex-col h-auto p-4 gap-2 print:pt-1`}>
         {stack.map((_, i) => (
           <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
         ))}

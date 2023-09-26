@@ -1,24 +1,20 @@
-import { Link2Icon, LinkNone2Icon } from "@radix-ui/react-icons";
+import { Link2Icon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import RadixDialog from "../RadixDialog";
 
 interface LinkInsertProps {
+  trigger: JSX.Element;
   applyLink: (link: string) => void;
 }
 
-const LinkInsert: React.FC<LinkInsertProps> = ({ applyLink }) => {
+const LinkInsert: React.FC<LinkInsertProps> = ({ trigger, applyLink }) => {
   const [link, setLink] = useState<string>("");
 
   return (
     <>
       <RadixDialog
         title={"Set Link"}
-        trigger={
-          <button className={`btn btn-standard`}>
-            <LinkNone2Icon />
-            Set Link
-          </button>
-        }
+        trigger={trigger}
         description={`add a link to the highlighted text.`}
         save={
           <>

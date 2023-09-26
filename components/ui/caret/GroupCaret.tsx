@@ -1,5 +1,5 @@
-import Block from "@/components/row/intent/text/block/Block";
-import GroupBlockWrapper from "@/components/row/intent/text/group-block/GroupBlockWrapper";
+import Block from "@/components/row/edit/intent/text/block/Block";
+import GroupBlockWrapper from "@/components/row/edit/intent/text/group-block/GroupBlockWrapper";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import { BlockIntentType, BlockModeTypes } from "@/util/helper/blockUtilities";
 import { selectBlockIndex } from "@/util/helper/globalUtilities";

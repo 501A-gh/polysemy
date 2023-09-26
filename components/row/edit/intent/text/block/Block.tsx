@@ -1,17 +1,19 @@
 import React, { useRef, useState } from "react";
-import GroupBlockEdit from "../group-block/GroupBlockEdit";
-import { GroupBlockDictType, groupBlockDict } from "@/util/data/groupBlockDict";
-import InputSpace from "../primitive-block/insert/InsertInputSpace";
+import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
   BlockModeTypes,
   getGroupBlockIntentData,
 } from "@/util/helper/blockUtilities";
-import InsertInput from "../primitive-block/insert/InsertInput";
 import Command from "@/components/ui/Command";
 import BlockEdit from "./BlockEdit";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import PrimitiveBlock from "../primitive-block/PrimitiveBlock";
-import { copy } from "@/util/helper/globalUtilities";
+import {
+  copy,
+  isEndOfHighlight,
+  sentence,
+} from "@/util/helper/globalUtilities";
+import TextFxBar from "@/components/ui/highlight/text-layer/TextAction";
 
 interface BlockProps {
   blockIndex: number;
@@ -66,7 +68,6 @@ const Block: React.FC<BlockProps> = ({
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-
       <PrimitiveBlock
         ref={buttonRef}
         blockIndex={blockIndex}

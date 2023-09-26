@@ -1,5 +1,5 @@
 import { IntentIdType } from "@/util/data/rowIntentDict";
-import { IntentComponentProps } from "../../Row";
+import { IntentComponentProps } from "../../../Row";
 import { StackType } from "@/components/ui/Editor";
 import { tableColumn } from "./tableStyle";
 import TableInput from "./TableInput";

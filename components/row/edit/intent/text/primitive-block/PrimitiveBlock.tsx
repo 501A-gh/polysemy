@@ -31,14 +31,12 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
               : `
               ${
                 blockMode === "standard" || blockMode === "insert"
-                  ? `block-mode-standard`
+                  ? `block-mode-standard rounded-sm`
                   : ""
               }
               ${blockMode === "edit" ? "block-mode-edit" : ""}
               ${blockMode === "command" ? "block-mode-command" : ""}
               `
-            // blockMode === "groupEdit"
-            // blockMode === "groupInsert"
           }
         `}
         {...props}

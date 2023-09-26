@@ -20,13 +20,13 @@ export const notify = (
         flex items-center gap-2
       `}
     >
-      <div className={`gray-text`}>
+      <div className={`zinc-text`}>
         {intent === "copy" && <CopyIcon />}
         {intent === "backspace" && <TrashIcon />}
         {intent === "action" && <LightningBoltIcon />}
         {intent === "alert" && <ExclamationTriangleIcon />}
       </div>
-      <p className={`gray-text text-sm`}>{description}</p>
+      <p className={`zinc-text text-sm`}>{description}</p>
       {/* {type === "action" && (
         <div className={`flex items-center justify-end `}>
           <button className="btn btn-standard">Commit</button>

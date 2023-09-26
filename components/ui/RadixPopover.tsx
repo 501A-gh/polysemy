@@ -52,7 +52,7 @@ const RadixPopover: React.FC<PopoverProps> = ({
           </Popover.Close>
         </hgroup>
         <div className={`grid p-1`}>{children}</div>
-        <Popover.Arrow className={`fill-gray-300 dark:fill-gray-800`} />
+        <Popover.Arrow className={`fill-zinc-300 dark:fill-zinc-800`} />
       </Popover.Content>
     </Popover.Portal>
   </Popover.Root>

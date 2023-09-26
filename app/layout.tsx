@@ -1,21 +1,21 @@
 import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 import "./globals.css";
-import { Space_Mono, Space_Grotesk, Ibarra_Real_Nova } from "next/font/google";
+import { Ibarra_Real_Nova, DM_Sans, DM_Mono } from "next/font/google";
 
-const spaceGrotesk = Space_Grotesk({
+const dmSans = DM_Sans({
   subsets: ["latin"],
   weight: ["400", "700"],
-  variable: "--font-spaceGrotesk",
+  variable: "--font-dmSans",
   display: "swap",
 });
-const spaceMono = Space_Mono({
+const dmMono = DM_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-spaceMono  ",
+  weight: ["400", "500"],
+  variable: "--font-dmMono",
 });
 const ibarraRealNova = Ibarra_Real_Nova({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "600", "700"],
   variable: "--font-ibarraRealNova",
   display: "swap",
 });
@@ -34,15 +34,15 @@ export default function RootLayout({
     <html
       lang="en"
       className={`
-        ${spaceGrotesk.variable}
-        ${spaceMono.variable}
+        ${dmSans.variable}
+        ${dmMono.variable}
         ${ibarraRealNova.variable}
       `}
     >
       <body
         className={`
-          bg-gray-100
-          dark:bg-gray-950
+          bg-zinc-100
+          dark:bg-zinc-950
           min-h-screen
         `}
       >

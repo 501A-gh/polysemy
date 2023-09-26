@@ -18,7 +18,7 @@ const Suggest: React.FC<SuggestProps> = ({
   return (
     <>
       {input?.length > 2 &&
-        suggestion.map((s: string) => (
+        suggestion.map((s: string, i: number) => (
           <button
             className={`btn ${className}`}
             key={s}

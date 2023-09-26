@@ -46,10 +46,10 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
           bg-transparent py-0.5 px-1
           w-24 text-sm my-0.5 
           focus:border-transparent 
-          hover:bg-gray-200/80
-          hover:border-gray-200
-          hover:dark:bg-gray-900
-          hover:dark:border-gray-800
+          hover:bg-zinc-200/80
+          hover:border-zinc-200
+          hover:dark:bg-zinc-900
+          hover:dark:border-zinc-800
         `}
         placeholder={focus ? "Type ..." : ""}
         value={input}

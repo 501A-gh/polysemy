@@ -40,19 +40,20 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
               selected.includes(blockIndex)
                 ? `block-mode-highlight`
                 : `
-                ${i === 0 && "rounded-l-sm"} ${
-                    i === text.split(" ").length - 1 && "rounded-r-sm"
-                  }
                 ${
-                  blockMode === "standard" && `text-gray-600 dark:text-gray-400`
+                  blockMode === "standard" || blockMode === "insert"
+                    ? `block-mode-standard`
+                    : ""
                 }
+                ${i === 0 && "rounded-l-sm"}
+                ${i === text.split(" ").length - 1 && "rounded-r-sm"}
                 ${
                   focus &&
                   `
-                    peer-focus:bg-gray-200
-                    peer-focus:dark:bg-gray-800
-                    peer-focus:border-b-gray-300
-                    peer-focus:dark:border-b-gray-700
+                    peer-focus:bg-zinc-200
+                    peer-focus:dark:bg-zinc-800
+                    peer-focus:border-b-zinc-300
+                    peer-focus:dark:border-b-zinc-700
                     peer-focus:text-black
                     peer-focus:dark:text-white
                     peer-focus:animate-pulse

@@ -7,7 +7,7 @@ interface DialogProps {
   title: string;
   description: string;
   children?: JSX.Element | JSX.Element[];
-  save: JSX.Element;
+  save?: JSX.Element;
 }
 
 const RadixDialog: React.FC<DialogProps> = ({
@@ -21,7 +21,7 @@ const RadixDialog: React.FC<DialogProps> = ({
     <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
     <Dialog.Portal>
       <Dialog.Overlay
-        className={`bg-gray-200/50 dark:bg-gray-900/50 backdrop-blur-sm data-[state=open]:animate-overlayShow fixed inset-0 z-20`}
+        className={`bg-zinc-200/50 dark:bg-zinc-900/50 backdrop-blur-sm data-[state=open]:animate-overlayShow fixed inset-0 z-20`}
       />
       <Dialog.Content
         //  data-[state=open]:animate-show

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import GroupBlockEdit from "../group-block/GroupBlockEdit";
+import GroupBlockEdit from "./GroupBlockEdit";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
   BlockModeTypes,
@@ -7,7 +7,7 @@ import {
 } from "@/util/helper/blockUtilities";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import GroupPrimitiveBlock from "../primitive-block/GroupPrimitiveBlock";
-import { copy } from "@/util/helper/globalUtilities";
+import { copy, isEndOfHighlight } from "@/util/helper/globalUtilities";
 
 interface GroupBlockProps {
   blockIndex: number;
@@ -62,7 +62,6 @@ const GroupBlock: React.FC<GroupBlockProps> = ({
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-
       {blockMode === "groupEdit" ? (
         <GroupBlockEdit
           groupBlockIntent={groupBlockIntent}

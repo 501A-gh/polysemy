@@ -4,12 +4,18 @@ Polysemy is a block based text editor for English.
 
 ## Keybindings
 
+### Global Shortcuts
+
+| Key             | Action               |
+| --------------- | -------------------- |
+| `⌘` + `⇧` + `p` | open command palette |
+
 ### Basic Navigation
 
-| Key             | Action         |
-| --------------- | -------------- |
-| `tab`           | move forwards  |
-| `tab` + `shift` | move backwords |
+| Key         | Action         |
+| ----------- | -------------- |
+| `tab`       | move forwards  |
+| `tab` + `⇧` | move backwords |
 
 ### Select Mode
 
@@ -24,23 +30,31 @@ Polysemy is a block based text editor for English.
 
 #### Text Edits
 
-| Key                       | Action                    | Submit             |
-| ------------------------- | ------------------------- | ------------------ |
-| `cmd`                     | Focus on caret            |                    |
-| `cmd` + `enter`           | switch to select mode     |                    |
-| `o`                       | enter command mode        | `enter` or `space` |
-| `h` (start) + `h` (end)   | highlight words           | `enter` or `space` |
-| `c`                       | copy word                 |                    |
-| `x`                       | cut word                  |                    |
-| `j`                       | delete word infront       |                    |
-| `del` or `backspace`      | delete word               |                    |
-| `r` or `enter` or `space` | replace a word            | `space`            |
-| `i`                       | insert a sentence infront | `enter`            |
+| Key                     | Action                    | Submit             |
+| ----------------------- | ------------------------- | ------------------ |
+| `⌘`                     | Focus on caret            |                    |
+| `⇧` + `⌥`               | Focus on markdown intent  |                    |
+| `⌘` + `enter`           | switch to select mode     |                    |
+| `o`                     | enter command mode        | `enter` or `space` |
+| `h` (start) + `h` (end) | highlight words           | `enter` or `space` |
+| `c`                     | copy word                 |                    |
+| `x`                     | cut word                  |                    |
+| `del` or `backspace`    | delete word               |                    |
+| `enter` or `space`      | replace a word            | `space`            |
+| `/`                     | insert a sentence infront | `enter`            |
+
+##### Text Groups
+
+Text groups refer to paranthesis, brakets and more. (Anything that group a set of words)
+
+| Key               | Action         | Submit  |
+| ----------------- | -------------- | ------- |
+| `(` or `'` or `[` | insert a group | `enter` |
 
 #### Table Edits
 
 | Key              | Action                |
 | ---------------- | --------------------- |
-| `cmd` + `k`      | Add column            |
-| `cmd` + `j`      | Add row               |
+| `⌘` + `k`        | Add column            |
+| `⌘` + `j`        | Add row               |
 | `tab` or `enter` | Save contents in cell |

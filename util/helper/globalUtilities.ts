@@ -24,9 +24,21 @@ export const selectBlockIndex = (
       { length: end - start + 1 },
       (_, i) => start + i
     );
-    setState(indexesInBetween);
+    setTimeout(() => setState(indexesInBetween), 1);
   } else {
     setState([index]);
+  }
+};
+
+export const isEndOfHighlight = (selected: number[], blockIndex: number) => {
+  if (
+    selected.length > 1 &&
+    selected.includes(blockIndex) &&
+    selected[selected.length - 1] == blockIndex
+  ) {
+    return true;
+  } else {
+    return false;
   }
 };
 
