@@ -31,7 +31,9 @@ const RadixDialog: React.FC<DialogProps> = ({
         `}
       >
         <hgroup className={`flex items-center justify-between`}>
-          <Dialog.Title className={`font-serif m-0`}>{title}</Dialog.Title>
+          <Dialog.Title className={`font-serif text-2xl m-0`}>
+            {title}
+          </Dialog.Title>
           <Dialog.Close className={`btn-close`}>
             <Cross2Icon />
           </Dialog.Close>

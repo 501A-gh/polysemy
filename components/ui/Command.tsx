@@ -4,6 +4,7 @@ import {
   Pencil1Icon,
   TransformIcon,
 } from "@radix-ui/react-icons";
+import { ActionTypes } from "@/util/helper/blockUtilities";
 
 interface CommandButtonProps {
   icon: JSX.Element;
@@ -29,28 +30,17 @@ const options: CommandButtonProps[] = [
   },
 ];
 
-interface CommandProps {
-  setCurrentMode: any;
+const Command: React.FC<{
   word: string;
-  insert: any;
-  backspace: any;
-  blockIndex: number;
   focusOnClick: any;
-}
-
-const Command: React.FC<CommandProps> = ({
-  setCurrentMode,
-  word,
-  insert,
-  backspace,
-  blockIndex,
-  focusOnClick,
-}) => {
+  setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
+  edit: (word: string) => void;
+}> = ({ setAction, word, edit, focusOnClick }) => {
   const [response, setResponse] = useState([]);
 
   const closeCommandMode = () => {
     setResponse([]);
-    setCurrentMode("standard");
+    setAction("standard");
   };
 
   async function fetchApi(apiRoute: string) {
@@ -73,24 +63,19 @@ const Command: React.FC<CommandProps> = ({
           {response.slice(0, 50).map((obj: any, i: number) => (
             <button
               key={i}
-              className={`btn btn-word`}
+              className={`btn-standard`}
               onClick={() => {
-                backspace(blockIndex);
-                obj.word
-                  .split(/\W+/)
-                  .reverse()
-                  .map((w: string) => {
-                    insert(w, blockIndex);
-                  });
+                edit(obj.word);
                 closeCommandMode();
                 focusOnClick();
               }}
-              onKeyDown={(e) => {
-                if (e.key === "o") {
-                  closeCommandMode();
-                  focusOnClick();
-                }
-              }}
+
+              // onKeyDown={(e) => {
+              //   if (e.key === "o") {
+              //     closeCommandMode();
+              //     focusOnClick();
+              //   }
+              // }}
             >
               {obj.word}
             </button>
@@ -101,7 +86,7 @@ const Command: React.FC<CommandProps> = ({
           {options.map((obj: CommandButtonProps, i: number) => (
             <button
               key={i}
-              className={`btn btn-standard`}
+              className={`btn-standard`}
               onClick={() => {
                 fetchApi(obj.apiRoute);
               }}

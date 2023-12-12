@@ -105,16 +105,31 @@ const Block: React.FC<GeneralBlockProps> = ({
         />
       )}
 
-      {/* {action === "command" && (
+      {action === "command" && (
         <Command
           word={word}
-          blockIndex={blockIndex}
-          insert={insert}
-          backspace={backspace(setBlocks, blockIndex)}
+          edit={(newWord: string) => {
+            if (newWord.split(/\W+/).length > 1) {
+              newWord
+                .split(/\W+/)
+                .reverse()
+                .map((w: string) => {
+                  insert({
+                    type: "word",
+                    content: w,
+                  });
+                });
+            } else {
+              edit({
+                type: "word",
+                content: newWord,
+              });
+            }
+          }}
           focusOnClick={focusOnBlock}
+          setAction={setAction}
         />
-      )} */}
-      {/* setCurrentMode={updateBlockMode} */}
+      )}
     </>
   );
 };

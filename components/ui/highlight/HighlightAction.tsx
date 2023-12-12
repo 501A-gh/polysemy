@@ -36,7 +36,7 @@ const HighlightAction: React.FC<{
       ) : (
         <p
           className={`
-            px-3 py-1 text-xs animate-pulse rounded-sm 
+            px-3 py-1 text-sm animate-pulse rounded-sm 
             border border-dashed 
             border-zinc-300 dark:border-zinc-700
           `}
