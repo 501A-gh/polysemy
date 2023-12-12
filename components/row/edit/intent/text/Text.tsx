@@ -188,6 +188,7 @@ const Text: React.FC<TextProps> = ({
                 )}
               </>
             ))}
+
           <Caret
             inputRef={caretRef}
             focusOnCaret={() => focusOnCaret()}
@@ -219,15 +220,15 @@ const Text: React.FC<TextProps> = ({
               description={`Resolve ${data.length} misspelled words`}
             ></RadixDialog>
             {links &&
-              links.map((url: string) => (
-                <Widget onClick={() => window.open(url, "_blank")}>
+              links.map((url: string, i: number) => (
+                <Widget key={i} onClick={() => window.open(url, "_blank")}>
                   <Link2Icon />
                   {url}
                 </Widget>
               ))}
           </div>
           <div className={`flex items-center gap-2 pr-1`}>
-            <RadixDialog
+            {/* <RadixDialog
               title="Misspell Handler"
               trigger={
                 <button className={`btn btn-transparent red-text`}>
@@ -241,7 +242,7 @@ const Text: React.FC<TextProps> = ({
                 </button>
               }
               description={`Resolve ${data.length} misspelled words`}
-            ></RadixDialog>
+            ></RadixDialog> */}
             <span className={`zinc-text text-xs `}>{data.length} Words</span>
           </div>
         </div>

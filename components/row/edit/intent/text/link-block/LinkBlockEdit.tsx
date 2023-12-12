@@ -1,4 +1,3 @@
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
 import React, { useRef, useState } from "react";
 import Block from "../block/Block";
 import {
@@ -9,17 +8,19 @@ import {
   updateGroupBlockModeAtIndex,
 } from "@/util/helper/groupBlockUtilities";
 import { selectBlockIndex } from "@/util/helper/globalUtilities";
+import { ModeTypes } from "@/util/helper/blockUtilities";
+import { BlockType } from "../TextInterpreter";
 
 interface LinkBlockEditProps {
-  updateBlockMode: (mode: BlockModeTypes) => void;
-  editLinkBlock: (text: string) => void;
+  setMode: React.Dispatch<React.SetStateAction<ModeTypes>>;
+  edit: (newBlockObj: BlockType) => void;
   text: string;
   url: string;
 }
 
 const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
-  updateBlockMode,
-  editLinkBlock,
+  setMode,
+  edit,
   text,
   url,
   ...props
@@ -40,8 +41,11 @@ const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
   const editAndSave = () => {
-    editLinkBlock(`[${linkBlock.join(" ")}](${linkBlockUrl})`);
-    updateBlockMode("standard");
+    edit({
+      type: "link",
+      content: `[${linkBlock.join(" ")}](${linkBlockUrl})`,
+    });
+    setMode("standard");
   };
 
   const linkBlockModeOriginal = new Array(linkBlock.length).fill("standard");
@@ -118,7 +122,7 @@ const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
           }
         }}
       />
-      <button className={`btn btn-standard`} onClick={() => editAndSave()}>
+      <button className={`btn-standard`} onClick={() => editAndSave()}>
         Done
       </button>
     </>

@@ -4,7 +4,7 @@ import IntentSelect, { IntentSelectProps } from "../edit/intent/IntentSelect";
 
 export interface SwitchModeProps extends SelectModeProps, IntentSelectProps {
   selectMode: boolean;
-  children?: JSX.Element;
+  children?: JSX.Element | JSX.Element[];
   status?: JSX.Element;
 }
 

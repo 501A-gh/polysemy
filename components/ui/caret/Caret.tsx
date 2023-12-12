@@ -1,43 +1,42 @@
 import React, { useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
-  BlockIntentType,
+  formatContent,
   getGroupBlockIntentData,
 } from "@/util/helper/blockUtilities";
 import PrimitiveCaret from "./PrimitiveCaret";
-import GroupCaret from "./GroupCaret";
+import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
+import GroupBlockInsert from "@/components/row/edit/intent/text/group-block/GroupBlockInsert";
 
 interface CaretProps {
   inputRef: React.Ref<HTMLInputElement>;
   focusOnCaret: () => void;
-  insert: (text: string) => void;
-  createBlockMode: () => void;
+  insert: (inputBlockObj: BlockType) => void;
 }
 
-const Caret: React.FC<CaretProps> = ({
-  inputRef,
-  focusOnCaret,
-  insert,
-  createBlockMode,
-}) => {
-  const [blockIntent, setBlockIntent] = useState<BlockIntentType>();
+const Caret: React.FC<CaretProps> = ({ inputRef, focusOnCaret, insert }) => {
+  const [blockIntent, setBlockIntent] = useState<BlockType["type"]>();
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();
 
   return (
     <>
       {blockIntent === "group" ? (
-        <GroupCaret
-          setBlockIntent={setBlockIntent}
+        <GroupBlockInsert
+          blocksData={[]}
           groupBlockIntent={groupBlockIntent}
-          insertGroupBlock={insert}
+          enter={(blocksData: BlockType[]) =>
+            insert({
+              type: "group",
+              content: formatContent.groupBlock(groupBlockIntent, blocksData),
+            })
+          }
         />
       ) : (
         <PrimitiveCaret
           inputRef={inputRef}
           focusOnCaret={focusOnCaret}
           insert={insert}
-          createBlockMode={createBlockMode}
           setBlockIntent={setBlockIntent}
           setGroupBlockIntent={(symbol: string) =>
             setGroupBlockIntent(getGroupBlockIntentData(symbol))

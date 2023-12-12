@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import Suggest, { SuggestProps } from "../Suggest";
-import { BlockIntentType } from "@/util/helper/blockUtilities";
-import { filterWord } from "@/util/helper/globalUtilities";
+import { filterWord } from "@/util/helper/blockUtilities";
+import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 
 interface PrimitiveCaretProps {
   inputRef: React.Ref<HTMLInputElement>;
   focusOnCaret: () => void;
-  insert: (text: string) => void;
-  createBlockMode: () => void;
-  setBlockIntent: (intent: BlockIntentType) => void;
+  insert: (newBlockObj: BlockType) => void;
+  setBlockIntent: (intent: BlockType["type"]) => void;
   setGroupBlockIntent: (symbol: string) => void;
 }
 
@@ -16,7 +15,6 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
   inputRef,
   focusOnCaret,
   insert,
-  createBlockMode,
   setBlockIntent,
   setGroupBlockIntent,
 }) => {
@@ -37,15 +35,21 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
           e.clipboardData
             .getData("text")
             .split(/\W+/)
-            .map((word: string) => insert(word));
+            .map((word: string) =>
+              insert({
+                type: "word",
+                content: word,
+              })
+            );
         }}
         className={`
           focus:outline-none h-fit
           transition-all delay-100
           border border-transparent
           bg-transparent py-0.5 px-1
-          w-24 text-sm my-0.5 
-          focus:border-transparent 
+          w-24 text-base my-0.5
+          focus:border-transparent
+          text-blue-600
           hover:bg-zinc-200/80
           hover:border-zinc-200
           hover:dark:bg-zinc-900
@@ -71,15 +75,15 @@ const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
               setGroupBlockIntent("[");
               setInput("");
               break;
+            default:
+              const results = filterWord(e.target.value);
+              setSuggestion(results);
           }
-          const results = filterWord(e.target.value);
-          setSuggestion(results);
         }}
         onKeyDown={(e) => {
           setFocus(true);
           if (input.split("").length > 0 && e.key === " ") {
-            insert(input);
-            createBlockMode();
+            insert({ type: "word", content: input });
             setTimeout(() => setInput(""), 1);
           }
         }}

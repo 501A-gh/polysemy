@@ -1,4 +1,5 @@
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
+// import { cva } from "class-variance-authority";
+import { ActionTypes } from "@/util/helper/blockUtilities";
 import React from "react";
 
 interface PrimitiveBlockProps
@@ -7,7 +8,7 @@ interface PrimitiveBlockProps
   blockIndex: number;
   selected: number[];
   text: string;
-  blockMode: BlockModeTypes;
+  action: ActionTypes;
 }
 
 const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
@@ -15,35 +16,53 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
   blockIndex,
   selected,
   text,
-  blockMode,
+  action,
   ...props
 }) => {
   return (
-    <>
-      <button
-        ref={ref}
-        type="button"
-        className={`
-          block
-          ${
-            selected.includes(blockIndex)
-              ? `block-mode-highlight`
-              : `
-              ${
-                blockMode === "standard" || blockMode === "insert"
-                  ? `block-mode-standard rounded-sm`
-                  : ""
-              }
-              ${blockMode === "edit" ? "block-mode-edit" : ""}
-              ${blockMode === "command" ? "block-mode-command" : ""}
+    <button
+      ref={ref}
+      type="button"
+      className={`
+        border border-transparent 
+        text-lg font-sans cursor-pointer 
+        outline-none select-none
+        px-0.5 my-0.5 duration-200
+        ${
+          selected.includes(blockIndex)
+            ? `
+              rounded-none
+              text-white
+              focus:bg-pink-600
+              bg-pink-500
+              border-pink-500
+              dark:focus:bg-pink-700
+              dark:bg-pink-900
+              dark:border-pink-900
+            `
+            : `
+            ${
+              (action === "standard" || action === "insert") &&
               `
-          }
-        `}
-        {...props}
-      >
-        {text}
-      </button>
-    </>
+                zinc-text
+                focus:bg-zinc-200
+                focus:dark:bg-zinc-800 
+                focus:border-b-zinc-300
+                focus:dark:border-b-zinc-700
+                focus:text-black
+                focus:dark:text-white 
+                rounded-sm
+              `
+            }
+            ${action === "edit" && "blue-text animate-bounce"}
+            ${action === "command" && "blue-text animate-pulse"}
+            `
+        }
+      `}
+      {...props}
+    >
+      {text}
+    </button>
   );
 };
 

@@ -1,4 +1,4 @@
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
+import { ActionTypes } from "@/util/helper/blockUtilities";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -8,7 +8,7 @@ interface LinkPrimitiveBlockProps
   blockIndex: number;
   selected: number[];
   text: string;
-  blockMode: BlockModeTypes;
+  action: ActionTypes;
 }
 
 const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
@@ -16,7 +16,7 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
   blockIndex,
   selected,
   text,
-  blockMode,
+  action,
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
@@ -46,7 +46,7 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
                     i === text.split(" ").length - 1 && "rounded-r-sm"
                   }
                 ${
-                  blockMode === "standard" &&
+                  action === "standard" &&
                   `zinc-text border border-b-zinc-300 dark:border-b-zinc-500`
                 }
                 ${
@@ -61,7 +61,7 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
                   duration-200
                 `
                 }
-                ${blockMode === "command" ? "block-mode-command" : ""}
+                ${action === "command" ? "block-mode-command" : ""}
               `
             }
           `}

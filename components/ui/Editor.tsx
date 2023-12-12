@@ -8,8 +8,15 @@ import { notify } from "./notify/Notify";
 export interface StackType {
   intentId: IntentIdType;
   data: {
-    text: string[];
-    table: string[][];
+    text: string,
+    link: string,
+    image: string,
+    quote: StackType[],
+    table: string[][],
+    list: StackType[],
+    code: string,
+    math: string,
+    hr: "---"
   };
 }
 
@@ -18,8 +25,15 @@ const Editor = () => {
     {
       intentId: "p",
       data: {
-        text: ["Welcome", "to", "Polysemy."],
+        text: "Welcome to Polysemy.",
+        link: "",
+        image: "",
+        quote: [],
         table: [["Title"], ["Data"]],
+        list: [],
+        code: "",
+        math: "",
+        hr: "---"
       },
     },
   ]);

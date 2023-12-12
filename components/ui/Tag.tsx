@@ -1,26 +1,24 @@
 import React from 'react'
 
-export default function Tag({children}:{children:any}) {
+
+// bg-zinc-200 dark:bg-zinc-800
+
+const Tag = ({ children }: { children: any }) => {
   return (
-    <span
-      className={` 
-        font-mono
-        text-black
-        dark:text-white
-        bg-gray-300
-        dark:bg-gray-800 
-        shadow-gray-300-highlight
-        dark:shadow-gray-700-highlight
-        select-none rounded-sm
-        ease-out 
-        text-xs
-        px-2
-        py-1
-        my-0.5
-        uppercase
+    <div
+      className={`
+        border border-zinc-200 dark:border-zinc-800
+        bg-gradient-to-t
+        to-zinc-200 from-transparent
+        dark:to-transparent dark:from-zinc-800
+        font-mono text-zinc-600 dark:text-zinc-400
+        select-none rounded-full text-xs uppercase
+        px-2 py-1 my-0.5 mx-1.5
       `}
     >
       {children}
-    </span>
+    </div>
   )
-}
+};
+
+export default Tag;

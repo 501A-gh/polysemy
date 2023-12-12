@@ -1,4 +1,4 @@
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
+import { ActionTypes, checkBlockIntent } from "@/util/helper/blockUtilities";
 import React, { useState } from "react";
 
 interface GroupPrimitiveBlockProps
@@ -7,7 +7,7 @@ interface GroupPrimitiveBlockProps
   blockIndex: number;
   selected: number[];
   text: string;
-  blockMode: BlockModeTypes;
+  action: ActionTypes;
 }
 
 const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
@@ -15,7 +15,7 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
   blockIndex,
   selected,
   text,
-  blockMode,
+  action,
   ...props
 }) => {
   const [focus, setFocus] = useState(false);
@@ -31,41 +31,46 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
         {...props}
       />
       {text.split(" ").map((w: string, i: number) => (
-        <span
-          {...props}
-          key={i}
-          className={`
-            block
-            ${
-              selected.includes(blockIndex)
-                ? `block-mode-highlight`
-                : `
+        <>
+          {checkBlockIntent(w) === "word" && (
+            <span
+              {...props}
+              key={i}
+              className={`
+                block
                 ${
-                  blockMode === "standard" || blockMode === "insert"
-                    ? `block-mode-standard`
-                    : ""
-                }
-                ${i === 0 && "rounded-l-sm"}
-                ${i === text.split(" ").length - 1 && "rounded-r-sm"}
-                ${
-                  focus &&
+                  selected.includes(blockIndex)
+                    ? `block-mode-highlight`
+                    : `
+                    ${
+                      action === "standard" || action === "insert"
+                        ? `block-mode-standard`
+                        : ""
+                    }
+                    ${i === 0 && "rounded-l-sm"}
+                    ${i === text.split(" ").length - 1 && "rounded-r-sm"}
+                    ${
+                      focus &&
+                      `
+                        peer-focus:bg-zinc-200
+                        peer-focus:dark:bg-zinc-800
+                        peer-focus:border-b-zinc-300
+                        peer-focus:dark:border-b-zinc-700
+                        peer-focus:text-black
+                        peer-focus:dark:text-white
+                        peer-focus:animate-pulse
+                        duration-200
+                      `
+                    }
                   `
-                    peer-focus:bg-zinc-200
-                    peer-focus:dark:bg-zinc-800
-                    peer-focus:border-b-zinc-300
-                    peer-focus:dark:border-b-zinc-700
-                    peer-focus:text-black
-                    peer-focus:dark:text-white
-                    peer-focus:animate-pulse
-                    duration-200
-                  `
                 }
-              `
-            }
-          `}
-        >
-          {w}
-        </span>
+              `}
+            >
+              {w}
+            </span>
+          )}
+          {checkBlockIntent(w) === "link" && <h1>w</h1>}
+        </>
       ))}
     </>
   );

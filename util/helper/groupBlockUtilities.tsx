@@ -1,5 +1,4 @@
 import { notify } from "@/components/ui/notify/Notify";
-import { BlockModeTypes } from "./blockUtilities";
 import { sentence } from "./globalUtilities";
 
 export const groupBackspace = (

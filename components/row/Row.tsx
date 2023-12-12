@@ -5,6 +5,7 @@ import { RowIntentDictType, rowIntentDict } from "@/util/data/rowIntentDict";
 import { StackType } from "@/components/ui/Editor";
 import Text from "./edit/intent/text/Text";
 import { notify } from "../ui/notify/Notify";
+import LText from "./edit/intent/text/LText";
 
 export interface IntentComponentProps {
   rowIndex: number;
@@ -105,11 +106,10 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
         }
         title={selectMode ? `Enter edit mode` : `Exit edit mode`}
         className={`
-          transition-all outline-none rounded-full peer 
-          ${
-            selectMode
-              ? `focus:bg-zinc-900 focus:dark:bg-zinc-100 w-3 h-3 my-auto`
-              : `bg-zinc-300 dark:bg-zinc-800 w-0.5 my-1 hocus:w-1.5 hocus:my-2.5`
+          transition-all outline-none rounded-full peer
+          ${selectMode
+            ? `focus:bg-zinc-900 focus:dark:bg-zinc-100 w-3 h-3 my-auto`
+            : `bg-zinc-300 dark:bg-zinc-800 w-0.5 my-1 hocus:w-1.5 hocus:my-2.5`
           }
         `}
         onKeyDown={(e) => {
@@ -134,9 +134,8 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
       <section
         className={`
           grid gap-1 w-full rounded-sm
-          ${
-            selectMode &&
-            `
+          ${selectMode &&
+          `
               peer-focus:bg-zinc-200
               peer-focus:dark:bg-zinc-900
             `
@@ -144,7 +143,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
         `}
       >
         {rowIntent?.category == "text" && (
-          <Text
+          <LText
             selectMode={selectMode}
             rowIndex={rowIndex}
             rowIntent={rowIntent}
@@ -155,6 +154,16 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
             setSelectMode={setSelectMode}
           />
         )}
+        {/* <Text
+          selectMode={selectMode}
+          rowIndex={rowIndex}
+          rowIntent={rowIntent}
+          data={data}
+          intentRef={intentRef}
+          stack={stack}
+          setStack={setStack}
+          setSelectMode={setSelectMode}
+        /> */}
 
         {/* {rowIntent?.category == "table" && (
             <Table rowIndex={rowIndex} stack={stack} setStack={setStack} />

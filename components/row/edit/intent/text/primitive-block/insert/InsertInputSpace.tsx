@@ -17,7 +17,7 @@ const InsertInputSpace: React.FC<InsertInputSpaceProps> = ({
       tabIndex={-1}
       className={`
         select-none h-6 cursor-text group
-        duration-700 transition-all 
+        duration-700 transition-all
         hover:mx-0 hover:w-20 hover:px-1
         ${selected.includes(blockIndex) ? " w-0" : "w-3 -mx-1"}
       `}
@@ -30,8 +30,8 @@ const InsertInputSpace: React.FC<InsertInputSpaceProps> = ({
         border-dashed
         border-transparent
         rounded
-        group-hover:border-gray-400
-        group-hover:dark:border-gray-700
+        group-hover:border-zinc-400
+        group-hover:dark:border-zinc-700
         group-hover:animate-pulse
         group-hover:scale-105
         group-hover:shadow-lg

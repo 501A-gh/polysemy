@@ -1,39 +1,21 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { BlockModeTypes, checkBlockIntent } from "@/util/helper/blockUtilities";
-import Block from "../block/Block";
+import { updateBlock } from "@/util/helper/blockUtilities";
 import GroupBlockWrapper from "./GroupBlockWrapper";
-import {
-  createGroupBlockModeAtIndex,
-  groupApplyLink,
-  groupBackspace,
-  groupBackspaceMultiple,
-  groupEdit,
-  groupInsert,
-  updateGroupBlockModeAtIndex,
-} from "@/util/helper/groupBlockUtilities";
-import {
-  isEndOfHighlight,
-  selectBlockIndex,
-  sentence,
-} from "@/util/helper/globalUtilities";
-import TextAction from "@/components/ui/highlight/text-layer/TextAction";
-import LinkBlock from "../link-block/LinkBlock";
+import { BlockType } from "../TextInterpreter";
+import BlockOutput from "../BlockOutput";
+import { CheckIcon } from "@radix-ui/react-icons";
 
 export interface GroupBlockInsertProps {
-  updateBlockMode: (mode: BlockModeTypes) => void;
-  insert: (text: string) => void;
-  groupBlockText?: string | "";
+  blocksData: BlockType[];
   groupBlockIntent: GroupBlockDictType | undefined;
-  createCaretBlockMode?: () => void;
+  enter: (newBlocksData: BlockType[]) => void;
 }
 
 const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
-  updateBlockMode,
-  insert,
-  groupBlockText,
+  blocksData,
   groupBlockIntent,
-  createCaretBlockMode,
+  enter,
   ...props
 }) => {
   const caretRef = useRef<HTMLInputElement>(null);
@@ -44,177 +26,48 @@ const GroupBlockInsert: React.FC<GroupBlockInsertProps> = ({
   };
 
   const [input, setInput] = useState<string>("");
-  const [groupBlock, setGroupBlock] = useState<string[]>(
-    groupBlockText ? groupBlockText.slice(1, -1).split(" ") : []
-  );
+  const [blocks, setBlocks] = useState<BlockType[]>(blocksData);
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
-
-  const insertAndSave = () => {
-    insert(
-      `${groupBlockIntent?.start}${groupBlock.join(" ")}${
-        groupBlockIntent?.end
-      }`
-    );
-    updateBlockMode("standard");
-  };
-
-  const groupBlockModeOriginal = new Array(groupBlock.length).fill("standard");
-  const [groupBlockMode, setGroupBlockMode] = useState<BlockModeTypes[]>(
-    groupBlockModeOriginal
-  );
 
   return (
     <GroupBlockWrapper groupBlockIntent={groupBlockIntent}>
+      <BlockOutput
+        blocks={blocks}
+        setBlocks={setBlocks}
+        selectBlocks={selectBlocks}
+        setSelectBlocks={setSelectBlocks}
+        focusOnCaret={focusOnCaret}
+      />
       <>
-        {groupBlock.length > 0 &&
-          groupBlock.map((word: string, i: number) => (
-            <>
-              {checkBlockIntent(word) === "standard" && (
-                <Block
-                  key={i}
-                  blockIndex={i}
-                  selected={selectBlocks}
-                  selectBlock={() =>
-                    selectBlockIndex(i, selectBlocks, setSelectBlocks)
-                  }
-                  word={word}
-                  focusOnCaret={() => focusOnCaret()}
-                  backspace={() => groupBackspace(i, groupBlock, setGroupBlock)}
-                  insert={(input: string) =>
-                    groupInsert(input, i, groupBlock, setGroupBlock)
-                  }
-                  edit={(input: string) =>
-                    groupEdit(input, i, groupBlock, setGroupBlock)
-                  }
-                  blockMode={groupBlockMode[i]}
-                  createBlockMode={() =>
-                    createGroupBlockModeAtIndex(
-                      i,
-                      groupBlockMode,
-                      setGroupBlockMode
-                    )
-                  }
-                  updateBlockMode={(mode: BlockModeTypes) =>
-                    updateGroupBlockModeAtIndex(
-                      i,
-                      mode,
-                      groupBlockMode,
-                      setGroupBlockMode
-                    )
-                  }
-                />
-              )}
-              {checkBlockIntent(word) === "link" && (
-                <LinkBlock
-                  key={i}
-                  blockIndex={i}
-                  selected={selectBlocks}
-                  selectBlock={() =>
-                    selectBlockIndex(i, selectBlocks, setSelectBlocks)
-                  }
-                  word={word}
-                  focusOnCaret={() => focusOnCaret()}
-                  backspace={() => groupBackspace(i, groupBlock, setGroupBlock)}
-                  insert={(input: string) =>
-                    groupInsert(input, i, groupBlock, setGroupBlock)
-                  }
-                  edit={(input: string) =>
-                    groupEdit(input, i, groupBlock, setGroupBlock)
-                  }
-                  blockMode={groupBlockMode[i]}
-                  createBlockMode={() =>
-                    createGroupBlockModeAtIndex(
-                      i,
-                      groupBlockMode,
-                      setGroupBlockMode
-                    )
-                  }
-                  updateBlockMode={(mode: BlockModeTypes) =>
-                    updateGroupBlockModeAtIndex(
-                      i,
-                      mode,
-                      groupBlockMode,
-                      setGroupBlockMode
-                    )
-                  }
-                />
-              )}
-              {isEndOfHighlight(selectBlocks, i) && (
-                <TextAction
-                  sentence={() => sentence(selectBlocks, groupBlock)}
-                  resetSelect={() => {
-                    focusOnCaret();
-                    setSelectBlocks([]);
-                  }}
-                  backspaceMultiple={() =>
-                    groupBackspaceMultiple(
-                      selectBlocks,
-                      groupBlock,
-                      setGroupBlock
-                    )
-                  }
-                  applyLink={(link: string) =>
-                    groupApplyLink(
-                      link,
-                      selectBlocks,
-                      groupBlock,
-                      setGroupBlock
-                    )
-                  }
-                />
-              )}
-            </>
-          ))}
-
         {!selectBlocks.length && (
           <>
             <input
               autoFocus
-              placeholder="Type..."
+              placeholder="Type in Group..."
               value={input}
               ref={caretRef}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
                 switch (e.key) {
                   case " ":
-                    groupInsert(
-                      input,
-                      groupBlock.length,
-                      groupBlock,
-                      setGroupBlock
-                    );
-                    createGroupBlockModeAtIndex(
-                      groupBlockMode.length,
-                      groupBlockMode,
-                      setGroupBlockMode
-                    );
+                    updateBlock(setBlocks, blocks?.length, "insert", {
+                      type: "word",
+                      content: input,
+                    });
                     setTimeout(() => setInput(""), 1);
                     break;
                   case "Enter":
-                    insertAndSave();
+                    enter(blocks);
                     break;
                 }
               }}
             />
-            <button
-              className={`btn btn-standard`}
-              onClick={() => insertAndSave()}
-            >
+            <button className={`btn-standard`} onClick={() => enter(blocks)}>
+              <CheckIcon />
               Done
             </button>
           </>
         )}
-        {/* {selectBlocks.length > 1 && (
-          <FunctionBar>
-            <button
-              autoFocus
-              className={`btn btn-selectop`}
-              onClick={() => setSelectBlocks([])}
-            >
-              Test
-            </button>
-          </FunctionBar>
-        )} */}
       </>
     </GroupBlockWrapper>
   );

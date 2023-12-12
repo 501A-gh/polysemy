@@ -1,43 +1,33 @@
 import React, { useRef, useState } from "react";
-import GroupBlockEdit from "./GroupBlockEdit";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
-  BlockModeTypes,
+  ActionTypes,
+  backspace,
+  copy,
+  formatContent,
   getGroupBlockIntentData,
+  updateBlock,
 } from "@/util/helper/blockUtilities";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import GroupPrimitiveBlock from "../primitive-block/GroupPrimitiveBlock";
-import { copy, isEndOfHighlight } from "@/util/helper/globalUtilities";
+import { BlockType, splitMarkdownIntoBlocks } from "../TextInterpreter";
+import { GeneralBlockProps } from "../BlockOutput";
+import GroupBlockInsert from "./GroupBlockInsert";
 
-interface GroupBlockProps {
-  blockIndex: number;
-  selected: number[];
-  selectBlock: () => void;
-  word: string;
-  focusOnCaret: () => void;
-  insert: (input: string) => void;
-  edit: (input: string) => void;
-  backspace: () => void;
-  blockMode: BlockModeTypes;
-  createBlockMode: () => void;
-  updateBlockMode: (mode: BlockModeTypes) => void;
-}
-
-const GroupBlock: React.FC<GroupBlockProps> = ({
+const GroupBlock: React.FC<GeneralBlockProps> = ({
   blockIndex,
+  setBlocks,
   selected,
   selectBlock,
   word,
   focusOnCaret,
-  insert,
-  edit,
-  backspace,
-  blockMode,
-  updateBlockMode,
-  createBlockMode,
 }) => {
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const insert = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "insert", newBlockObj);
+  const edit = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "edit", newBlockObj);
 
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const focusOnBlock = () =>
     setTimeout(() => {
       if (buttonRef.current) {
@@ -48,66 +38,71 @@ const GroupBlock: React.FC<GroupBlockProps> = ({
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();
 
+  const [action, setAction] = useState<ActionTypes>("standard");
+
   return (
     <>
       <PrimitiveBlockInsert
-        blockMode={blockMode}
+        action={action}
+        setAction={setAction}
         blockIndex={blockIndex}
         selected={selected}
         insert={insert}
-        createBlockMode={createBlockMode}
-        updateBlockMode={updateBlockMode}
+        edit={edit}
         groupBlockIntent={groupBlockIntent}
         symbolToGroupBlockIntent={(symbol: string) =>
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-      {blockMode === "groupEdit" ? (
-        <GroupBlockEdit
+      {action === "groupEdit" ? (
+        <GroupBlockInsert
+          blocksData={splitMarkdownIntoBlocks(word.slice(1, -1))}
           groupBlockIntent={groupBlockIntent}
-          updateBlockMode={updateBlockMode}
-          editGroupBlock={(text: string) => edit(text)}
-          groupBlockText={word}
+          enter={(blocksData: BlockType[]) => {
+            edit({
+              type: "group",
+              content: formatContent.groupBlock(groupBlockIntent, blocksData),
+            });
+            setAction("standard");
+          }}
         />
       ) : (
-        <>
-          <GroupPrimitiveBlock
-            ref={buttonRef}
-            blockIndex={blockIndex}
-            selected={selected}
-            text={word}
-            blockMode={blockMode}
-            onClick={() => {
-              setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-              updateBlockMode("groupEdit");
-            }}
-            onKeyDown={(e) => {
-              if (e.metaKey) focusOnCaret();
-              switch (e.key) {
-                case "c":
-                  copy(word);
-                  break;
-                case "Backspace" || "Delete":
-                  backspace();
-                  break;
-                case "/":
-                  updateBlockMode("insert");
-                  break;
-                case "h":
-                  selectBlock();
-                  break;
-                case "x":
-                  copy(word);
-                  backspace();
-                  focusOnCaret();
-                  break;
-                case "k":
-                  focusOnCaret();
-                  break;
-              }
-            }}
-          />
-        </>
+        <GroupPrimitiveBlock
+          ref={buttonRef}
+          blockIndex={blockIndex}
+          selected={selected}
+          text={word}
+          action={action}
+          onClick={() => {
+            setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
+            setAction("groupEdit");
+          }}
+          onKeyDown={(e) => {
+            if (e.metaKey) focusOnCaret();
+            switch (e.key) {
+              case "c":
+                copy(word);
+                break;
+              case "Backspace" || "Delete":
+                backspace(setBlocks, blockIndex);
+                break;
+              case "/":
+                setAction("insert");
+                break;
+              case "h":
+                selectBlock();
+                break;
+              case "x":
+                copy(word);
+                backspace(setBlocks, blockIndex);
+                focusOnCaret();
+                break;
+              case "k":
+                focusOnCaret();
+                break;
+            }
+          }}
+        />
       )}
     </>
   );

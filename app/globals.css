@@ -21,25 +21,25 @@
     @apply selection:bg-zinc-200 selection:dark:bg-zinc-800;
   }
   h1 {
-    @apply text-black dark:text-white text-2xl mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-4xl mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   h2 {
-    @apply text-black dark:text-white text-xl mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-3xl mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   h3 {
-    @apply text-black dark:text-white text-lg mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-2xl mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   h4 {
-    @apply text-black dark:text-white text-base mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-xl mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   h5 {
-    @apply text-black dark:text-white text-sm mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-lg mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   h6 {
-    @apply text-black dark:text-white text-xs mt-2 mb-1 mx-0 font-serif font-semibold;
+    @apply text-black dark:text-white text-base mt-2 mb-1 mx-0 font-serif font-semibold;
   }
   p {
-    @apply text-black dark:text-zinc-400 text-sm font-sans;
+    @apply text-black dark:text-zinc-400 text-base font-sans;
   }
   blockquote {
     @apply border-l text-black bg-zinc-200 border-l-zinc-400 dark:text-zinc-400 dark:bg-zinc-900 dark:border-l-zinc-600 text-sm p-2 italic font-serif w-full;
@@ -64,10 +64,9 @@
   }
 
   input {
-    @apply my-0.5 mx-[1px] focus:outline-none font-mono text-xs h-fit w-auto 
-    border 
-    border-zinc-300/70 dark:border-zinc-800 
-    focus:border-zinc-500/50  focus:dark:border-zinc-600/50 
+    @apply my-0.5 mx-[1px] focus:outline-none font-mono text-sm h-fit w-auto 
+    border border-zinc-300/70 dark:border-zinc-800 
+    focus:border-zinc-500/50 focus:dark:border-zinc-600/50 
     py-1 px-2 rounded-sm 
     bg-zinc-200/20 dark:bg-zinc-900 
     text-black dark:text-white
@@ -110,7 +109,7 @@
 
   .material-solid {
     @apply bg-zinc-50 dark:bg-zinc-900
-    border border-zinc-200 dark:border-zinc-800;
+    border border-zinc-300 dark:border-zinc-800;
   }
 
   .zinc-text {
@@ -138,8 +137,8 @@
     focus:shadow-orange-400/40;
   }
 
-  .btn {
-    @apply border text-xs
+  /* .btn {
+    @apply border text-sm
     outline-none cursor-pointer select-none
     font-sans rounded-sm
     whitespace-nowrap
@@ -148,7 +147,7 @@
     flex items-center gap-1.5
     bg-zinc-200 border-zinc-200
     dark:bg-zinc-800 dark:border-zinc-800;
-  }
+  } */
 
   .btn-transparent {
     @apply bg-transparent border-transparent   
@@ -163,7 +162,17 @@
   }
 
   .btn-standard {
-    @apply text-zinc-500
+    @apply border text-sm
+    outline-none cursor-pointer select-none
+    font-sans rounded-sm
+    whitespace-nowrap
+    py-1 px-2
+    my-0.5 mx-[1px]
+    flex items-center gap-1.5
+    bg-zinc-200 border-zinc-200
+    dark:bg-zinc-800 dark:border-zinc-800
+
+    text-zinc-500
     focus:shadow-zinc-400/40
     focus:text-zinc-900
     dark:focus:text-zinc-100
@@ -174,12 +183,12 @@
     focus:dark:border-zinc-700;
   }
 
-  .btn-word {
+  /* .btn-word {
     @apply zinc-text 
     focus:text-white
     focus:border-blue-500 focus:dark:border-blue-700
     focus:bg-blue-500 focus:dark:bg-blue-800;
-  }
+  } */
 
   .btn-command {
     @apply text-purple-500
@@ -281,12 +290,12 @@
 
   /* BLOCK */
   .block {
-    @apply border border-transparent
+    @apply border border-transparent text-xl
     outline-none cursor-pointer select-none
     font-sans px-0.5 my-0.5 duration-200;
   }
 
-  .block-mode-highlight {
+  /* .block-mode-highlight {
     @apply rounded-none
     text-white
     focus:bg-pink-600
@@ -295,17 +304,17 @@
     dark:focus:bg-pink-700
     dark:bg-pink-900
     dark:border-pink-900;
-  }
+  } */
 
-  .block-mode-command {
+  /* .block-mode-command {
     @apply blue-text animate-pulse;
   }
 
   .block-mode-edit {
     @apply blue-text animate-bounce;
-  }
+  } */
 
-  .block-mode-standard {
+  /* .block-mode-standard {
     @apply zinc-text
     focus:bg-zinc-200
     focus:dark:bg-zinc-800 
@@ -313,7 +322,7 @@
     focus:dark:border-b-zinc-700
     focus:text-black
     focus:dark:text-white;
-  }
+  } */
 
   /* TEXT */
   .text-hint {

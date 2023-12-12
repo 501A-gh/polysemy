@@ -1,21 +1,28 @@
 import Suggest, { SuggestProps } from "@/components/ui/Suggest";
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
-import { filterWord } from "@/util/helper/globalUtilities";
+import {
+  ActionTypes,
+  filterWord,
+  updateBlock,
+} from "@/util/helper/blockUtilities";
 import React, { useEffect, useRef, useState } from "react";
+import BlockOutput from "../../BlockOutput";
+import { BlockType } from "../../TextInterpreter";
+import Tag from "@/components/ui/Tag";
 
 export interface InsertInputProps {
-  insert: (input: string) => void;
-  createBlockMode: () => void;
-  updateBlockMode: (mode: BlockModeTypes) => void;
+  insert: (newBlockObj: BlockType) => void;
+  setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
   symbolToGroupBlockIntent: (symbol: string) => void;
 }
 
 const InsertInput: React.FC<InsertInputProps> = ({
   insert,
-  createBlockMode,
-  updateBlockMode,
+  setAction,
   symbolToGroupBlockIntent,
 }) => {
+  const [blocks, setBlocks] = useState<BlockType[]>([]);
+  const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
+
   const [insertValue, setInsertValue] = useState<string>("");
   const [suggestion, setSuggestion] = useState<SuggestProps["suggestion"]>([]);
 
@@ -27,13 +34,19 @@ const InsertInput: React.FC<InsertInputProps> = ({
   };
 
   useEffect(() => {
-    if (insertValue === " " || insertValue === "/") {
-      setInsertValue("");
-    }
+    if (insertValue === " " || insertValue === "/") setInsertValue("");
   }, [insertValue]);
 
   return (
     <>
+      <Tag>Insert</Tag>
+      <BlockOutput
+        blocks={blocks}
+        setBlocks={setBlocks}
+        selectBlocks={selectBlocks}
+        setSelectBlocks={setSelectBlocks}
+        focusOnCaret={focusOnInsertInputRef}
+      />
       <input
         autoFocus
         placeholder="Type ..."
@@ -43,32 +56,36 @@ const InsertInput: React.FC<InsertInputProps> = ({
           setInsertValue(e.target.value);
           switch (e.target.value.split("")[0]) {
             case "(":
-              updateBlockMode("groupInsert");
+              setAction("groupInsert");
               symbolToGroupBlockIntent("(");
               setInsertValue("");
               break;
             case "'":
-              updateBlockMode("groupInsert");
+              setAction("groupInsert");
               symbolToGroupBlockIntent("'");
               setInsertValue("");
               break;
             case "[":
-              updateBlockMode("groupInsert");
+              setAction("groupInsert");
               symbolToGroupBlockIntent("[");
               setInsertValue("");
               break;
+            default:
+              const results = filterWord(e.target.value);
+              setSuggestion(results);
           }
-          const results = filterWord(e.target.value);
-          setSuggestion(results);
         }}
         onKeyDown={(e) => {
           if (e.key === " ") {
-            insert(insertValue);
-            createBlockMode();
+            updateBlock(setBlocks, blocks?.length, "insert", {
+              type: "word",
+              content: insertValue,
+            });
             setTimeout(() => setInsertValue(""), 1);
           }
           if (e.key === "Enter") {
-            updateBlockMode("standard");
+            blocks.reverse().map((blockObj: BlockType) => insert(blockObj));
+            setAction("standard");
           }
         }}
       />
@@ -81,7 +98,7 @@ const InsertInput: React.FC<InsertInputProps> = ({
       />
       <button
         className={`btn btn-standard`}
-        onClick={() => updateBlockMode("standard")}
+        onClick={() => setAction("standard")}
       >
         Done
       </button>

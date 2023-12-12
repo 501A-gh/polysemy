@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   ClipboardIcon,
   ExternalLinkIcon,
@@ -12,21 +11,14 @@ import {
 } from "@radix-ui/react-icons";
 import LinkInsert from "../LinkInsert";
 import HighlightAction, { HighlightActionItemTypes } from "../HighlightAction";
-import { copy } from "@/util/helper/globalUtilities";
+import { copy } from "@/util/helper/blockUtilities";
 
-interface TextFxBarProps {
+const TextAction: React.FC<{
   sentence: () => string;
   resetSelect: () => void;
   backspaceMultiple: () => void;
   applyLink: (link: string) => void;
-}
-
-const TextAction: React.FC<TextFxBarProps> = ({
-  sentence,
-  resetSelect,
-  backspaceMultiple,
-  applyLink,
-}) => {
+}> = ({ sentence, resetSelect, backspaceMultiple, applyLink }) => {
   const textActions: HighlightActionItemTypes[] = [
     {
       action: "copy",

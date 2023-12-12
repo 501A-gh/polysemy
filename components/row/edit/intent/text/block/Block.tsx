@@ -1,49 +1,33 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
-  BlockModeTypes,
+  ActionTypes,
+  backspace,
+  copy,
   getGroupBlockIntentData,
+  updateBlock,
 } from "@/util/helper/blockUtilities";
 import Command from "@/components/ui/Command";
 import BlockEdit from "./BlockEdit";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import PrimitiveBlock from "../primitive-block/PrimitiveBlock";
-import {
-  copy,
-  isEndOfHighlight,
-  sentence,
-} from "@/util/helper/globalUtilities";
-import TextFxBar from "@/components/ui/highlight/text-layer/TextAction";
+import { BlockType } from "../TextInterpreter";
+import { GeneralBlockProps } from "../BlockOutput";
 
-interface BlockProps {
-  blockIndex: number;
-  selected: number[];
-  selectBlock: () => void;
-  word: string;
-  focusOnCaret: () => void;
-  insert: (input: string) => void;
-  edit: (input: string) => void;
-  backspace: () => void;
-  blockMode: any;
-  createBlockMode: () => void;
-  updateBlockMode: (mode: BlockModeTypes) => void;
-}
-
-const Block: React.FC<BlockProps> = ({
+const Block: React.FC<GeneralBlockProps> = ({
   blockIndex,
+  setBlocks,
   selected,
   selectBlock,
   word,
   focusOnCaret,
-  insert,
-  edit,
-  backspace,
-  blockMode,
-  createBlockMode,
-  updateBlockMode,
 }) => {
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  const insert = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "insert", newBlockObj);
+  const edit = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "edit", newBlockObj);
 
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const focusOnBlock = () =>
     setTimeout(() => {
       if (buttonRef.current) {
@@ -54,15 +38,17 @@ const Block: React.FC<BlockProps> = ({
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();
 
+  const [action, setAction] = useState<ActionTypes>("standard");
+
   return (
     <>
       <PrimitiveBlockInsert
-        blockMode={blockMode}
+        action={action}
+        setAction={setAction}
         blockIndex={blockIndex}
         selected={selected}
         insert={insert}
-        createBlockMode={createBlockMode}
-        updateBlockMode={updateBlockMode}
+        edit={edit}
         groupBlockIntent={groupBlockIntent}
         symbolToGroupBlockIntent={(symbol: string) =>
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
@@ -73,32 +59,35 @@ const Block: React.FC<BlockProps> = ({
         blockIndex={blockIndex}
         selected={selected}
         text={word}
-        blockMode={blockMode}
-        onClick={() => updateBlockMode("edit")}
+        action={action}
+        onClick={() => setAction("edit")}
         onKeyDown={(e) => {
           if (e.metaKey) focusOnCaret();
           switch (e.key) {
             case "o":
               focusOnBlock();
-              blockMode === "command"
-                ? updateBlockMode("standard")
-                : updateBlockMode("command");
+              action === "command"
+                ? setAction("standard")
+                : setAction("command");
               break;
             case "c":
               copy(word);
               break;
             case "Backspace" || "Delete":
-              backspace();
+              backspace(setBlocks, blockIndex);
               break;
             case "/":
-              updateBlockMode("insert");
+              {
+                /* updateBlockMode("insert"); */
+              }
+              setAction("insert");
               break;
             case "h":
               selectBlock();
               break;
             case "x":
               copy(word);
-              backspace();
+              backspace(setBlocks, blockIndex);
               focusOnCaret();
               break;
             case "k":
@@ -108,24 +97,24 @@ const Block: React.FC<BlockProps> = ({
         }}
       />
 
-      {blockMode === "edit" && (
+      {action === "edit" && (
         <BlockEdit
           edit={edit}
           focusOnBlock={focusOnBlock}
-          updateBlockMode={updateBlockMode}
+          setAction={setAction}
         />
       )}
 
-      {blockMode === "command" && (
+      {/* {action === "command" && (
         <Command
           word={word}
           blockIndex={blockIndex}
           insert={insert}
-          backspace={backspace}
-          setCurrentMode={updateBlockMode}
+          backspace={backspace(setBlocks, blockIndex)}
           focusOnClick={focusOnBlock}
         />
-      )}
+      )} */}
+      {/* setCurrentMode={updateBlockMode} */}
     </>
   );
 };

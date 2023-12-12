@@ -1,51 +1,62 @@
 import React from "react";
 import InsertInput, { InsertInputProps } from "./InsertInput";
 import InsertInputSpace, { InsertInputSpaceProps } from "./InsertInputSpace";
-import GroupBlockInsert, {
-  GroupBlockInsertProps,
-} from "../../group-block/GroupBlockInsert";
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
+import GroupBlockInsert from "../../group-block/GroupBlockInsert";
+import { BlockType } from "../../TextInterpreter";
+import { GroupBlockDictType } from "@/util/data/groupBlockDict";
+import { ActionTypes, formatContent } from "@/util/helper/blockUtilities";
 
-export interface PrimitiveBlockInsertProps
-  extends InsertInputProps,
-    InsertInputSpaceProps,
-    GroupBlockInsertProps {
-  blockMode: BlockModeTypes;
+export interface PrimitiveBlockInsertProps {
+  blockIndex: number;
+  insert: (newBlockObj: BlockType) => void;
+  edit: (newBlockObj: BlockType) => void;
+  action: ActionTypes;
+  setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
+  groupBlockIntent: GroupBlockDictType | undefined;
+  selected: number[];
+  symbolToGroupBlockIntent: (symbol: string) => void;
 }
 
 const PrimitiveBlockInsert: React.FC<PrimitiveBlockInsertProps> = ({
-  blockMode,
   blockIndex,
   insert,
-  createBlockMode,
-  updateBlockMode,
+  edit,
+  action,
+  setAction,
   groupBlockIntent,
   selected,
   symbolToGroupBlockIntent,
 }) => {
   return (
     <>
-      {blockMode === "groupInsert" ? (
-        <GroupBlockInsert
-          groupBlockIntent={groupBlockIntent}
-          updateBlockMode={updateBlockMode}
-          insert={insert}
-          groupBlockText={""}
+      {action === "standard" ? (
+        <InsertInputSpace
+          selected={selected}
+          blockIndex={blockIndex}
+          onClick={() => setAction("insert")}
         />
       ) : (
         <>
-          {blockMode === "insert" ? (
+          {action === "insert" && (
             <InsertInput
               insert={insert}
-              createBlockMode={createBlockMode}
-              updateBlockMode={updateBlockMode}
+              setAction={setAction}
               symbolToGroupBlockIntent={symbolToGroupBlockIntent}
             />
-          ) : (
-            <InsertInputSpace
-              selected={selected}
-              blockIndex={blockIndex}
-              onClick={() => updateBlockMode("insert")}
+          )}
+          {action === "groupInsert" && (
+            <GroupBlockInsert
+              blocksData={[]}
+              groupBlockIntent={groupBlockIntent}
+              enter={(blocksData: BlockType[]) =>
+                insert({
+                  type: "group",
+                  content: formatContent.groupBlock(
+                    groupBlockIntent,
+                    blocksData
+                  ),
+                })
+              }
             />
           )}
         </>

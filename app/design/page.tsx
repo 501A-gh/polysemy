@@ -4,7 +4,6 @@ const Page = () => {
   return (
     <main>
       <hgroup className={`px-10 py-5`}>
-        <h6 className={`font-serif`}>Polysemy Design Team</h6>
         <h1 className={`font-serif`}>Design Approach</h1>
       </hgroup>
       <hr />

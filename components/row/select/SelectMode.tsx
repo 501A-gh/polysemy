@@ -20,7 +20,7 @@ const SelectMode: React.FC<SelectModeProps> = ({
     <>
       <div
         className={`
-          group flex items-stretch justify-between 
+          group flex items-stretch justify-between
           w-full max-w-[40px] min-w-[40px]
         `}
       >
@@ -29,7 +29,7 @@ const SelectMode: React.FC<SelectModeProps> = ({
           focus:outline-none w-full
           border border-transparent
           py-0.5 px-1 flex items-center justify-end
-          font-mono rounded  
+          font-mono rounded
           print:hidden text-sm
           orange-focus text-zinc-400 dark:text-zinc-700
         `}
@@ -38,19 +38,18 @@ const SelectMode: React.FC<SelectModeProps> = ({
         </div>
       </div>
       <ReactMarkdown
-        className={` 
+        className={`
           m-0 flex items-center
           text-zinc-800 dark:text-zinc-400 print:text-black
         `}
         remarkPlugins={[remarkGfm]}
       >
-        {`${
-          rowIntent?.category == "text"
-            ? `${rowIntent?.markdownSymbol} ${data.text && data.text.join(" ")}`
+        {`${rowIntent?.category == "text"
+            ? `${rowIntent?.markdownSymbol} ${data?.text}`
             : rowIntent?.category == "table" &&
-              data.table &&
-              `${markdownTable(data.table)}`
-        }`}
+            data.table &&
+            `${markdownTable(data.table)}`
+          }`}
       </ReactMarkdown>
     </>
   );

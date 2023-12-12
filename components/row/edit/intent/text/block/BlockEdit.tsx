@@ -1,17 +1,17 @@
 import Suggest, { SuggestProps } from "@/components/ui/Suggest";
-import { BlockModeTypes } from "@/util/helper/blockUtilities";
-import { filterWord } from "@/util/helper/globalUtilities";
 import React, { useRef, useState } from "react";
+import { BlockType } from "../TextInterpreter";
+import { ActionTypes, filterWord } from "@/util/helper/blockUtilities";
 
 interface BlockEditProps {
-  edit: (input: string) => void;
-  updateBlockMode: (mode: BlockModeTypes) => void;
+  edit: (blockObj: BlockType) => void;
+  setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
   focusOnBlock: () => void;
 }
 
 const BlockEdit: React.FC<BlockEditProps> = ({
   edit,
-  updateBlockMode,
+  setAction,
   focusOnBlock,
 }) => {
   const [editValue, setEditValue] = useState<string>("");
@@ -30,7 +30,7 @@ const BlockEdit: React.FC<BlockEditProps> = ({
         autoFocus
         placeholder="Replace ..."
         ref={inputRef}
-        onFocus={() => updateBlockMode("edit")}
+        onFocus={() => setAction("edit")}
         value={editValue}
         onChange={(e) => {
           setEditValue(e.target.value);
@@ -39,8 +39,11 @@ const BlockEdit: React.FC<BlockEditProps> = ({
         }}
         onKeyDown={(e) => {
           if (e.key === " ") {
-            edit(editValue);
-            updateBlockMode("standard");
+            edit({
+              type: "word",
+              content: editValue,
+            });
+            setAction("standard");
             focusOnBlock();
           }
         }}
@@ -55,7 +58,7 @@ const BlockEdit: React.FC<BlockEditProps> = ({
       />
       <button
         className={`btn btn-standard`}
-        onClick={() => updateBlockMode("standard")}
+        onClick={() => setAction("standard")}
       >
         Done
       </button>

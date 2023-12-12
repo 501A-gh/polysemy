@@ -2,9 +2,11 @@ import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import {
-  BlockModeTypes,
+  ModeTypes,
+  backspace,
   getGroupBlockIntentData,
   splitMarkdownLink,
+  updateBlock,
 } from "@/util/helper/blockUtilities";
 import LinkBlockEdit from "./LinkBlockEdit";
 import LinkPrimitiveBlock from "../primitive-block/LinkPrimitiveBlock";
@@ -12,34 +14,22 @@ import { CopyIcon, ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import RadixPopover from "@/components/ui/RadixPopover";
 import { Tweet } from "@/components/tweet/Tweet";
 import { copy } from "@/util/helper/globalUtilities";
+import { BlockType } from "../TextInterpreter";
+import { GeneralBlockProps } from "../BlockOutput";
 
-interface LinkBlockProps {
-  blockIndex: number;
-  selected: number[];
-  selectBlock: () => void;
-  word: string;
-  focusOnCaret: () => void;
-  insert: (input: string) => void;
-  edit: (input: string) => void;
-  backspace: () => void;
-  blockMode: BlockModeTypes;
-  createBlockMode: () => void;
-  updateBlockMode: (mode: BlockModeTypes) => void;
-}
-
-const LinkBlock: React.FC<LinkBlockProps> = ({
+const LinkBlock: React.FC<GeneralBlockProps> = ({
   blockIndex,
+  setBlocks,
   selected,
   selectBlock,
   word,
   focusOnCaret,
-  insert,
-  edit,
-  backspace,
-  blockMode,
-  updateBlockMode,
-  createBlockMode,
 }) => {
+  const insert = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "insert", newBlockObj);
+  const edit = (newBlockObj: BlockType) =>
+    updateBlock(setBlocks, blockIndex, "edit", newBlockObj);
+
   const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   const focusOnBlock = () =>
@@ -54,24 +44,26 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
 
   const result = splitMarkdownLink(word);
 
+  const [mode, setMode] = useState<ModeTypes>("standard");
+
   return (
     <>
       <PrimitiveBlockInsert
-        blockMode={blockMode}
+        mode={mode}
+        setMode={setMode}
         blockIndex={blockIndex}
         selected={selected}
         insert={insert}
-        createBlockMode={createBlockMode}
-        updateBlockMode={updateBlockMode}
+        edit={edit}
         groupBlockIntent={groupBlockIntent}
         symbolToGroupBlockIntent={(symbol: string) =>
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-      {blockMode === "linkEdit" ? (
+      {mode === "linkEdit" ? (
         <LinkBlockEdit
-          updateBlockMode={updateBlockMode}
-          editLinkBlock={(text: string) => edit(text)}
+          setMode={setMode}
+          edit={edit}
           text={result?.text ? result?.text : ""}
           url={result?.url ? result?.url : ""}
         />
@@ -81,10 +73,10 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
           blockIndex={blockIndex}
           selected={selected}
           text={result?.text ? result?.text : ""}
-          blockMode={blockMode}
+          blockMode={mode}
           onClick={() => {
             setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-            updateBlockMode("linkEdit");
+            setMode("linkEdit");
           }}
           onKeyDown={(e) => {
             if (e.metaKey) focusOnCaret();
@@ -93,17 +85,17 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
                 copy(word);
                 break;
               case "Backspace" || "Delete":
-                backspace();
+                backspace(setBlocks, blockIndex);
                 break;
               case "/":
-                updateBlockMode("insert");
+                setMode("insert");
                 break;
               case "h":
                 selectBlock();
                 break;
               case "x":
                 copy(word);
-                backspace();
+                backspace(setBlocks, blockIndex);
                 focusOnCaret();
                 break;
               case "k":
@@ -111,15 +103,13 @@ const LinkBlock: React.FC<LinkBlockProps> = ({
                 break;
               case "o":
                 focusOnBlock();
-                blockMode === "command"
-                  ? updateBlockMode("standard")
-                  : updateBlockMode("command");
+                mode === "command" ? setMode("standard") : setMode("command");
                 break;
             }
           }}
         />
       )}
-      {blockMode === "command" && (
+      {mode === "command" && (
         <>
           <RadixPopover
             title={"Tweet"}
