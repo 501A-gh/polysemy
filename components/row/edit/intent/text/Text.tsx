@@ -1,34 +1,17 @@
 import React, { useRef, useState } from "react";
 import Caret from "@/components/ui/caret/Caret";
 import { StackType } from "@/components/ui/Editor";
-import { BlockModeTypes, checkBlockIntent } from "@/util/helper/blockUtilities";
-import Block from "./block/Block";
-import GroupBlock from "./group-block/GroupBlock";
-import LinkBlock from "./link-block/LinkBlock";
 
-import {
-  textApplyLink,
-  textBackspace,
-  textBackspaceMultiple,
-  textEdit,
-  textInsert,
-} from "@/util/helper/textUtilities";
-import {
-  isEndOfHighlight,
-  selectBlockIndex,
-  sentence,
-} from "@/util/helper/globalUtilities";
 import SwitchMode, {
   SwitchModeProps,
 } from "@/components/row/switch/SwitchMode";
 import Widget from "@/components/row/switch/Widget";
-import {
-  ExclamationTriangleIcon,
-  Link2Icon,
-  Pencil1Icon,
-} from "@radix-ui/react-icons";
+import { Pencil1Icon } from "@radix-ui/react-icons";
 import RadixDialog from "@/components/ui/RadixDialog";
 import TextAction from "@/components/ui/highlight/text-layer/TextAction";
+import { BlockType, splitMarkdownIntoBlocks } from "./TextInterpreter";
+import BlockOutput from "./BlockOutput";
+import { updateBlock } from "@/util/helper/blockUtilities";
 
 interface TextProps extends SwitchModeProps {
   rowIndex: number;
@@ -48,10 +31,13 @@ const Text: React.FC<TextProps> = ({
   const currentRow: StackType = stack[rowIndex];
   const data = currentRow.data.text;
 
-  const markdownLinkExtractor = require("markdown-link-extractor");
-  const { links } = markdownLinkExtractor(data.join());
-
+  const [blocks, setBlocks] = useState<BlockType[]>(
+    splitMarkdownIntoBlocks(data)
+  );
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
+
+  // const markdownLinkExtractor = require("markdown-link-extractor");
+  // const { links } = markdownLinkExtractor(data);
 
   const caretRef = useRef<HTMLInputElement>(null);
   const focusOnCaret = () => {
@@ -60,21 +46,19 @@ const Text: React.FC<TextProps> = ({
     }
   };
 
-  const blockModeOriginal = new Array(data.length + 1).fill("standard");
-  const [blockMode, setBlockMode] =
-    useState<BlockModeTypes[]>(blockModeOriginal);
+  // const [blockMode, setBlockMode] = useState<BlockModeTypes[]>(blockModeOriginal);
 
-  const createBlockModeAtIndex = (index: number) => {
-    const updatedArray = [...blockMode];
-    updatedArray.splice(index, 0, "standard");
-    setBlockMode(updatedArray);
-  };
+  // const createBlockModeAtIndex = (index: number) => {
+  //   const updatedArray = [...blockMode];
+  //   updatedArray.splice(index, 0, "standard");
+  //   setBlockMode(updatedArray);
+  // };
 
-  const updateBlockModeAtIndex = (index: number, newValue: BlockModeTypes) => {
-    const updatedArray = [...blockMode];
-    updatedArray[index] = newValue;
-    setBlockMode(updatedArray);
-  };
+  // const updateBlockModeAtIndex = (index: number, newValue: BlockModeTypes) => {
+  //   const updatedArray = [...blockMode];
+  //   updatedArray[index] = newValue;
+  //   setBlockMode(updatedArray);
+  // };
 
   return (
     <section className={`grid gap-1 w-full`}>
@@ -88,120 +72,27 @@ const Text: React.FC<TextProps> = ({
         selectMode={selectMode}
         setSelectMode={setSelectMode}
       >
-        <>
-          {data &&
-            data.length > 0 &&
-            data.map((word: string, i: number) => (
-              <>
-                {checkBlockIntent(word) === "standard" && (
-                  <Block
-                    key={i}
-                    blockIndex={i}
-                    selected={selectBlocks}
-                    selectBlock={() =>
-                      selectBlockIndex(i, selectBlocks, setSelectBlocks)
-                    }
-                    word={word}
-                    focusOnCaret={() => focusOnCaret()}
-                    backspace={() => textBackspace(i, setStack, rowIndex)}
-                    insert={(input: string) =>
-                      textInsert(input, i, setStack, rowIndex)
-                    }
-                    edit={(input: string) =>
-                      textEdit(input, i, setStack, rowIndex)
-                    }
-                    blockMode={blockMode[i]}
-                    createBlockMode={() => createBlockModeAtIndex(i)}
-                    updateBlockMode={(mode: BlockModeTypes) =>
-                      updateBlockModeAtIndex(i, mode)
-                    }
-                  />
-                )}
-                {checkBlockIntent(word) === "group" && (
-                  <GroupBlock
-                    key={i}
-                    blockIndex={i}
-                    selected={selectBlocks}
-                    selectBlock={() =>
-                      selectBlockIndex(i, selectBlocks, setSelectBlocks)
-                    }
-                    word={word}
-                    focusOnCaret={() => focusOnCaret()}
-                    backspace={() => textBackspace(i, setStack, rowIndex)}
-                    insert={(input: string) =>
-                      textInsert(input, i, setStack, rowIndex)
-                    }
-                    edit={(input: string) =>
-                      textEdit(input, i, setStack, rowIndex)
-                    }
-                    blockMode={blockMode[i]}
-                    createBlockMode={() => createBlockModeAtIndex(i)}
-                    updateBlockMode={(mode: BlockModeTypes) =>
-                      updateBlockModeAtIndex(i, mode)
-                    }
-                  />
-                )}
-                {checkBlockIntent(word) === "link" && (
-                  <LinkBlock
-                    key={i}
-                    blockIndex={i}
-                    selected={selectBlocks}
-                    selectBlock={() =>
-                      selectBlockIndex(i, selectBlocks, setSelectBlocks)
-                    }
-                    word={word}
-                    focusOnCaret={() => focusOnCaret()}
-                    backspace={() => textBackspace(i, setStack, rowIndex)}
-                    insert={(input: string) =>
-                      textInsert(input, i, setStack, rowIndex)
-                    }
-                    edit={(input: string) =>
-                      textEdit(input, i, setStack, rowIndex)
-                    }
-                    blockMode={blockMode[i]}
-                    createBlockMode={() => createBlockModeAtIndex(i)}
-                    updateBlockMode={(mode: BlockModeTypes) =>
-                      updateBlockModeAtIndex(i, mode)
-                    }
-                  />
-                )}
-                {isEndOfHighlight(selectBlocks, i) && (
-                  <TextAction
-                    sentence={() => sentence(selectBlocks, data)}
-                    resetSelect={() => {
-                      focusOnCaret();
-                      setSelectBlocks([]);
-                    }}
-                    backspaceMultiple={() =>
-                      textBackspaceMultiple(selectBlocks, setStack, rowIndex)
-                    }
-                    applyLink={(link: string) =>
-                      textApplyLink(
-                        link,
-                        selectBlocks,
-                        setStack,
-                        rowIndex,
-                        () => sentence(selectBlocks, data)
-                      )
-                    }
-                  />
-                )}
-              </>
-            ))}
-
-          <Caret
-            inputRef={caretRef}
-            focusOnCaret={() => focusOnCaret()}
-            insert={(input: string) =>
-              textInsert(input, data.length, setStack, rowIndex)
-            }
-            createBlockMode={() => createBlockModeAtIndex(blockMode.length)}
-          />
-        </>
+        <BlockOutput
+          blocks={blocks}
+          setBlocks={setBlocks}
+          selectBlocks={selectBlocks}
+          setSelectBlocks={setSelectBlocks}
+          focusOnCaret={focusOnCaret}
+        />
+        <Caret
+          inputRef={caretRef}
+          focusOnCaret={() => focusOnCaret()}
+          insert={(inputBlockObj: BlockType) =>
+            updateBlock(setBlocks, blocks.length, "insert", inputBlockObj)
+          }
+        />
       </SwitchMode>
       {!selectMode && selectBlocks.length < 2 && data.length > 0 && (
         <div
-          className={`h-fit flex items-center justify-between gap-1 animate-slide-from-above`}
+          className={`
+            flex items-center justify-between gap-1 
+            h-fit animate-slide-from-above 
+          `}
         >
           <div className={`flex items-center gap-1`}>
             <RadixDialog
@@ -218,14 +109,17 @@ const Text: React.FC<TextProps> = ({
                 </button>
               }
               description={`Resolve ${data.length} misspelled words`}
-            ></RadixDialog>
-            {links &&
+            >
+              <p>Editor</p>
+            </RadixDialog>
+
+            {/* {links &&
               links.map((url: string, i: number) => (
                 <Widget key={i} onClick={() => window.open(url, "_blank")}>
                   <Link2Icon />
                   {url}
                 </Widget>
-              ))}
+              ))} */}
           </div>
           <div className={`flex items-center gap-2 pr-1`}>
             {/* <RadixDialog
@@ -243,7 +137,7 @@ const Text: React.FC<TextProps> = ({
               }
               description={`Resolve ${data.length} misspelled words`}
             ></RadixDialog> */}
-            <span className={`zinc-text text-xs `}>{data.length} Words</span>
+            <span className={`zinc-text text-xs `}>{blocks.length} Words</span>
           </div>
         </div>
       )}

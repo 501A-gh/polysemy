@@ -3,9 +3,8 @@ import { RowIntentDictType, rowIntentDict } from "@/util/data/rowIntentDict";
 
 // Intent Types
 import { StackType } from "@/components/ui/Editor";
-import Text from "./edit/intent/text/Text";
 import { notify } from "../ui/notify/Notify";
-import LText from "./edit/intent/text/LText";
+import Text from "./edit/intent/text/Text";
 
 export interface IntentComponentProps {
   rowIndex: number;
@@ -28,17 +27,25 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
   );
 
   const data: StackType["data"] = currentRow.data;
+  const newRow: StackType = {
+    intentId: "p",
+    data: {
+      text: "Welcome to Polysemy.",
+      link: "",
+      image: "",
+      quote: [],
+      table: [["Title"], ["Data"]],
+      list: [],
+      code: "",
+      math: "",
+      hr: "---",
+    },
+  };
 
   const addStackAbove = () => {
     setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      updatedItems.splice(rowIndex, 0, {
-        intentId: "p",
-        data: {
-          text: [],
-          table: [[""], [""]],
-        },
-      });
+      updatedItems.splice(rowIndex, 0, newRow);
       return updatedItems;
     });
   };
@@ -46,13 +53,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
   const addStackBelow = () => {
     setStack((prevItems: StackType[]) => {
       const updatedItems = [...prevItems];
-      updatedItems.splice(rowIndex + 1, 0, {
-        intentId: "p",
-        data: {
-          text: [],
-          table: [[""], [""]],
-        },
-      });
+      updatedItems.splice(rowIndex + 1, 0, newRow);
       return updatedItems;
     });
   };
@@ -107,9 +108,10 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
         title={selectMode ? `Enter edit mode` : `Exit edit mode`}
         className={`
           transition-all outline-none rounded-full peer
-          ${selectMode
-            ? `focus:bg-zinc-900 focus:dark:bg-zinc-100 w-3 h-3 my-auto`
-            : `bg-zinc-300 dark:bg-zinc-800 w-0.5 my-1 hocus:w-1.5 hocus:my-2.5`
+          ${
+            selectMode
+              ? `focus:bg-zinc-900 focus:dark:bg-zinc-100 w-3 h-3 my-auto`
+              : `bg-zinc-300 dark:bg-zinc-800 w-0.5 my-1 hocus:w-1.5 hocus:my-2.5`
           }
         `}
         onKeyDown={(e) => {
@@ -134,8 +136,9 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
       <section
         className={`
           grid gap-1 w-full rounded-sm
-          ${selectMode &&
-          `
+          ${
+            selectMode &&
+            `
               peer-focus:bg-zinc-200
               peer-focus:dark:bg-zinc-900
             `
@@ -143,7 +146,7 @@ const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
         `}
       >
         {rowIntent?.category == "text" && (
-          <LText
+          <Text
             selectMode={selectMode}
             rowIndex={rowIndex}
             rowIntent={rowIntent}

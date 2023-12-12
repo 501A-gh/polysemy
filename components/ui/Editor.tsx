@@ -8,15 +8,15 @@ import { notify } from "./notify/Notify";
 export interface StackType {
   intentId: IntentIdType;
   data: {
-    text: string,
-    link: string,
-    image: string,
-    quote: StackType[],
-    table: string[][],
-    list: StackType[],
-    code: string,
-    math: string,
-    hr: "---"
+    text: string;
+    link: string;
+    image: string;
+    quote: StackType[];
+    table: string[][];
+    list: StackType[];
+    code: string;
+    math: string;
+    hr: "---";
   };
 }
 
@@ -33,7 +33,7 @@ const Editor = () => {
         list: [],
         code: "",
         math: "",
-        hr: "---"
+        hr: "---",
       },
     },
   ]);
