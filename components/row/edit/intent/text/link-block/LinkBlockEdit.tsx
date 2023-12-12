@@ -1,30 +1,16 @@
 import React, { useRef, useState } from "react";
-import Block from "../block/Block";
-import {
-  createGroupBlockModeAtIndex,
-  groupBackspace,
-  groupEdit,
-  groupInsert,
-  updateGroupBlockModeAtIndex,
-} from "@/util/helper/groupBlockUtilities";
-import { selectBlockIndex } from "@/util/helper/globalUtilities";
-import { ModeTypes } from "@/util/helper/blockUtilities";
 import { BlockType } from "../TextInterpreter";
+import { ActionTypes, updateBlock } from "@/util/helper/blockUtilities";
+import BlockOutput from "../BlockOutput";
+import { CheckIcon } from "@radix-ui/react-icons";
+import { notify } from "@/components/ui/notify/Notify";
 
-interface LinkBlockEditProps {
-  setMode: React.Dispatch<React.SetStateAction<ModeTypes>>;
-  edit: (newBlockObj: BlockType) => void;
-  text: string;
+const LinkBlockEdit: React.FC<{
+  blocksData: BlockType[];
   url: string;
-}
-
-const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
-  setMode,
-  edit,
-  text,
-  url,
-  ...props
-}) => {
+  setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
+  enter: (newBlocksData: BlockType[]) => void;
+}> = ({ blocksData, setAction, url, enter, ...props }) => {
   const caretRef = useRef<HTMLInputElement>(null);
   const focusOnCaret = () => {
     if (caretRef.current != null) {
@@ -33,58 +19,22 @@ const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
   };
 
   const [input, setInput] = useState<string>("");
+  const [blocks, setBlocks] = useState<BlockType[]>(blocksData);
   const [linkBlockUrl, setLinkBlockUrl] = useState<string>(url);
-  const [linkBlock, setLinkBlock] = useState<string[]>(
-    text ? text.split(" ") : []
-  );
-
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
-  const editAndSave = () => {
-    edit({
-      type: "link",
-      content: `[${linkBlock.join(" ")}](${linkBlockUrl})`,
-    });
-    setMode("standard");
-  };
-
-  const linkBlockModeOriginal = new Array(linkBlock.length).fill("standard");
-  const [linkBlockMode, setLinkBlockMode] = useState(linkBlockModeOriginal);
+  const enterWhenSatisfied = () =>
+    input && linkBlockUrl ? enter(blocks) : notify("Missing link URL", "alert");
 
   return (
     <>
-      {linkBlock.length > 0 &&
-        linkBlock.map((word: string, i: number) => (
-          <Block
-            key={i}
-            blockIndex={i}
-            selected={selectBlocks}
-            selectBlock={() =>
-              selectBlockIndex(i, selectBlocks, setSelectBlocks)
-            }
-            word={word}
-            focusOnCaret={() => focusOnCaret()}
-            backspace={() => groupBackspace(i, linkBlock, setLinkBlock)}
-            insert={(input: string) =>
-              groupInsert(input, i, linkBlock, setLinkBlock)
-            }
-            edit={(input: string) =>
-              groupEdit(input, i, linkBlock, setLinkBlock)
-            }
-            blockMode={linkBlockMode[i]}
-            createBlockMode={() =>
-              createGroupBlockModeAtIndex(i, linkBlockMode, setLinkBlockMode)
-            }
-            updateBlockMode={(mode: BlockModeTypes) =>
-              updateGroupBlockModeAtIndex(
-                i,
-                mode,
-                linkBlockMode,
-                setLinkBlockMode
-              )
-            }
-          />
-        ))}
+      <BlockOutput
+        blocks={blocks}
+        setBlocks={setBlocks}
+        selectBlocks={selectBlocks}
+        setSelectBlocks={setSelectBlocks}
+        focusOnCaret={focusOnCaret}
+      />
       <input
         autoFocus
         placeholder="Text"
@@ -95,16 +45,14 @@ const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
         onKeyDown={(e) => {
           switch (e.key) {
             case " ":
-              groupInsert(input, linkBlockMode.length, linkBlock, setLinkBlock);
-              createGroupBlockModeAtIndex(
-                linkBlockMode.length,
-                linkBlockMode,
-                setLinkBlockMode
-              );
+              updateBlock(setBlocks, blocks?.length, "insert", {
+                type: "word",
+                content: input,
+              });
               setTimeout(() => setInput(""), 1);
               break;
             case "Enter":
-              editAndSave();
+              enterWhenSatisfied();
               break;
           }
         }}
@@ -117,12 +65,13 @@ const LinkBlockEdit: React.FC<LinkBlockEditProps> = ({
         onKeyDown={(e) => {
           switch (e.key) {
             case "Enter":
-              editAndSave();
+              enterWhenSatisfied();
               break;
           }
         }}
       />
-      <button className={`btn-standard`} onClick={() => editAndSave()}>
+      <button className={`btn-standard`} onClick={() => enter(blocks)}>
+        <CheckIcon />
         Done
       </button>
     </>

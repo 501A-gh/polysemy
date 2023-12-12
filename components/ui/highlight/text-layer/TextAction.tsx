@@ -11,14 +11,16 @@ import {
 } from "@radix-ui/react-icons";
 import LinkInsert from "../LinkInsert";
 import HighlightAction, { HighlightActionItemTypes } from "../HighlightAction";
-import { copy } from "@/util/helper/blockUtilities";
+import { backspaceMultiple, copy } from "@/util/helper/blockUtilities";
+import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
+import { applyLink } from "@/util/helper/globalUtilities";
 
 const TextAction: React.FC<{
+  setBlocks: React.Dispatch<React.SetStateAction<BlockType[]>>;
+  selectBlocks: number[];
   sentence: () => string;
   resetSelect: () => void;
-  backspaceMultiple: () => void;
-  applyLink: (link: string) => void;
-}> = ({ sentence, resetSelect, backspaceMultiple, applyLink }) => {
+}> = ({ setBlocks, selectBlocks, sentence, resetSelect }) => {
   const textActions: HighlightActionItemTypes[] = [
     {
       action: "copy",
@@ -46,7 +48,7 @@ const TextAction: React.FC<{
             </button>
           }
           applyLink={(link: string) => {
-            applyLink(link);
+            applyLink(link, selectBlocks, setBlocks, sentence());
             resetSelect();
           }}
         />
@@ -56,9 +58,9 @@ const TextAction: React.FC<{
       action: "delete",
       element: (
         <button
-          className={`btn  btn-standard`}
+          className={`btn btn-standard`}
           onClick={() => {
-            backspaceMultiple();
+            backspaceMultiple(selectBlocks, setBlocks);
             resetSelect();
           }}
         >
@@ -70,7 +72,7 @@ const TextAction: React.FC<{
     {
       action: "bold",
       element: (
-        <button className={`btn  btn-standard`}>
+        <button className={`btn btn-standard`}>
           <FontBoldIcon />
           Bold
         </button>

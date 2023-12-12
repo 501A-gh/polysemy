@@ -16,44 +16,13 @@ export interface GeneralBlockProps {
   focusOnCaret: () => void;
 }
 
-interface BlockOutputProps {
+const BlockOutput: React.FC<{
   blocks: BlockType[];
   setBlocks: React.Dispatch<React.SetStateAction<BlockType[]>>;
   selectBlocks: number[];
   setSelectBlocks: React.Dispatch<React.SetStateAction<number[]>>;
   focusOnCaret: any;
-}
-
-const BlockOutput: React.FC<BlockOutputProps> = ({
-  blocks,
-  setBlocks,
-  selectBlocks,
-  setSelectBlocks,
-  focusOnCaret,
-}) => {
-  blocks?.map((blockObj: BlockType, i: number) =>
-    console.log(blockObj.content, i)
-  );
-
-  // const textApplyLink = (
-  //   link: string,
-  //   selectBlocks: number[],
-  //   setStack: (stack: any) => StackType[],
-  //   rowIndex: number,
-  //   sentence: () => string
-  // ) => {
-  //   const startIndex = selectBlocks[0];
-  //   textBackspaceMultiple(selectBlocks, setStack, rowIndex);
-  //   setStack((prevItems: StackType[]) => {
-  //     const updatedItems = [...prevItems];
-  //     const updatedRow = [...prevItems[rowIndex].data.text];
-  //     updatedRow.splice(startIndex, 0, `[${sentence()}](${link})`);
-  //     updatedItems[rowIndex].data.text = updatedRow;
-  //     return updatedItems;
-  //   });
-  //   notify("Applied link to highlighted blocks", "action");
-  // };
-
+}> = ({ blocks, setBlocks, selectBlocks, setSelectBlocks, focusOnCaret }) => {
   return (
     <>
       {blocks?.map((blockObj: BlockType, i: number) => (
@@ -101,19 +70,13 @@ const BlockOutput: React.FC<BlockOutputProps> = ({
           {/* Highlight Functionality */}
           {isEndOfHighlight(selectBlocks, i) && (
             <TextAction
+              setBlocks={setBlocks}
+              selectBlocks={selectBlocks}
               sentence={() => sentence(selectBlocks, blocks)}
               resetSelect={() => {
                 focusOnCaret();
                 setSelectBlocks([]);
               }}
-              backspaceMultiple={() =>
-                textBackspaceMultiple(selectBlocks, setStack, rowIndex)
-              }
-              applyLink={(link: string) =>
-                textApplyLink(link, selectBlocks, setStack, rowIndex, () =>
-                  sentence(selectBlocks, data)
-                )
-              }
             />
           )}
         </>

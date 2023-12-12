@@ -2,8 +2,10 @@ import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import {
-  ModeTypes,
+  ActionTypes,
   backspace,
+  copy,
+  formatContent,
   getGroupBlockIntentData,
   splitMarkdownLink,
   updateBlock,
@@ -13,8 +15,7 @@ import LinkPrimitiveBlock from "../primitive-block/LinkPrimitiveBlock";
 import { CopyIcon, ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";
 import RadixPopover from "@/components/ui/RadixPopover";
 import { Tweet } from "@/components/tweet/Tweet";
-import { copy } from "@/util/helper/globalUtilities";
-import { BlockType } from "../TextInterpreter";
+import { BlockType, splitMarkdownIntoBlocks } from "../TextInterpreter";
 import { GeneralBlockProps } from "../BlockOutput";
 
 const LinkBlock: React.FC<GeneralBlockProps> = ({
@@ -42,15 +43,14 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();
 
-  const result = splitMarkdownLink(word);
-
-  const [mode, setMode] = useState<ModeTypes>("standard");
+  const [action, setAction] = useState<ActionTypes>("standard");
+  const linkData = splitMarkdownLink(word);
 
   return (
     <>
       <PrimitiveBlockInsert
-        mode={mode}
-        setMode={setMode}
+        action={action}
+        setAction={setAction}
         blockIndex={blockIndex}
         selected={selected}
         insert={insert}
@@ -60,23 +60,29 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
           setGroupBlockIntent(getGroupBlockIntentData(symbol))
         }
       />
-      {mode === "linkEdit" ? (
+      {action === "linkEdit" ? (
         <LinkBlockEdit
-          setMode={setMode}
-          edit={edit}
-          text={result?.text ? result?.text : ""}
-          url={result?.url ? result?.url : ""}
+          blocksData={splitMarkdownIntoBlocks(word.slice(1, -1))}
+          url={`${linkData?.url}`}
+          enter={(blocksData: BlockType[]) => {
+            edit({
+              type: "link",
+              content: formatContent.linkBlock(`${linkData?.url}`, blocksData),
+            });
+            setAction("standard");
+          }}
+          setAction={setAction}
         />
       ) : (
         <LinkPrimitiveBlock
           ref={buttonRef}
           blockIndex={blockIndex}
           selected={selected}
-          text={result?.text ? result?.text : ""}
-          blockMode={mode}
+          text={`${linkData?.text}`}
+          action={action}
           onClick={() => {
             setGroupBlockIntent(getGroupBlockIntentData(word.split("")[0]));
-            setMode("linkEdit");
+            setAction("linkEdit");
           }}
           onKeyDown={(e) => {
             if (e.metaKey) focusOnCaret();
@@ -88,7 +94,7 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
                 backspace(setBlocks, blockIndex);
                 break;
               case "/":
-                setMode("insert");
+                setAction("insert");
                 break;
               case "h":
                 selectBlock();
@@ -103,13 +109,15 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
                 break;
               case "o":
                 focusOnBlock();
-                mode === "command" ? setMode("standard") : setMode("command");
+                action === "command"
+                  ? setAction("standard")
+                  : setAction("command");
                 break;
             }
           }}
         />
       )}
-      {mode === "command" && (
+      {action === "command" && (
         <>
           <RadixPopover
             title={"Tweet"}
@@ -127,14 +135,14 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
           </RadixPopover>
           <button
             className={`btn btn-standard`}
-            onClick={() => window.open(result?.url, "_blank")}
+            onClick={() => window.open(`${linkData?.url}`, "_blank")}
           >
             <ExternalLinkIcon />
             Open Link
           </button>
           <button
             className={`btn btn-standard`}
-            onClick={() => copy(result?.url ? result?.url : "")}
+            onClick={() => copy(`${linkData?.url}`)}
           >
             <CopyIcon />
             Copy Link

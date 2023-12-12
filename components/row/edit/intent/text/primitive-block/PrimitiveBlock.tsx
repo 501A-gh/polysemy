@@ -24,7 +24,7 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
       ref={ref}
       type="button"
       className={`
-        border border-transparent 
+        border-b border-b-transparent
         text-lg font-sans cursor-pointer 
         outline-none select-none
         px-0.5 my-0.5 duration-200

@@ -1,42 +1,44 @@
 export interface BlockType {
-  type: 'word' | 'link' | 'bold' | 'italic' | 'code' | 'latex' | 'group';
-  content: string,
+  type: "word" | "link" | "bold" | "italic" | "code" | "latex" | "group";
+  content: string;
+  data?: any;
 }
 
 export const splitMarkdownIntoBlocks = (markdown: string): BlockType[] => {
   const blocks: BlockType[] = [];
-  const regex = /(\[.*?\]\(.*?\)|\*\*.*?\*\*|__.*?__|\*.*?\*|_.*?_|`.*?`|\$.*?\$|\b\w+\b|".*?"|'.*?'|\(.*?\))/g;
+  const regex =
+    /(\[.*?\]\(.*?\)|\*\*.*?\*\*|__.*?__|\*.*?\*|_.*?_|`.*?`|\$.*?\$|\b\w+\b|".*?"|'.*?'|\(.*?\))/g;
 
   let match;
   while ((match = regex.exec(markdown)) !== null) {
     const block = match[0];
-    if (block.startsWith('[') && block.endsWith(')')) {
-      blocks.push({ type: 'link', content: block });
-    } else if (block.startsWith('**') && block.endsWith('**')) {
-      blocks.push({ type: 'bold', content: block });
-    } else if (block.startsWith('__') && block.endsWith('__')) {
-      blocks.push({ type: 'bold', content: block });
-    } else if (block.startsWith('*') && block.endsWith('*')) {
-      blocks.push({ type: 'italic', content: block });
-    } else if (block.startsWith('_') && block.endsWith('_')) {
-      blocks.push({ type: 'italic', content: block });
-    } else if (block.startsWith('`') && block.endsWith('`')) {
-      blocks.push({ type: 'code', content: block });
-    } else if (block.startsWith('$') && block.endsWith('$')) {
-      blocks.push({ type: 'latex', content: block });
+    if (block.startsWith("[") && block.endsWith(")")) {
+      blocks.push({ type: "link", content: block });
+    } else if (block.startsWith("**") && block.endsWith("**")) {
+      blocks.push({ type: "bold", content: block });
+    } else if (block.startsWith("__") && block.endsWith("__")) {
+      blocks.push({ type: "bold", content: block });
+    } else if (block.startsWith("*") && block.endsWith("*")) {
+      blocks.push({ type: "italic", content: block });
+    } else if (block.startsWith("_") && block.endsWith("_")) {
+      blocks.push({ type: "italic", content: block });
+    } else if (block.startsWith("`") && block.endsWith("`")) {
+      blocks.push({ type: "code", content: block });
+    } else if (block.startsWith("$") && block.endsWith("$")) {
+      blocks.push({ type: "latex", content: block });
     } else if (block.startsWith('"') && block.endsWith('"')) {
-      blocks.push({ type: 'group', content: block });
+      blocks.push({ type: "group", content: block });
     } else if (block.startsWith("'") && block.endsWith("'")) {
-      blocks.push({ type: 'group', content: block });
-    } else if (block.startsWith('(') && block.endsWith(')')) {
-      blocks.push({ type: 'group', content: block });
+      blocks.push({ type: "group", content: block });
+    } else if (block.startsWith("(") && block.endsWith(")")) {
+      blocks.push({ type: "group", content: block });
     } else {
-      blocks.push({ type: 'word', content: block });
+      blocks.push({ type: "word", content: block });
     }
   }
 
   return blocks;
-}
+};
 
 // const MarkdownBlockSplitter = ({ markdown }: { markdown: string }) => {
 //   const blocks = splitMarkdownIntoBlocks(markdown);

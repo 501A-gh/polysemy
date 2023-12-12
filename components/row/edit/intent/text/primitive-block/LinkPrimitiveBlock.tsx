@@ -42,12 +42,13 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
               selected.includes(blockIndex)
                 ? `block-mode-highlight`
                 : `
-                ${i === 0 && "rounded-l-sm"} ${
-                    i === text.split(" ").length - 1 && "rounded-r-sm"
+                ${i === 0 && "peer-focus:rounded-l-sm"} ${
+                    i === text.split(" ").length - 1 &&
+                    "peer-focus:rounded-r-sm"
                   }
                 ${
                   action === "standard" &&
-                  `zinc-text border border-b-zinc-300 dark:border-b-zinc-500`
+                  `zinc-text border-b border-b-zinc-300 dark:border-b-zinc-500`
                 }
                 ${
                   focus &&

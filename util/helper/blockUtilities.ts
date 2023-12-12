@@ -68,7 +68,6 @@ const doubleQuotesRegex = /^".+"$/;
 const singleQuotesRegex = /^'.+'$/;
 const markdownLinkRegex = /^\[.+\]\(.+\)$/;
 
-// export type BlockIntentType = "standard" | "group" | "link";
 export const checkBlockIntent = (text: string): BlockType["type"] => {
   if (markdownLinkRegex.test(text)) {
     return "link";
@@ -148,7 +147,7 @@ export const updateBlock = (
 };
 
 export const backspaceMultiple = (
-  selectBlocks: BlockType[],
+  selectBlocks: number[],
   setState: React.Dispatch<React.SetStateAction<BlockType[]>>
 ) => {
   selectBlocks.reverse().forEach((i: number) => backspace(setState, i));
@@ -164,4 +163,8 @@ export const formatContent = {
     `${groupBlockIntent?.start}${blocks
       .map((blockObj: BlockType) => blockObj.content)
       .join(" ")}${groupBlockIntent?.end}`,
+  linkBlock: (url: string, blocks: BlockType[]) =>
+    `[${blocks
+      .map((blockObj: BlockType) => blockObj.content)
+      .join(" ")}](${url})`,
 };

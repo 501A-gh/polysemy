@@ -150,7 +150,17 @@
   } */
 
   .btn-transparent {
-    @apply bg-transparent border-transparent   
+    @apply border text-sm
+    outline-none cursor-pointer select-none
+    font-sans rounded-sm
+    whitespace-nowrap
+    py-1 px-2
+    my-0.5 mx-[1px]
+    flex items-center gap-1.5
+    bg-zinc-200 border-zinc-200
+    dark:bg-zinc-800 dark:border-zinc-800
+    
+    bg-transparent border-transparent   
     zinc-text
     focus:shadow-zinc-400/40
     focus:text-zinc-900
@@ -290,7 +300,7 @@
 
   /* BLOCK */
   .block {
-    @apply border border-transparent text-xl
+    @apply border-b text-xl
     outline-none cursor-pointer select-none
     font-sans px-0.5 my-0.5 duration-200;
   }
