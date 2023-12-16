@@ -3,7 +3,7 @@ import {
   ActionTypes,
   filterWord,
   updateBlock,
-} from "@/util/helper/blockUtilities";
+} from "@/util/helper/globalUtilities";
 import React, { useEffect, useRef, useState } from "react";
 import BlockOutput from "../../BlockOutput";
 import { BlockType } from "../../TextInterpreter";

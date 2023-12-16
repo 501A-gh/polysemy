@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Suggest, { SuggestProps } from "../Suggest";
-import { filterWord } from "@/util/helper/blockUtilities";
+import { filterWord } from "@/util/helper/globalUtilities";
 import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 
 interface PrimitiveCaretProps {

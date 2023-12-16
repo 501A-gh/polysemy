@@ -3,7 +3,7 @@ import { GroupBlockDictType } from "@/util/data/groupBlockDict";
 import {
   formatContent,
   getGroupBlockIntentData,
-} from "@/util/helper/blockUtilities";
+} from "@/util/helper/globalUtilities";
 import PrimitiveCaret from "./PrimitiveCaret";
 import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 import GroupBlockInsert from "@/components/row/edit/intent/text/group-block/GroupBlockInsert";

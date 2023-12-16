@@ -1,7 +1,7 @@
 import React from "react";
 import { BlockType } from "./TextInterpreter";
 import Block from "./block/Block";
-import { selectBlockIndex } from "@/util/helper/blockUtilities";
+import { selectBlockIndex } from "@/util/helper/globalUtilities";
 import GroupBlock from "./group-block/GroupBlock";
 import LinkBlock from "./link-block/LinkBlock";
 import { isEndOfHighlight, sentence } from "@/util/helper/globalUtilities";

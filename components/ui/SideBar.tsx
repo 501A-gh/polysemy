@@ -3,8 +3,6 @@ import { MagnifyingGlassIcon, PlusIcon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import RadixDialog from "./RadixDialog";
 import { getTopFrequentWords } from "@/util/helper/getTopFrequentWords";
-import { Tweet } from "../tweet/Tweet";
-import RadixHoverCard from "./RadixHoverCard";
 import RadixPopover from "./RadixPopover";
 
 export default function SideBar() {

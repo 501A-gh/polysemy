@@ -4,7 +4,7 @@ import {
   Pencil1Icon,
   TransformIcon,
 } from "@radix-ui/react-icons";
-import { ActionTypes } from "@/util/helper/blockUtilities";
+import { ActionTypes } from "@/util/helper/globalUtilities";
 
 interface CommandButtonProps {
   icon: JSX.Element;

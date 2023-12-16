@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import LinkInsert from "../LinkInsert";
 import HighlightAction, { HighlightActionItemTypes } from "../HighlightAction";
-import { copy } from "@/util/helper/blockUtilities";
+import { copy } from "@/util/helper/globalUtilities";
 
 const GroupAction: React.FC<{
   sentence: () => string;

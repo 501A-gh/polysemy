@@ -1,12 +1,10 @@
 import React from "react";
 import * as HoverCard from "@radix-ui/react-hover-card";
 
-interface HoverCardProps {
+const RadixHoverCard: React.FC<{
   trigger: JSX.Element;
   children: JSX.Element | JSX.Element[];
-}
-
-const RadixHoverCard: React.FC<HoverCardProps> = ({ trigger, children }) => (
+}> = ({ trigger, children }) => (
   <HoverCard.Root>
     <HoverCard.Trigger asChild>{trigger}</HoverCard.Trigger>
     <HoverCard.Portal>

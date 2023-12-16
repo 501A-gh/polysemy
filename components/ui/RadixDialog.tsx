@@ -2,21 +2,13 @@ import React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-interface DialogProps {
+const RadixDialog: React.FC<{
   trigger: JSX.Element;
   title: string;
   description: string;
   children?: JSX.Element | JSX.Element[];
   save?: JSX.Element;
-}
-
-const RadixDialog: React.FC<DialogProps> = ({
-  trigger,
-  title,
-  description,
-  children,
-  save,
-}) => (
+}> = ({ trigger, title, description, children, save }) => (
   <Dialog.Root>
     <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
     <Dialog.Portal>

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { BlockType } from "../TextInterpreter";
-import { ActionTypes, updateBlock } from "@/util/helper/blockUtilities";
+import { ActionTypes, updateBlock } from "@/util/helper/globalUtilities";
 import BlockOutput from "../BlockOutput";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { notify } from "@/components/ui/notify/Notify";

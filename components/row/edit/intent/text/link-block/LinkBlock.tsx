@@ -9,7 +9,7 @@ import {
   getGroupBlockIntentData,
   splitMarkdownLink,
   updateBlock,
-} from "@/util/helper/blockUtilities";
+} from "@/util/helper/globalUtilities";
 import LinkBlockEdit from "./LinkBlockEdit";
 import LinkPrimitiveBlock from "../primitive-block/LinkPrimitiveBlock";
 import { CopyIcon, ExternalLinkIcon, EyeOpenIcon } from "@radix-ui/react-icons";

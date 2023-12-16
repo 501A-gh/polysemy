@@ -1,11 +1,9 @@
 import Image from "next/image";
 import React from "react";
 
-interface WallpaperProps {
+const Wallpaper: React.FC<{
   src: string | false;
-}
-
-const Wallpaper: React.FC<WallpaperProps> = ({ src }) => {
+}> = ({ src }) => {
   return (
     <>
       <div

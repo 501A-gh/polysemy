@@ -1,7 +1,7 @@
 import Suggest, { SuggestProps } from "@/components/ui/Suggest";
 import React, { useRef, useState } from "react";
 import { BlockType } from "../TextInterpreter";
-import { ActionTypes, filterWord } from "@/util/helper/blockUtilities";
+import { ActionTypes, filterWord } from "@/util/helper/globalUtilities";
 
 interface BlockEditProps {
   edit: (blockObj: BlockType) => void;

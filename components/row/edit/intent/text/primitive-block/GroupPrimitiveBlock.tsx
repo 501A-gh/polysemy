@@ -1,4 +1,4 @@
-import { ActionTypes, checkBlockIntent } from "@/util/helper/blockUtilities";
+import { ActionTypes, checkBlockIntent } from "@/util/helper/globalUtilities";
 import React, { useState } from "react";
 
 interface GroupPrimitiveBlockProps

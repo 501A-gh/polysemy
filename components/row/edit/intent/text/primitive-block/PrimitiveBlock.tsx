@@ -1,5 +1,5 @@
 // import { cva } from "class-variance-authority";
-import { ActionTypes } from "@/util/helper/blockUtilities";
+import { ActionTypes } from "@/util/helper/globalUtilities";
 import React from "react";
 
 interface PrimitiveBlockProps

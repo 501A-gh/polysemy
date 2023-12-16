@@ -1,10 +1,10 @@
 import React, { useRef, useState } from "react";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { updateBlock } from "@/util/helper/blockUtilities";
 import GroupBlockWrapper from "./GroupBlockWrapper";
 import { BlockType } from "../TextInterpreter";
 import BlockOutput from "../BlockOutput";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { updateBlock } from "@/util/helper/globalUtilities";
 
 export interface GroupBlockInsertProps {
   blocksData: BlockType[];

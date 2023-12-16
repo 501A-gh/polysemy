@@ -1,4 +1,4 @@
-import { ActionTypes } from "@/util/helper/blockUtilities";
+import { ActionTypes } from "@/util/helper/globalUtilities";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 

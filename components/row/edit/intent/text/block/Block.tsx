@@ -6,7 +6,7 @@ import {
   copy,
   getGroupBlockIntentData,
   updateBlock,
-} from "@/util/helper/blockUtilities";
+} from "@/util/helper/globalUtilities";
 import Command from "@/components/ui/Command";
 import BlockEdit from "./BlockEdit";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";

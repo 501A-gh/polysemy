@@ -4,7 +4,7 @@ import InsertInputSpace, { InsertInputSpaceProps } from "./InsertInputSpace";
 import GroupBlockInsert from "../../group-block/GroupBlockInsert";
 import { BlockType } from "../../TextInterpreter";
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import { ActionTypes, formatContent } from "@/util/helper/blockUtilities";
+import { ActionTypes, formatContent } from "@/util/helper/globalUtilities";
 
 export interface PrimitiveBlockInsertProps {
   blockIndex: number;

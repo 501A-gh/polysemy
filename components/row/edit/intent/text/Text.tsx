@@ -8,10 +8,9 @@ import SwitchMode, {
 import Widget from "@/components/row/switch/Widget";
 import { Pencil1Icon } from "@radix-ui/react-icons";
 import RadixDialog from "@/components/ui/RadixDialog";
-import TextAction from "@/components/ui/highlight/text-layer/TextAction";
 import { BlockType, splitMarkdownIntoBlocks } from "./TextInterpreter";
 import BlockOutput from "./BlockOutput";
-import { updateBlock } from "@/util/helper/blockUtilities";
+import { updateBlock } from "@/util/helper/globalUtilities";
 
 interface TextProps extends SwitchModeProps {
   rowIndex: number;

@@ -1,6 +1,4 @@
-import React from 'react'
-
-
+import React from "react";
 // bg-zinc-200 dark:bg-zinc-800
 
 const Tag = ({ children }: { children: any }) => {
@@ -18,7 +16,7 @@ const Tag = ({ children }: { children: any }) => {
     >
       {children}
     </div>
-  )
+  );
 };
 
 export default Tag;

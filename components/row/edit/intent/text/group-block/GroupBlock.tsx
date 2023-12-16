@@ -7,7 +7,7 @@ import {
   formatContent,
   getGroupBlockIntentData,
   updateBlock,
-} from "@/util/helper/blockUtilities";
+} from "@/util/helper/globalUtilities";
 import PrimitiveBlockInsert from "../primitive-block/insert/PrimitiveBlockInsert";
 import GroupPrimitiveBlock from "../primitive-block/GroupPrimitiveBlock";
 import { BlockType, splitMarkdownIntoBlocks } from "../TextInterpreter";

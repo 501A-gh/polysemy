@@ -11,7 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import LinkInsert from "../LinkInsert";
 import HighlightAction, { HighlightActionItemTypes } from "../HighlightAction";
-import { backspaceMultiple, copy } from "@/util/helper/blockUtilities";
+import { backspaceMultiple, copy } from "@/util/helper/globalUtilities";
 import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 import { applyLink } from "@/util/helper/globalUtilities";
 
