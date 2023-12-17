@@ -2,19 +2,12 @@ import React from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-interface PopoverProps {
+const RadixPopover: React.FC<{
   trigger: JSX.Element;
   title: string;
   size: "small" | "medium" | "large";
   children: JSX.Element | JSX.Element[];
-}
-
-const RadixPopover: React.FC<PopoverProps> = ({
-  trigger,
-  title,
-  size,
-  children,
-}) => (
+}> = ({ trigger, title, size, children }) => (
   <Popover.Root>
     <Popover.Trigger asChild>{trigger}</Popover.Trigger>
     <Popover.Portal>

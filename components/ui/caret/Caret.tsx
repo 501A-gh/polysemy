@@ -8,13 +8,11 @@ import PrimitiveCaret from "./PrimitiveCaret";
 import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 import GroupBlockInsert from "@/components/row/edit/intent/text/group-block/GroupBlockInsert";
 
-interface CaretProps {
+const Caret: React.FC<{
   inputRef: React.Ref<HTMLInputElement>;
   focusOnCaret: () => void;
   insert: (inputBlockObj: BlockType) => void;
-}
-
-const Caret: React.FC<CaretProps> = ({ inputRef, focusOnCaret, insert }) => {
+}> = ({ inputRef, focusOnCaret, insert }) => {
   const [blockIntent, setBlockIntent] = useState<BlockType["type"]>();
   const [groupBlockIntent, setGroupBlockIntent] =
     useState<GroupBlockDictType>();

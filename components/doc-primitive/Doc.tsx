@@ -2,12 +2,10 @@ import { ClockIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import React from "react";
 
-interface DocProps {
+const Doc: React.FC<{
   title: string;
   date: string;
-}
-
-const Doc: React.FC<DocProps> = ({ title, date }) => {
+}> = ({ title, date }) => {
   return (
     <Link
       href={`/editor`}

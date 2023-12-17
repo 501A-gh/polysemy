@@ -4,17 +4,19 @@ import RadixPopover from "@/components/ui/RadixPopover";
 import { FileTextIcon, PlusIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
 
-const Header = ({ children }: { children?: JSX.Element | JSX.Element[] }) => {
+const Header: React.FC<{ children?: JSX.Element | JSX.Element[] }> = ({
+  children,
+}) => {
   const [title, setTitle] = useState<string>("Untitled");
 
   return (
     <header
       className={`
-          z-10 sticky top-0
-          print:hidden select-none
-          border-b border-b-gray-300
-          bg-gray-100 dark:border-b-gray-800 dark:bg-gray-950
-        `}
+        z-10 sticky top-0
+        print:hidden select-none
+        border-b border-b-gray-300
+        bg-gray-100 dark:border-b-gray-800 dark:bg-gray-950
+      `}
     >
       <section className={`flex items-center justify-between`}>
         <div className={`flex items-center`}>

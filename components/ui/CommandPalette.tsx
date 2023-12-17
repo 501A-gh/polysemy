@@ -27,16 +27,13 @@ const CommandPalette: React.FC<CommandPaletteProps> = ({ open, setOpen }) => {
     <>
       {open ? (
         <FocusTrap>
-          {/* // bg-zinc-50/70 dark:bg-zinc-950/70 */}
           <div
             className={`
               outline-none h-fit w-96 pb-2 overflow-y-scroll 
               fixed top-0 left-1/2 -ml-48 mt-2
               transition-all duration-300 z-10
-              group rounded-md cursor-pointer backdrop-blur 
-               material-gradient
+              group rounded-md cursor-pointer backdrop-blur material-gradient animate-slide-from-above
               border border-zinc-300 dark:border-zinc-800
-              animate-slide-from-above
               shadow-lg shadow-zinc-200/50 dark:shadow-zinc-900/50
             `}
           >

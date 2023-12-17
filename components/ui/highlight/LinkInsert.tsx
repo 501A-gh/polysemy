@@ -2,12 +2,10 @@ import { Link2Icon } from "@radix-ui/react-icons";
 import React, { useState } from "react";
 import RadixDialog from "../RadixDialog";
 
-interface LinkInsertProps {
+const LinkInsert: React.FC<{
   trigger: JSX.Element;
   applyLink: (link: string) => void;
-}
-
-const LinkInsert: React.FC<LinkInsertProps> = ({ trigger, applyLink }) => {
+}> = ({ trigger, applyLink }) => {
   const [link, setLink] = useState<string>("");
 
   return (

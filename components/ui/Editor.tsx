@@ -39,7 +39,7 @@ const Editor = () => {
   ]);
 
   useEffect(() => {
-    const down = (e: any) => {
+    const down = (e: KeyboardEvent) => {
       if (e.key === "s" && e.metaKey) notify("Saved", "action");
     };
     document.addEventListener("keydown", down);

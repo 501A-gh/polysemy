@@ -1,10 +1,8 @@
 import React from "react";
 
-interface DocCarouselProps {
+const DocCarousel: React.FC<{
   children: JSX.Element[];
-}
-
-const DocCarousel: React.FC<DocCarouselProps> = ({ children }) => {
+}> = ({ children }) => {
   return (
     <div style={{ perspective: "1000px" }}>
       <section className={`flex item-center justify-center`}>

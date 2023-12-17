@@ -8,7 +8,6 @@ const textarea = cva("textarea", {
       word: [
         "text-orange-500",
         "focus:shadow-orange-400/40",
-
         "focus:text-white",
         "focus:bg-orange-400",
         "dark:focus:text-black",

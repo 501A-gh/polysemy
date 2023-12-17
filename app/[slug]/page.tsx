@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Editor from "../../components/ui/Editor";
 import Wallpaper from "@/components/ui/Wallpaper";
@@ -36,7 +37,7 @@ const editor = cva(["border", "transition-all"], {
 export default function EditorPage() {
   const [cmdPalette, setCmdPalette] = useState(false);
   useEffect(() => {
-    const down = (e: any) => {
+    const down = (e: KeyboardEvent) => {
       if (e.metaKey && e.shiftKey && e.key === "p") setCmdPalette(true);
     };
     document.addEventListener("keydown", down);

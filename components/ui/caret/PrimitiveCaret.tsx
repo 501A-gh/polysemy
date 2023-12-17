@@ -3,15 +3,13 @@ import Suggest, { SuggestProps } from "../Suggest";
 import { filterWord } from "@/util/helper/globalUtilities";
 import { BlockType } from "@/components/row/edit/intent/text/TextInterpreter";
 
-interface PrimitiveCaretProps {
+const PrimitiveCaret: React.FC<{
   inputRef: React.Ref<HTMLInputElement>;
   focusOnCaret: () => void;
   insert: (newBlockObj: BlockType) => void;
   setBlockIntent: (intent: BlockType["type"]) => void;
   setGroupBlockIntent: (symbol: string) => void;
-}
-
-const PrimitiveCaret: React.FC<PrimitiveCaretProps> = ({
+}> = ({
   inputRef,
   focusOnCaret,
   insert,

@@ -1,7 +1,8 @@
 import React from "react";
-// bg-zinc-200 dark:bg-zinc-800
 
-const Tag = ({ children }: { children: any }) => {
+const Tag: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
+  children,
+}) => {
   return (
     <div
       className={`

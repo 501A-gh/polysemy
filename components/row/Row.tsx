@@ -12,13 +12,11 @@ export interface IntentComponentProps {
   setStack: any;
 }
 
-interface RowProps {
+const Row: React.FC<{
   rowIndex: number;
   stack: StackType[];
   setStack: any;
-}
-
-const Row: React.FC<RowProps> = ({ rowIndex, stack, setStack }) => {
+}> = ({ rowIndex, stack, setStack }) => {
   const [selectMode, setSelectMode] = useState<boolean>(true);
 
   const currentRow: StackType = stack[rowIndex];

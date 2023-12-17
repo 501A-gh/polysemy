@@ -9,13 +9,8 @@ const Wallpaper: React.FC<{
       <div
         className={`
           transition-all
-          fixed
-          w-full
-          h-screen
-          object-cover
-          -z-20
-          bg-zinc-200/50
-          dark:bg-zinc-950/80
+          fixed w-full h-screen object-cover -z-20
+          bg-zinc-200/50 dark:bg-zinc-950/80
         `}
       />
       {src && (
