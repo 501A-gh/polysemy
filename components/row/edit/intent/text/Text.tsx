@@ -31,7 +31,7 @@ const Text: React.FC<TextProps> = ({
   const data = currentRow.data.text;
 
   const [blocks, setBlocks] = useState<BlockType[]>(
-    splitMarkdownIntoBlocks(data)
+    splitMarkdownIntoBlocks(data),
   );
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
@@ -60,7 +60,7 @@ const Text: React.FC<TextProps> = ({
   // };
 
   return (
-    <section className={`grid gap-1 w-full`}>
+    <section className={`grid w-full gap-1`}>
       <SwitchMode
         rowIndex={rowIndex}
         rowIntent={rowIntent}
@@ -89,8 +89,8 @@ const Text: React.FC<TextProps> = ({
       {!selectMode && selectBlocks.length < 2 && data.length > 0 && (
         <div
           className={`
-            flex items-center justify-between gap-1 
-            h-fit animate-slide-from-above 
+            animate-slide-from-above flex h-fit items-center
+            justify-between gap-1
           `}
         >
           <div className={`flex items-center gap-1`}>
