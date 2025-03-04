@@ -1,6 +1,6 @@
 import React from "react";
 
-const Tag: React.FC<{ children: JSX.Element | JSX.Element[] }> = ({
+const Tag: React.FC<{ children: JSX.Element | JSX.Element[] | string }> = ({
   children,
 }) => {
   return (
