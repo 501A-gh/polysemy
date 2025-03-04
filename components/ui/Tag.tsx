@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 
 const Tag: React.FC<{ children: JSX.Element | JSX.Element[] | string }> = ({
   children,

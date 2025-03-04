@@ -1,5 +1,5 @@
 import { GroupBlockDictType } from "@/util/data/groupBlockDict";
-import React from "react";
+import React, { type JSX } from "react";
 
 interface GroupBlockWrapperProps {
   groupBlockIntent: GroupBlockDictType | undefined;

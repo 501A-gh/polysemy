@@ -1,5 +1,5 @@
 import { Link2Icon } from "@radix-ui/react-icons";
-import React, { useState } from "react";
+import React, { useState, type JSX } from "react";
 import RadixDialog from "../RadixDialog";
 
 const LinkInsert: React.FC<{

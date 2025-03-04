@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 import SelectMode, { SelectModeProps } from "../select/SelectMode";
 import IntentSelect, { IntentSelectProps } from "../edit/intent/IntentSelect";
 

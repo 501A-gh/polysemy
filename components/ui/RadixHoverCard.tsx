@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 import * as HoverCard from "@radix-ui/react-hover-card";
 
 const RadixHoverCard: React.FC<{

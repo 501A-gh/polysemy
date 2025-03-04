@@ -1,4 +1,4 @@
-import React from "react";
+import React, { type JSX } from "react";
 import * as Popover from "@radix-ui/react-popover";
 import { Cross2Icon } from "@radix-ui/react-icons";
 

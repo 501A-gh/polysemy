@@ -2,7 +2,7 @@
 
 import RadixPopover from "@/components/ui/RadixPopover";
 import { FileTextIcon, PlusIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { useState, type JSX } from "react";
 
 const Header: React.FC<{ children?: JSX.Element | JSX.Element[] }> = ({
   children,
