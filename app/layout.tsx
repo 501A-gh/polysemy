@@ -1,7 +1,6 @@
 import NoSpaceScroll from "@/components/ui/NoScrollSpace";
 import "./globals.css";
 import { Ibarra_Real_Nova, DM_Sans, DM_Mono } from "next/font/google";
-import { ReactScan } from "./ReactScan";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -40,7 +39,6 @@ export default function RootLayout({
         ${ibarraRealNova.variable}
       `}
     >
-      <ReactScan />
       <body
         className={`
           bg-zinc-100

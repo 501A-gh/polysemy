@@ -31,7 +31,7 @@ const Text: React.FC<TextProps> = ({
   const data = currentRow.data.text;
 
   const [blocks, setBlocks] = useState<BlockType[]>(
-    splitMarkdownIntoBlocks(data),
+    splitMarkdownIntoBlocks(data)
   );
   const [selectBlocks, setSelectBlocks] = useState<number[]>([]);
 
