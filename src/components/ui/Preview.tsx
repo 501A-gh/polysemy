@@ -1,6 +1,8 @@
-import { VariantProps, cva } from "class-variance-authority";
+import { cva } from "class-variance-authority";
+import type { VariantProps } from "class-variance-authority";
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const preview = cva(
   [
@@ -59,7 +61,7 @@ const Preview: React.FC<PreviewProps> = ({
     >
       <div className={preview({ select, className })} {...props}>
         <h1>Preview</h1>
-        <ReactMarkdown>{children}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{children}</ReactMarkdown>
         <h6
           className={`text-center font-serif italic text-gray-400/80  dark:text-gray-500/80`}
         >

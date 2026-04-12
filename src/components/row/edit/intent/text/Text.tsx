@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Caret from "@/components/ui/caret/Caret";
 import type { StackType } from "@/components/ui/Editor";
 
@@ -12,6 +12,10 @@ import { splitMarkdownIntoBlocks } from "./TextInterpreter";
 import type { BlockType } from "./TextInterpreter";
 import BlockOutput from "./BlockOutput";
 import { updateBlock } from "@/util/helper/globalUtilities";
+import {
+  blocksToNormalizedMarkdown,
+  normalizeMarkdown,
+} from "@/util/helper/markdown";
 
 interface TextProps extends SwitchModeProps {
   rowIndex: number;
@@ -59,6 +63,53 @@ const Text: React.FC<TextProps> = ({
   //   updatedArray[index] = newValue;
   //   setBlockMode(updatedArray);
   // };
+
+  const blocksRef = useRef(blocks);
+  blocksRef.current = blocks;
+
+  const dataRef = useRef(data);
+  dataRef.current = data;
+
+  const prevSelectMode = useRef(selectMode);
+
+  useEffect(() => {
+    const justSwitchedToPreview = !prevSelectMode.current && selectMode;
+    const justSwitchedToEdit = prevSelectMode.current && !selectMode;
+    
+    prevSelectMode.current = selectMode;
+
+    if (justSwitchedToPreview) {
+      const nextMarkdown = blocksToNormalizedMarkdown(blocksRef.current);
+
+      setStack((prevStack: StackType[]) => {
+        const row = prevStack[rowIndex];
+
+        if (!row) {
+          return prevStack;
+        }
+
+        const currentMarkdown = normalizeMarkdown(row.data.text);
+
+        if (currentMarkdown === nextMarkdown) {
+          return prevStack;
+        }
+
+        const updatedStack = [...prevStack];
+
+        updatedStack[rowIndex] = {
+          ...row,
+          data: {
+            ...row.data,
+            text: nextMarkdown,
+          },
+        };
+
+        return updatedStack;
+      });
+    } else if (justSwitchedToEdit) {
+      setBlocks(splitMarkdownIntoBlocks(dataRef.current));
+    }
+  }, [rowIndex, selectMode, setStack]);
 
   return (
     <section className={`grid w-full gap-1`}>
