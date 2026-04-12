@@ -1,0 +1,26 @@
+import React from "react";
+
+const Wallpaper: React.FC<{
+  src: string | false;
+}> = ({ src }) => {
+  return (
+    <>
+      <div
+        className={`
+          transition-all
+          fixed w-full h-screen object-cover -z-20
+          bg-zinc-200/50 dark:bg-zinc-950/80
+        `}
+      />
+      {src && (
+        <img
+          alt={"Wallpaper"}
+          src={src}
+          className={`fixed w-full -z-30 h-screen object-cover`}
+        />
+      )}
+    </>
+  );
+};
+
+export default Wallpaper;
