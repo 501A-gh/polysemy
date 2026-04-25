@@ -26,6 +26,7 @@ const PrimitiveCaret: React.FC<{
       <input
         autoFocus
         spellCheck
+        data-editor-caret="true"
         ref={inputRef}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}

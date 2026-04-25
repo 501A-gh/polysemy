@@ -26,6 +26,7 @@ const GroupPrimitiveBlock: React.FC<GroupPrimitiveBlockProps> = ({
       <button
         ref={ref}
         type="button"
+        data-editor-block="true"
         className={`peer`}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}

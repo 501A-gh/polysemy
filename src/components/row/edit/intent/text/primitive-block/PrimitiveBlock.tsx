@@ -23,6 +23,7 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
     <button
       ref={ref}
       type="button"
+      data-editor-block="true"
       className={`
         border-b border-b-transparent
         text-lg font-sans cursor-pointer 

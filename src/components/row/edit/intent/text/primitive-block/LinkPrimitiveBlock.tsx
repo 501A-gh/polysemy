@@ -25,6 +25,7 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
       <button
         ref={ref}
         type="button"
+        data-editor-block="true"
         className={`peer`}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
