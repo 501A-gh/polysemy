@@ -32,15 +32,16 @@ const PrimitiveCaret: React.FC<{
         onBlur={() => setFocus(false)}
         onPaste={(e) => {
           e.preventDefault();
-          e.clipboardData
-            .getData("text")
-            .split(/\W+/)
-            .map((word: string) =>
-              insert({
-                type: "word",
-                content: word,
-              })
-            );
+            e.clipboardData
+              .getData("text")
+              .split(/\s+/)
+              .reverse()
+              .map((word: string) =>
+                insert({
+                  type: "word",
+                  content: word,
+                })
+              );
         }}
         className={`
           focus:outline-none h-fit

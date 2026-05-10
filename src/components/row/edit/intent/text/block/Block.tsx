@@ -112,9 +112,9 @@ const Block: React.FC<GeneralBlockProps> = ({
         <Command
           word={word}
           edit={(newWord: string) => {
-            if (newWord.split(/\W+/).length > 1) {
+            if (newWord.split(/\s+/).length > 1) {
               newWord
-                .split(/\W+/)
+                .split(/\s+/)
                 .reverse()
                 .map((w: string) => {
                   insert({

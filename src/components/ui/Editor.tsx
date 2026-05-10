@@ -56,13 +56,19 @@ const Editor = () => {
       if (target instanceof HTMLInputElement) {
         const isAtEnd = target.selectionStart === target.value.length;
         const isAtStart = target.selectionStart === 0;
-        if ((e.key === "ArrowRight" && !isAtEnd) || (e.key === "ArrowLeft" && !isAtStart)) {
+        if (
+          (e.key === "ArrowRight" && !isAtEnd) ||
+          (e.key === "ArrowLeft" && !isAtStart)
+        ) {
           return;
         }
       } else if (target instanceof HTMLTextAreaElement) {
         const isAtEnd = target.selectionStart === target.value.length;
         const isAtStart = target.selectionStart === 0;
-        if ((e.key === "ArrowRight" && !isAtEnd) || (e.key === "ArrowLeft" && !isAtStart)) {
+        if (
+          (e.key === "ArrowRight" && !isAtEnd) ||
+          (e.key === "ArrowLeft" && !isAtStart)
+        ) {
           return;
         }
       } else if (target?.isContentEditable) {
@@ -71,21 +77,30 @@ const Editor = () => {
           const range = selection.getRangeAt(0);
           const isAtEnd = !range.commonAncestorContainer.nextSibling;
           const isAtStart = !range.commonAncestorContainer.previousSibling;
-          if ((e.key === "ArrowRight" && !isAtEnd) || (e.key === "ArrowLeft" && !isAtStart)) {
+          if (
+            (e.key === "ArrowRight" && !isAtEnd) ||
+            (e.key === "ArrowLeft" && !isAtStart)
+          ) {
             return;
           }
         }
       }
 
       const blocks = Array.from(
-        document.querySelectorAll<HTMLButtonElement>('[data-editor-block="true"]')
+        document.querySelectorAll<HTMLButtonElement>(
+          '[data-editor-block="true"]',
+        ),
       );
-      const caretInput = document.querySelector<HTMLInputElement>('[data-editor-caret="true"]');
+      const caretInput = document.querySelector<HTMLInputElement>(
+        '[data-editor-caret="true"]',
+      );
       const goBackward = e.key === "ArrowLeft" || e.key === "ArrowUp";
 
       if (blocks.length === 0) return;
 
-      const activeIndex = blocks.findIndex((block) => block === document.activeElement);
+      const activeIndex = blocks.findIndex(
+        (block) => block === document.activeElement,
+      );
 
       if (activeIndex === -1) {
         if (!target) return;
@@ -95,12 +110,12 @@ const Editor = () => {
           .find(
             (block) =>
               block.compareDocumentPosition(target) &
-              Node.DOCUMENT_POSITION_FOLLOWING
+              Node.DOCUMENT_POSITION_FOLLOWING,
           );
         const nextBlock = blocks.find(
           (block) =>
             block.compareDocumentPosition(target) &
-            Node.DOCUMENT_POSITION_PRECEDING
+            Node.DOCUMENT_POSITION_PRECEDING,
         );
 
         if (goBackward && previousBlock) {
@@ -134,7 +149,7 @@ const Editor = () => {
 
   return (
     <>
-      <section className={`flex flex-col h-auto p-4 gap-2 print:pt-1`}>
+      <section className="flex flex-col h-auto p-4 gap-2 print:pt-1">
         {stack.map((_, i) => (
           <Row key={i} rowIndex={i} stack={stack} setStack={setStack} />
         ))}
