@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   rowIntentDict,
 } from "@/util/data/rowIntentDict";
@@ -44,6 +44,17 @@ const IntentSelect: React.FC<IntentSelectProps> = ({
   const [suggestedOptions, setSuggestedOptions] = useState<RowIntentDictType[]>(
     []
   );
+
+  const prevCommandMode = useRef(commandMode);
+
+  useEffect(() => {
+    if (prevCommandMode.current && !commandMode) {
+      if (typeof intentRef !== "function" && intentRef && "current" in intentRef) {
+        (intentRef as { current: HTMLButtonElement | null }).current?.focus();
+      }
+    }
+    prevCommandMode.current = commandMode;
+  }, [commandMode, intentRef]);
 
   const updateIntentId = (intentId: IntentIdType) => {
     setStack((prevStack: any) => {
