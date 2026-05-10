@@ -53,6 +53,50 @@ const Editor = () => {
       const target = e.target as HTMLElement | null;
       if (target?.closest('[data-operate-menu="true"]')) return;
 
+      const isVertical = e.key === "ArrowUp" || e.key === "ArrowDown";
+
+      if (isVertical) {
+        const rows = Array.from(
+          document.querySelectorAll<HTMLButtonElement>(
+            '[data-editor-row="true"]',
+          ),
+        );
+        if (rows.length === 0) return;
+
+        const activeIndex = rows.findIndex(
+          (row) => row === document.activeElement,
+        );
+
+        if (activeIndex === -1) {
+          const block = document.activeElement?.closest<HTMLElement>(
+            '[data-editor-block="true"]',
+          );
+          if (!block) return;
+
+          const textSection = block.closest("section");
+          const innerRowSection = textSection?.parentElement;
+          const outerRowSection = innerRowSection?.parentElement;
+          const rowBtn = outerRowSection?.querySelector<HTMLButtonElement>(
+            '[data-editor-row="true"]',
+          );
+          if (rowBtn) {
+            e.preventDefault();
+            rowBtn.focus();
+          }
+          return;
+        }
+
+        const nextIndex = e.key === "ArrowUp"
+          ? Math.max(0, activeIndex - 1)
+          : Math.min(rows.length - 1, activeIndex + 1);
+
+        if (nextIndex !== activeIndex) {
+          e.preventDefault();
+          rows[nextIndex].focus();
+        }
+        return;
+      }
+
       if (target instanceof HTMLInputElement) {
         const isAtEnd = target.selectionStart === target.value.length;
         const isAtStart = target.selectionStart === 0;
@@ -94,7 +138,7 @@ const Editor = () => {
       const caretInput = document.querySelector<HTMLInputElement>(
         '[data-editor-caret="true"]',
       );
-      const goBackward = e.key === "ArrowLeft" || e.key === "ArrowUp";
+      const goBackward = e.key === "ArrowLeft";
 
       if (blocks.length === 0) return;
 

@@ -85,10 +85,17 @@ const Row: React.FC<{
     }
   };
 
+  const rowBtnRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     const down = (e: any) => {
       if (e.key === "Enter" && e.metaKey) {
         setSelectMode(true);
+        if (
+          rowBtnRef.current?.parentElement?.contains(document.activeElement)
+        ) {
+          rowBtnRef.current.focus();
+        }
       }
       if (e.altKey && e.shiftKey) focusOnIntent();
     };
@@ -101,6 +108,8 @@ const Row: React.FC<{
       className={`flex items-stretch ${selectMode ? "gap-3" : "gap-1.5"}`}
     >
       <button
+        ref={rowBtnRef}
+        data-editor-row="true"
         onClick={() =>
           selectMode ? setSelectMode(false) : setSelectMode(true)
         }
