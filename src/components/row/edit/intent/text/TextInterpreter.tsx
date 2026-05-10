@@ -7,7 +7,7 @@ export interface BlockType {
 export const splitMarkdownIntoBlocks = (markdown: string): BlockType[] => {
   const blocks: BlockType[] = [];
   const regex =
-    /(\[.*?\]\(.*?\)|\*\*.*?\*\*|__.*?__|\*.*?\*|_.*?_|`.*?`|\$.*?\$|\b\w+\b|".*?"|'.*?'|\(.*?\))/g;
+    /(\[.*?\]\(.*?\)|\*\*.*?\*\*|__.*?__|\*.*?\*|_.*?_|`.*?`|\$.*?\$|\b\w+(?:[-']\w+)*\b|".*?"|'.*?'|\(.*?\))/g;
 
   let match;
   while ((match = regex.exec(markdown)) !== null) {
