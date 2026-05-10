@@ -56,7 +56,7 @@ const PrimitiveBlock: React.FC<PrimitiveBlockProps> = ({
               `
             }
             ${action === "edit" && "blue-text animate-bounce"}
-            ${action === "command" && "blue-text animate-pulse"}
+            ${action === "operate" && "blue-text animate-pulse"}
             `
         }
       `}

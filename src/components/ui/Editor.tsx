@@ -51,6 +51,8 @@ const Editor = () => {
       if (!isArrowKey) return;
 
       const target = e.target as HTMLElement | null;
+      if (target?.closest('[data-operate-menu="true"]')) return;
+
       if (target instanceof HTMLInputElement) {
         const isAtEnd = target.selectionStart === target.value.length;
         const isAtStart = target.selectionStart === 0;

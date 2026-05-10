@@ -61,7 +61,7 @@ const LinkPrimitiveBlock: React.FC<LinkPrimitiveBlockProps> = ({
                   duration-200
                 `
                 }
-                ${action === "command" ? "block-mode-command" : ""}
+                ${action === "operate" ? "block-mode-command" : ""}
               `
             }
           `}

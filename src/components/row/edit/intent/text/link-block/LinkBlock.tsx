@@ -91,7 +91,8 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
               case "c":
                 copy(word);
                 break;
-              case "Backspace" || "Delete":
+              case "Backspace":
+              case "Delete":
                 backspace(setBlocks, blockIndex);
                 break;
               case "/":
@@ -110,15 +111,15 @@ const LinkBlock: React.FC<GeneralBlockProps> = ({
                 break;
               case "o":
                 focusOnBlock();
-                action === "command"
+                action === "operate"
                   ? setAction("standard")
-                  : setAction("command");
+                  : setAction("operate");
                 break;
             }
           }}
         />
       )}
-      {action === "command" && (
+      {action === "operate" && (
         <>
           <RadixPopover
             title={"Tweet"}

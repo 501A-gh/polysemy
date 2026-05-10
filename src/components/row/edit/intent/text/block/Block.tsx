@@ -65,15 +65,18 @@ const Block: React.FC<GeneralBlockProps> = ({
           if (e.metaKey) focusOnCaret();
           switch (e.key) {
             case "o":
-              focusOnBlock();
-              action === "command"
-                ? setAction("standard")
-                : setAction("command");
+              if (action === "operate") {
+                setAction("standard");
+                focusOnBlock();
+              } else {
+                setAction("operate");
+              }
               break;
             case "c":
               copy(word);
               break;
-            case "Backspace" || "Delete":
+            case "Backspace":
+            case "Delete":
               backspace(setBlocks, blockIndex);
               break;
             case "/":
@@ -105,7 +108,7 @@ const Block: React.FC<GeneralBlockProps> = ({
         />
       )}
 
-      {action === "command" && (
+      {action === "operate" && (
         <Command
           word={word}
           edit={(newWord: string) => {

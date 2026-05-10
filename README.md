@@ -35,7 +35,7 @@ Polysemy is a block based text editor for English.
 | `⌘`                     | Focus on caret            |                    |
 | `⇧` + `⌥`               | Focus on markdown intent  |                    |
 | `⌘` + `enter`           | switch to select mode     |                    |
-| `o`                     | enter command mode        | `enter` or `space` |
+| `o`                     | enter operate mode        | `enter` or `space` |
 | `h` (start) + `h` (end) | highlight words           | `enter` or `space` |
 | `c`                     | copy word                 |                    |
 | `x`                     | cut word                  |                    |

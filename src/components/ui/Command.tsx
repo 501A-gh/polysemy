@@ -1,4 +1,4 @@
-import React, { useState, type JSX } from "react";
+import React, { useEffect, useRef, useState, type JSX } from "react";
 import {
   MagicWandIcon,
   Pencil1Icon,
@@ -32,15 +32,81 @@ const options: CommandButtonProps[] = [
 
 const Command: React.FC<{
   word: string;
-  focusOnClick: any;
+  focusOnClick: () => void;
   setAction: React.Dispatch<React.SetStateAction<ActionTypes>>;
   edit: (word: string) => void;
 }> = ({ setAction, word, edit, focusOnClick }) => {
   const [response, setResponse] = useState([]);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
-  const closeCommandMode = () => {
+  const closeOperateMode = () => {
     setResponse([]);
     setAction("standard");
+  };
+
+  const getOptionButtons = () => {
+    if (!containerRef.current) return [];
+    return Array.from(containerRef.current.querySelectorAll("button"));
+  };
+
+  useEffect(() => {
+    const buttons = getOptionButtons();
+    buttons[0]?.focus();
+  }, [response]);
+
+  const handleKeyboardNavigation = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    index: number
+  ) => {
+    const buttons = getOptionButtons();
+    if (buttons.length === 0) return;
+
+    if (e.key === "o" || e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      closeOperateMode();
+      focusOnClick();
+      return;
+    }
+
+    const nextIndex =
+      index + 1 >= buttons.length ? 0 : index + 1;
+    const previousIndex =
+      index - 1 < 0 ? buttons.length - 1 : index - 1;
+
+    if (e.key === "Tab") {
+      e.preventDefault();
+      e.stopPropagation();
+      buttons[e.shiftKey ? previousIndex : nextIndex]?.focus();
+      return;
+    }
+
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+      e.preventDefault();
+      e.stopPropagation();
+      buttons[nextIndex]?.focus();
+      return;
+    }
+
+    if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+      e.preventDefault();
+      e.stopPropagation();
+      buttons[previousIndex]?.focus();
+      return;
+    }
+
+    if (e.key === "Home") {
+      e.preventDefault();
+      e.stopPropagation();
+      buttons[0]?.focus();
+      return;
+    }
+
+    if (e.key === "End") {
+      e.preventDefault();
+      e.stopPropagation();
+      buttons[buttons.length - 1]?.focus();
+    }
   };
 
   async function fetchApi(apiRoute: string) {
@@ -57,25 +123,23 @@ const Command: React.FC<{
   }
 
   return (
-    <>
+    <div
+      ref={containerRef}
+      data-operate-menu="true"
+      className="inline-flex flex-wrap items-center"
+    >
       {response.length > 0 ? (
         <>
           {response.slice(0, 50).map((obj: any, i: number) => (
             <button
               key={i}
-              className={`btn-standard`}
+              className={`btn-standard inline-flex`}
               onClick={() => {
                 edit(obj.word);
-                closeCommandMode();
+                closeOperateMode();
                 focusOnClick();
               }}
-
-              // onKeyDown={(e) => {
-              //   if (e.key === "o") {
-              //     closeCommandMode();
-              //     focusOnClick();
-              //   }
-              // }}
+              onKeyDown={(e) => handleKeyboardNavigation(e, i)}
             >
               {obj.word}
             </button>
@@ -86,16 +150,11 @@ const Command: React.FC<{
           {options.map((obj: CommandButtonProps, i: number) => (
             <button
               key={i}
-              className={`btn-standard`}
+              className={`btn-standard inline-flex`}
               onClick={() => {
                 fetchApi(obj.apiRoute);
               }}
-              onKeyDown={(e) => {
-                if (e.key === "o") {
-                  closeCommandMode();
-                  focusOnClick();
-                }
-              }}
+              onKeyDown={(e) => handleKeyboardNavigation(e, i)}
             >
               {obj.icon}
               {obj.name}
@@ -103,7 +162,7 @@ const Command: React.FC<{
           ))}
         </>
       )}
-    </>
+    </div>
   );
 };
 

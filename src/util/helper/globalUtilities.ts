@@ -34,7 +34,7 @@ export type ActionTypes =
   | "standard"
   | "edit"
   | "insert"
-  | "command"
+  | "operate"
   | "highlight"
   | "groupEdit"
   | "groupInsert"
